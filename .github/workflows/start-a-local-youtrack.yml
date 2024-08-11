@@ -1,0 +1,11 @@
+name: start-a-local-youtrack
+on:
+  workflow_dispatch:
+
+jobs:
+  start-a-local-youtrack:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: docker pull
+        run: docker pull jetbrains/youtrack:2024.2.38971
