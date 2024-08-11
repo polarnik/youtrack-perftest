@@ -9,3 +9,28 @@ jobs:
       - uses: actions/checkout@v4
       - name: docker pull YOUTRACK
         run: docker pull jetbrains/youtrack:${{ vars.YOUTRACK_VERSION }}
+      - name: create volume folders
+        run: |
+          mkdir -p -m 750 \
+            ./volumes/youtrack/opt/youtrack/data \
+            ./volumes/youtrack/opt/youtrack/logs \
+            ./volumes/youtrack/opt/youtrack/conf \
+            ./volumes/youtrack/opt/youtrack/backups
+      - name: set the volume owner
+        run: |
+          chown -R 13001:13001 \
+            ./volumes/youtrack/opt/youtrack/data \
+            ./volumes/youtrack/opt/youtrack/logs \
+            ./volumes/youtrack/opt/youtrack/conf \
+            ./volumes/youtrack/opt/youtrack/backups
+      - name: check folders
+        run: |
+          ls -la .
+          ls -la ./volumes/
+          ls -la ./volumes/youtrack/
+          ls -la ./volumes/youtrack/opt/
+          ls -la ./volumes/youtrack/opt/youtrack/
+          ls -la ./volumes/youtrack/opt/youtrack/data
+          ls -la ./volumes/youtrack/opt/youtrack/logs
+          ls -la ./volumes/youtrack/opt/youtrack/conf
+          ls -la ./volumes/youtrack/opt/youtrack/backups
