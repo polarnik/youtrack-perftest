@@ -5,43 +5,65 @@ on:
 jobs:
   start-a-local-youtrack:
     runs-on: self-hosted
+    env:
+      YOUTRACK_VERSION: ${{ vars.YOUTRACK_VERSION }}
     steps:
-      - uses: actions/checkout@v4
+      # https://stackoverflow.com/questions/59191913/how-do-i-get-the-output-of-a-specific-step-in-github-actions
+      # It will help to decrease the request rate from the current github-action to dockerhub.com
+      - name: get docker image id
+        id: get_docker_image_id
+        run: |
+          echo id=$(docker images --filter reference=jetbrains/youtrack:${YOUTRACK_VERSION} -q) >> $GITHUB_OUTPUT
+      # optional step
+      # It will help to decrease the request rate from the current github-action to dockerhub.com
       - name: docker pull YOUTRACK
-        run: docker pull jetbrains/youtrack:${{ vars.YOUTRACK_VERSION }}
+        if: ${{ steps.get_docker_image_id.outputs.id == '' }}
+        run: docker pull jetbrains/youtrack:${YOUTRACK_VERSION}
+      - name: delete volume folders
+        run: |
+          ls -la .
+          ls -la ./volumes/ || true
+          rm -rf ./volumes/youtrack_data || true
+          rm -rf ./volumes/youtrack_logs || true
+          rm -rf ./volumes/youtrack_conf || true
+          rm -rf ./volumes/youtrack_backups || true
+          rm -rf ./volumes/youtrack_temp || true
+          ls -la ./volumes/ || true
       - name: create volume folders
         run: |
           mkdir -p -m 750 \
-            ./volumes/youtrack/opt/youtrack/data \
-            ./volumes/youtrack/opt/youtrack/logs \
-            ./volumes/youtrack/opt/youtrack/conf \
-            ./volumes/youtrack/opt/youtrack/backups
-      - name: check folders
+            ./volumes/youtrack_data \
+            ./volumes/youtrack_logs \
+            ./volumes/youtrack_conf \
+            ./volumes/youtrack_backups \
+            ./volumes/youtrack_temp
+      - name: change an owner
         run: |
-          ls -la .
-          ls -la ./volumes/
-          ls -la ./volumes/youtrack/
-          ls -la ./volumes/youtrack/opt/
-          ls -la ./volumes/youtrack/opt/youtrack/
-          ls -la ./volumes/youtrack/opt/youtrack/data
-          ls -la ./volumes/youtrack/opt/youtrack/logs
-          ls -la ./volumes/youtrack/opt/youtrack/conf
-          ls -la ./volumes/youtrack/opt/youtrack/backups
-      - name: set the volume owner
+          sudo chown -R 13001:13001 \
+            ./volumes/youtrack_data \
+            ./volumes/youtrack_logs \
+            ./volumes/youtrack_conf \
+            ./volumes/youtrack_backups \
+            ./volumes/youtrack_temp
+      # https://docs.docker.com/reference/cli/docker/container/run/
+      - name: docker run
         run: |
-          chown -R 13001:13001 \
-            ./volumes/youtrack/opt/youtrack/data \
-            ./volumes/youtrack/opt/youtrack/logs \
-            ./volumes/youtrack/opt/youtrack/conf \
-            ./volumes/youtrack/opt/youtrack/backups
-      - name: check folders
+          docker run --rm --name youtrack \
+            --memory 6GB --memory-swap 0m --memory-reservation 3GB --oom-kill-disable \
+            --cpus 4 --cpuset-cpus 0-3 \
+            -v ./volumes/youtrack_data:/opt/youtrack/data \
+            -v ./volumes/youtrack_conf:/opt/youtrack/conf \
+            -v ./volumes/youtrack_logs:/opt/youtrack/logs \
+            -v ./volumes/youtrack_backups:/opt/youtrack/backups \
+            -v ./volumes/youtrack_temp:/opt/youtrack/temp \
+            -p 8080:8080 \
+            jetbrains/youtrack:${YOUTRACK_VERSION}
+      - name: make a backup
         run: |
-          ls -la .
-          ls -la ./volumes/
-          ls -la ./volumes/youtrack/
-          ls -la ./volumes/youtrack/opt/
-          ls -la ./volumes/youtrack/opt/youtrack/
-          ls -la ./volumes/youtrack/opt/youtrack/data
-          ls -la ./volumes/youtrack/opt/youtrack/logs
-          ls -la ./volumes/youtrack/opt/youtrack/conf
-          ls -la ./volumes/youtrack/opt/youtrack/backups
+          mkdir -p ./backup/demo_project
+          sudo tar cvf ./backup/demo_project/youtrack_data.tar ./volumes/youtrack_data
+          sudo tar cvf ./backup/demo_project/youtrack_conf.tar ./volumes/youtrack_conf
+          sudo tar cvf ./backup/demo_project/youtrack_logs.tar ./volumes/youtrack_logs
+          sudo tar cvf ./backup/demo_project/youtrack_backups.tar ./volumes/youtrack_backups
+          sudo tar cvf ./backup/demo_project/youtrack_temp.tar ./volumes/youtrack_temp
+          ls -la ./backup/demo_project
