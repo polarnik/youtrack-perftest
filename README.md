@@ -13,6 +13,11 @@ The host machine is:
 - Docker version: 24.0.5
 - A laptop model: Dell Inc. Inspiron 5770
 
+## C-level and power settings
+
+Dell Inc. Inspiron 5770 is a laptop, and laptops have power settings.
+A development process will use the **Low-performance** Power and CPU settings,
+but test launch processes will use the **High-performace** Power and CPU settings.
 
 ## Test tools
 
@@ -70,3 +75,10 @@ Metrics include:
 - Gatling metrics
 - System metrics
 - Java metrics
+
+## Setup
+
+1. Start a pipelie `start-a-local-youtrack`
+2. Open http://localhost:8080/
+2. Set a password and tokens
+3. Execute `docker stop youtrack` (locally, manually)
