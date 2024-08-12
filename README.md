@@ -82,3 +82,21 @@ Metrics include:
 2. Open http://localhost:8080/
 2. Set a password and tokens
 3. Execute `docker stop youtrack` (locally, manually)
+
+
+## Admin tokens
+
+- login
+    - `admin`
+- password
+    - `password`
+- all_scopes:
+    - `perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry`
+- YouTrack:
+    - `perm:YWRtaW4=.NDctMQ==.AS5zCVT8N0seJZhxaACg0OYCdHUWfR`
+- YouTrack Administrator
+    - `perm:YWRtaW4=.NDctMg==.fwF4Usyx38KNNGtIncUXfcXtFgfslP`
+- YouTrack Konnector
+    - `perm:YWRtaW4=.NDctMw==.jj5BoR8noOuzeiaKgFQTbuMOodM2kt`
+- YouTrack Mobile
+    - `perm:YWRtaW4=.NDctNA==.HvPy6busydG4QV4gkXcAdKgRVerFND`
