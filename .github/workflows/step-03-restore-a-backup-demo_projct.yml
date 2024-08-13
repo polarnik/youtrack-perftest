@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  step-03-restore-a-backup-demo_project-youtrack_data:
+  step-03-restore-a-backup-demo_project:
     runs-on: self-hosted
     steps:
       - uses: actions/cache/restore@v3
@@ -13,9 +13,6 @@ jobs:
           path: ./backup/demo_project/youtrack_data.tar
           key: backup-youtrack_data
           fail-on-cache-miss: true
-  step-03-restore-a-backup-demo_project-youtrack_conf:
-    runs-on: self-hosted
-    steps:
       - uses: actions/cache/restore@v3
         name: youtrack_conf
         id: youtrack_conf
@@ -23,33 +20,28 @@ jobs:
           path: ./backup/demo_project/youtrack_conf.tar
           key: backup-youtrack_conf
           fail-on-cache-miss: true
-  step-03-restore-a-backup-demo_project-youtrack_logs:
-    runs-on: self-hosted
-    steps:
-      - uses: actions/cache/restore@v3
-        name: youtrack_logs
-        id: youtrack_logs
-        with:
-          path: ./backup/demo_project/youtrack_logs.tar
-          key: backup-youtrack_logs
-          fail-on-cache-miss: true
-  step-03-restore-a-backup-demo_project-youtrack_backups:
-    runs-on: self-hosted
-    steps:
-      - uses: actions/cache/restore@v3
-        name: youtrack_backups
-        id: youtrack_backups
-        with:
-          path: ./backup/demo_project/youtrack_backups.tar
-          key: backup-youtrack_backups
-          fail-on-cache-miss: true
-  step-03-restore-a-backup-demo_project-youtrack_temp:
-    runs-on: self-hosted
-    steps:
-      - uses: actions/cache/restore@v3
-        name: youtrack_temp
-        id: youtrack_temp
-        with:
-          path: ./backup/demo_project/youtrack_temp.tar
-          key: backup-youtrack_temp
-          fail-on-cache-miss: true
+
+
+      - name: extract youtrack_data
+        env:
+          DIR: youtrack_data
+          STEP: demo_project
+        run: |
+          sudo ls -la ./volumes || true
+          sudo ls -la ./volumes/${DIR} || true
+          sudo rm -rf ./volumes/${DIR} || true
+          sudo tar xf ./backup/${STEP}/${DIR}.tar -C .
+          sudo ls -la ./volumes
+          sudo ls -la ./volumes/${DIR} || true
+
+      - name: extract youtrack_conf
+        env:
+          DIR: youtrack_conf
+          STEP: demo_project
+        run: |
+          sudo ls -la ./volumes || true
+          sudo ls -la ./volumes/${DIR} || true
+          sudo rm -rf ./volumes/${DIR} || true
+          sudo tar xf ./backup/${STEP}/${DIR}.tar -C .
+          sudo ls -la ./volumes
+          sudo ls -la ./volumes/${DIR} || true
