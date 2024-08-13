@@ -27,10 +27,15 @@ jobs:
           DIR: youtrack_data
           STEP: demo_project
         run: |
+          echo "01. Before rm:"
           sudo ls -la ./volumes || true
           sudo ls -la ./volumes/${DIR} || true
           sudo rm -rf ./volumes/${DIR} || true
+          echo "02. After rm:"
+          sudo ls -la ./volumes || true
+          sudo ls -la ./volumes/${DIR} || true
           sudo tar xf ./backup/${STEP}/${DIR}.tar -C .
+          echo "03. After extract:"
           sudo ls -la ./volumes
           sudo ls -la ./volumes/${DIR} || true
 
@@ -39,9 +44,14 @@ jobs:
           DIR: youtrack_conf
           STEP: demo_project
         run: |
+          echo "01. Before rm:"
           sudo ls -la ./volumes || true
           sudo ls -la ./volumes/${DIR} || true
           sudo rm -rf ./volumes/${DIR} || true
+          echo "02. After rm:"
+          sudo ls -la ./volumes || true
+          sudo ls -la ./volumes/${DIR} || true
           sudo tar xf ./backup/${STEP}/${DIR}.tar -C .
+          echo "03. After extract:"
           sudo ls -la ./volumes
           sudo ls -la ./volumes/${DIR} || true
