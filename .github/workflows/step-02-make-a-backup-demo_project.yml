@@ -1,0 +1,33 @@
+name: step-02-make-a-backup-demo_project
+on:
+  workflow_dispatch:
+
+jobs:
+  start-a-local-youtrack:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/cache/save@v3
+        id: youtrack_data
+        with:
+          path: ./backup/demo_project/youtrack_data.tar
+          key: backup-youtrack_data
+      - uses: actions/cache/save@v3
+        id: youtrack_conf
+        with:
+          path: ./backup/demo_project/youtrack_conf.tar
+          key: backup-youtrack_conf
+      - uses: actions/cache/save@v3
+        id: youtrack_logs
+        with:
+          path: ./backup/demo_project/youtrack_logs.tar
+          key: backup-youtrack_logs
+      - uses: actions/cache/save@v3
+        id: youtrack_backups
+        with:
+          path: ./backup/demo_project/youtrack_backups.tar
+          key: backup-youtrack_backups
+      - uses: actions/cache/save@v3
+        id: youtrack_temp
+        with:
+          path: ./backup/demo_project/youtrack_temp.tar
+          key: backup-youtrack_backups
