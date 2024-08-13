@@ -30,4 +30,4 @@ jobs:
         id: youtrack_temp
         with:
           path: ./backup/demo_project/youtrack_temp.tar
-          key: backup-youtrack_backups
+          key: backup-youtrack_temp
