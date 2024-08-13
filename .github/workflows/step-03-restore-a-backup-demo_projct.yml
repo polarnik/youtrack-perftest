@@ -1,33 +1,38 @@
-name: step 02 make a backup demo_project
+name: step 03 restore a backup demo_project
 on:
   workflow_dispatch:
 
 jobs:
-  step-02-make-a-backup-demo_project:
+  step-03-restore-a-backup-demo_project:
     runs-on: self-hosted
     steps:
-      - name: youtrack_data
-        uses: actions/cache/save@v3
+      - uses: actions/cache/restore@v3
+        name: youtrack_data
+        id: youtrack_data
         with:
           path: ./backup/demo_project/youtrack_data.tar
           key: backup-youtrack_data
-      - uses: actions/cache/save@v3
+      - uses: actions/cache/restore@v3
         name: youtrack_conf
+        id: youtrack_conf
         with:
           path: ./backup/demo_project/youtrack_conf.tar
           key: backup-youtrack_conf
-      - uses: actions/cache/save@v3
+      - uses: actions/cache/restore@v3
         name: youtrack_logs
+        id: youtrack_logs
         with:
           path: ./backup/demo_project/youtrack_logs.tar
           key: backup-youtrack_logs
-      - uses: actions/cache/save@v3
+      - uses: actions/cache/restore@v3
         name: youtrack_backups
+        id: youtrack_backups
         with:
           path: ./backup/demo_project/youtrack_backups.tar
           key: backup-youtrack_backups
-      - uses: actions/cache/save@v3
+      - uses: actions/cache/restore@v3
         name: youtrack_temp
+        id: youtrack_temp
         with:
           path: ./backup/demo_project/youtrack_temp.tar
           key: backup-youtrack_temp
