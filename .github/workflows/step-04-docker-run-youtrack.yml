@@ -1,0 +1,33 @@
+name: step 04 docker run youtrack
+on:
+  workflow_dispatch:
+
+jobs:
+  step-04-docker-run-youtrack:
+    runs-on: self-hosted
+    env:
+      YOUTRACK_VERSION: ${{ vars.YOUTRACK_VERSION }}
+    steps:
+      # https://stackoverflow.com/questions/59191913/how-do-i-get-the-output-of-a-specific-step-in-github-actions
+      # It will help to decrease the request rate from the current github-action to dockerhub.com
+      - name: get docker image id
+        id: get_docker_image_id
+        run: |
+          echo id=$(docker images --filter reference=jetbrains/youtrack:${YOUTRACK_VERSION} -q) >> $GITHUB_OUTPUT
+      # optional step
+      # It will help to decrease the request rate from the current github-action to dockerhub.com
+      - name: docker pull YOUTRACK
+        if: ${{ steps.get_docker_image_id.outputs.id == '' }}
+        run: docker pull jetbrains/youtrack:${YOUTRACK_VERSION}
+      - name: docker run youtrack
+        run: |
+          docker run --rm --name youtrack \
+            --memory 6GB --memory-swap 0m --memory-reservation 3GB --oom-kill-disable \
+            --cpus 4 --cpuset-cpus 0-3 \
+            -v ./volumes/youtrack_data:/opt/youtrack/data \
+            -v ./volumes/youtrack_conf:/opt/youtrack/conf \
+            -v ./volumes/youtrack_logs:/opt/youtrack/logs \
+            -v ./volumes/youtrack_backups:/opt/youtrack/backups \
+            -v ./volumes/youtrack_temp:/opt/youtrack/temp \
+            -p 8080:8080 \
+            jetbrains/youtrack:${YOUTRACK_VERSION}
