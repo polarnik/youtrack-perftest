@@ -1,0 +1,11 @@
+name: step 05 docker stop youtrack
+on:
+  workflow_dispatch:
+
+jobs:
+  step-05-docker-stop-youtrack:
+    runs-on: self-hosted
+    steps:
+      - name: docker stop
+        run: |
+          docker stop youtrack
