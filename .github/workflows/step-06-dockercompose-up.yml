@@ -12,7 +12,9 @@ jobs:
         run: |
           unlink ./git/volumes || true
           ls -la ./git || true
-
+      - name: delete git folder
+        run: |
+          sudo rm -rf ./git || true
       - name: git checkout (with clean, into the directory git)
         # https://github.com/actions/checkout
         uses: actions/checkout@v4
