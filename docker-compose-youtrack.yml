@@ -47,7 +47,7 @@ services:
       start_period: 1s
     networks:
       - youtrack_net
-    restart: unless-stopped
+    restart: "unless-stopped"
 
   grafana:
     image: grafana/grafana:11.1.4
@@ -61,7 +61,6 @@ services:
       - "10000:10000"
     volumes:
       - "./volumes/grafana_data:/var/lib/grafana"
-      - "./volumes/grafana-apiserver:/var/lib/grafana/grafana-apiserver"
       - "./configs/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro"
       - "./configs/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro"
     environment:
@@ -71,7 +70,7 @@ services:
       GF_SECURITY_admin_user: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
       GF_INSTALL_PLUGINS:
-      GF_FEATURE_TOGGLES_ENABLE: newNavigation
+      GF_FEATURE_TOGGLES_ENABLE: publicDashboards correlations exploreContentOutline cloudWatchCrossAccountQuerying nestedFolders logsContextDatasourceUi lokiQuerySplitting prometheusMetricEncyclopedia influxdbBackendMigration prometheusDataplane lokiMetricDataplane dataplaneFrontendFallback recordedQueriesMulti logsExploreTableVisualisation transformationsRedesign awsAsyncQueryCaching prometheusConfigOverhaulAuth alertingNoDataErrorExecution angularDeprecationUI dashgpt alertingInsights panelMonitoring kubernetesPlaylists recoveryThreshold lokiStructuredMetadata awsDatasourcesNewFormStyling managedPluginsInstall annotationPermissionUpdate ssoSettingsApi logsInfiniteScrolling exploreMetrics alertingSimplifiedRouting logRowsPopoverMenu lokiQueryHints betterPageScrolling cloudWatchNewLabelParsing grpcServer formatString transformationsVariableSupport addFieldFromCalculationStatFunctions pdfTables regressionTransformation groupToNestedTableTransformation newPDFRendering scenes extraThemes mlExpressions prometheusPromQAIL dashboardSceneForViewers dashboardSceneSolo dashboardScene flameGraphItemCollapsing logsExploreTableDefaultVisualization featureToggleAdminPage
       GF_ANALYTICS_ENABLED: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
@@ -108,10 +107,10 @@ services:
       start_period: 10s
     networks:
       - youtrack_net
-    restart: no
+    restart: "no"
 
   telegraf:
-    image: telegraf:1.30
+    image: telegraf:1.31.3
     hostname: telegraf
     environment:
       GOMEMLIMIT: 300MiB
@@ -130,24 +129,25 @@ services:
       start_period: 10s
     networks:
       - youtrack_net
-    restart: no
+    restart: "no"
 
   influxdb_v2:
     image: influxdb:2.7.10
+    hostname: influxdb_v2
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10
       # https://github.com/influxdata/influxdata-docker/blob/master/influxdb/2.7/entrypoint.sh
       INFLUXD_BOLT_PATH: "/var/lib/influxdb2/influxd.bolt"
       INFLUXD_ENGINE_PATH: "/var/lib/influxdb2/engine"
-      INFLUXD_LOG_LEVEL: "debug"
+      INFLUXD_LOG_LEVEL: "info"
       INFLUXD_HTTP_BIND_ADDRESS: ":8086"
       DOCKER_INFLUXDB_INIT_USERNAME: "admin"
       DOCKER_INFLUXDB_INIT_PASSWORD: "admin"
       DOCKER_INFLUXDB_INIT_ORG: "youtrack"
       DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
       USER_SCRIPT_DIR: "/user_script"
-      INFLUXD_REPORTING_DISABLED: true
+      INFLUXD_REPORTING_DISABLED: "true"
       INFLUXD_STORAGE_COMPACT_THROUGHPUT_BURST: 80388608
       INFLUXD_STORAGE_MAX_CONCURRENT_COMPACTIONS: 1
       INFLUXD_STORAGE_SERIES_FILE_MAX_CONCURRENT_SNAPSHOT_COMPACTIONS: 1
@@ -161,7 +161,7 @@ services:
       INFLUXD_STORAGE_WAL_MAX_CONCURRENT_WRITES: 1
       INFLUXD_STORAGE_SERIES_ID_SET_CACHE_SIZE: 0
       INFLUXD_QUERY_QUEUE_SIZE: 100
-      INFLUXD_FLUX_LOG_ENABLED: false
+      INFLUXD_FLUX_LOG_ENABLED: "false"
     ports:
       - "8086:8086"
     volumes:
@@ -175,14 +175,20 @@ services:
       start_period: 10s
     networks:
       - youtrack_net
-    restart: no
+    restart: "no"
 
-volumes:
-  nginx_client_temp:
-  nginx_cache_tmp:
-  nginx_cache_cdn:
-  nginx_log:
-  grafana_data:
-  grafana-apiserver:
+
+  gatling:
+    image: maven:3.9.8-amazoncorretto-21-debian
+    volumes:
+      - "./src:/tmp/gatling/src:ro"
+      - "./pom.xml:/tmp/gatling/pom.xml:ro"
+      - "./volumes/gatling/repository:/root/.m2/repository"
+    tmpfs:
+      - /tmp
+    working_dir: /tmp/gatling
+    restart: "no"
+    command: "mvn clean verify"
+
 networks:
   youtrack_net:
