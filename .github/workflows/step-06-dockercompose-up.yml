@@ -8,6 +8,9 @@ jobs:
     env:
       YOUTRACK_VERSION: ${{ vars.YOUTRACK_VERSION }}
     steps:
+      - name: docker-compose down
+        run: |
+          docker-compose --file ./git/docker-compose-youtrack.yml down || true
       - name: delete the symbolic link "volumes"
         run: |
           unlink ./git/volumes || true
