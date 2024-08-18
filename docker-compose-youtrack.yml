@@ -71,7 +71,7 @@ services:
       GF_SECURITY_admin_user: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
       GF_INSTALL_PLUGINS:
-      GF_FEATURE_TOGGLES_ENABLE: newNavigation
+      GF_FEATURE_TOGGLES_ENABLE: accessActionSets,addFieldFromCalculationStatFunctions,aiGeneratedDashboardChanges,cachingOptimizeSerializationMemoryUsage,dashboardRestore,dashboardScene,dashboardSceneForViewers,dashboardSceneSolo,dashgpt,datasourceQueryMultiStatus,datasourceQueryTypes,expressionParser,extraThemes,featureHighlights,featureToggleAdminPage,groupByVariable,grpcServer,influxdbBackendMigration,influxdbRunQueriesInParallel,mlExpressions,newDashboardSharingComponent,newDashboardWithFiltersAndGroupBy,newPDFRendering,pdfTables,publicDashboardsScene,scenes,showDashboardValidationWarnings,transformationsVariableSupport,wargamesTesting
       GF_ANALYTICS_ENABLED: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
