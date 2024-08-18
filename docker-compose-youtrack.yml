@@ -47,7 +47,7 @@ services:
       start_period: 1s
     networks:
       - youtrack_net
-    restart: unless-stopped
+    restart: "unless-stopped"
 
   grafana:
     image: grafana/grafana:11.1.4
@@ -108,7 +108,7 @@ services:
       start_period: 10s
     networks:
       - youtrack_net
-    restart: no
+    restart: "no"
 
   telegraf:
     image: telegraf:1.30
@@ -147,7 +147,7 @@ services:
       DOCKER_INFLUXDB_INIT_ORG: "youtrack"
       DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
       USER_SCRIPT_DIR: "/user_script"
-      INFLUXD_REPORTING_DISABLED: true
+      INFLUXD_REPORTING_DISABLED: "true"
       INFLUXD_STORAGE_COMPACT_THROUGHPUT_BURST: 80388608
       INFLUXD_STORAGE_MAX_CONCURRENT_COMPACTIONS: 1
       INFLUXD_STORAGE_SERIES_FILE_MAX_CONCURRENT_SNAPSHOT_COMPACTIONS: 1
@@ -161,7 +161,7 @@ services:
       INFLUXD_STORAGE_WAL_MAX_CONCURRENT_WRITES: 1
       INFLUXD_STORAGE_SERIES_ID_SET_CACHE_SIZE: 0
       INFLUXD_QUERY_QUEUE_SIZE: 100
-      INFLUXD_FLUX_LOG_ENABLED: false
+      INFLUXD_FLUX_LOG_ENABLED: "false"
     ports:
       - "8086:8086"
     volumes:
@@ -175,7 +175,7 @@ services:
       start_period: 10s
     networks:
       - youtrack_net
-    restart: no
+    restart: "no"
 
 volumes:
   nginx_client_temp:
