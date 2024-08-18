@@ -27,8 +27,10 @@ jobs:
 
       - name: create the symbolic link "volumes"
         run: |
-          ln -s ./volumes ./git/volumes
-          ls -la ./git || true
+          cd ./git
+          ln -s ../volumes volumes
+          ls -la .
+          cd ..
 
       - name: create volume folders youtrack
         run: |
