@@ -73,4 +73,4 @@ jobs:
 
       - name: docker-compose up --detach
         run: |
-          docker-compose --file ./git/docker-compose-youtrack.yml up --detach
+          docker-compose --file ./git/docker-compose-youtrack.yml up --detach --force-recreate
