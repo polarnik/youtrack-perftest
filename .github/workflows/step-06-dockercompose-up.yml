@@ -25,6 +25,40 @@ jobs:
         run: |
           ln -s ./volumes ./git/volumes
           ls -la ./git || true
+      - name: create volume folders youtrack
+        run: |
+          mkdir -p -m 750 \
+          ./volumes/youtrack_data \
+          ./volumes/youtrack_logs \
+          ./volumes/youtrack_conf \
+          ./volumes/youtrack_backups \
+          ./volumes/youtrack_temp || true
+      - name: create volume folders nginx, grafana, influx
+        run: |
+          mkdir -p -m 750 \
+          ./volumes/nginx_client_temp \
+          ./volumes/nginx_cache_tmp \
+          ./volumes/nginx_cache_cdn \
+          ./volumes/nginx_log \
+          ./volumes/grafana_data \
+          ./volumes/grafana-apiserver \
+          ./volumes/influx-v2-data || true
+      - name: set an influx folders owner
+        run: |
+          sudo chown -R 1000:1000 \
+            ./volumes/influx-v2-data || true
+      - name: set a grafana folders owner
+        run: |
+          sudo chown -R 427:0 \
+            ./volumes/grafana_data \
+            ./volumes/grafana-apiserver || true
+      - name: set a nginx folders owner
+          sudo chown -R 101:101 \
+            ./volumes/nginx_client_temp \
+            ./volumes/nginx_cache_tmp \
+            ./volumes/nginx_cache_cdn \
+            ./volumes/nginx_log || true
+
       - name: docker-compose up
         run: |
           docker-compose --file ./git/docker-compose-youtrack.yml up

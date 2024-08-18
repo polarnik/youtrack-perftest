@@ -111,7 +111,7 @@ services:
     restart: "no"
 
   telegraf:
-    image: telegraf:1.30
+    image: telegraf:1.31.3
     hostname: telegraf
     environment:
       GOMEMLIMIT: 300MiB
@@ -177,12 +177,5 @@ services:
       - youtrack_net
     restart: "no"
 
-volumes:
-  nginx_client_temp:
-  nginx_cache_tmp:
-  nginx_cache_cdn:
-  nginx_log:
-  grafana_data:
-  grafana-apiserver:
 networks:
   youtrack_net:
