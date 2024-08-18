@@ -130,7 +130,7 @@ services:
       start_period: 10s
     networks:
       - youtrack_net
-    restart: no
+    restart: "no"
 
   influxdb_v2:
     image: influxdb:2.7.10
