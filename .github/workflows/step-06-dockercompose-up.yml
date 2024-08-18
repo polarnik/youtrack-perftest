@@ -59,7 +59,7 @@ jobs:
 
       - name: set a grafana folders owner
         run: |
-          sudo chown -R 427:0 \
+          sudo chown -R 472:0 \
             ./volumes/grafana_data \
             ./volumes/grafana-apiserver || true
 
@@ -71,6 +71,6 @@ jobs:
             ./volumes/nginx_cache_cdn \
             ./volumes/nginx_log || true
 
-      - name: docker-compose up
+      - name: docker-compose up --detach
         run: |
-          docker-compose --file ./git/docker-compose-youtrack.yml up
+          docker-compose --file ./git/docker-compose-youtrack.yml up --detach
