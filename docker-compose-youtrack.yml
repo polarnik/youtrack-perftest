@@ -183,6 +183,7 @@ services:
     volumes:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
+      - "./volumes/gatling/repository:/root/.m2/repository"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling

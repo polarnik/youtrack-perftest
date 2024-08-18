@@ -55,6 +55,11 @@ jobs:
           ./volumes/grafana-apiserver \
           ./volumes/influx-v2-data || true
 
+      - name: create volume folders gatling
+        run: |
+          mkdir -p -m 777 \
+            ./volumes/gatling/repository || true
+
       - name: set an influx folders owner
         run: |
           sudo chown -R 1000:1000 \
