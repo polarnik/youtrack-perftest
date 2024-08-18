@@ -70,30 +70,7 @@ services:
       GF_SECURITY_admin_user: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
       GF_INSTALL_PLUGINS:
-      #GF_FEATURE_TOGGLES_ENABLE: publicDashboards correlations exploreContentOutline cloudWatchCrossAccountQuerying nestedFolders logsContextDatasourceUi lokiQuerySplitting prometheusMetricEncyclopedia influxdbBackendMigration prometheusDataplane lokiMetricDataplane dataplaneFrontendFallback recordedQueriesMulti logsExploreTableVisualisation transformationsRedesign awsAsyncQueryCaching prometheusConfigOverhaulAuth alertingNoDataErrorExecution angularDeprecationUI dashgpt alertingInsights panelMonitoring kubernetesPlaylists recoveryThreshold lokiStructuredMetadata awsDatasourcesNewFormStyling managedPluginsInstall annotationPermissionUpdate ssoSettingsApi logsInfiniteScrolling exploreMetrics alertingSimplifiedRouting logRowsPopoverMenu lokiQueryHints betterPageScrolling cloudWatchNewLabelParsing grpcServer formatString transformationsVariableSupport addFieldFromCalculationStatFunctions pdfTables regressionTransformation groupToNestedTableTransformation newPDFRendering scenes extraThemes mlExpressions prometheusPromQAIL dashboardSceneForViewers dashboardSceneSolo dashboardScene flameGraphItemCollapsing logsExploreTableDefaultVisualization featureToggleAdminPage
-      GF_FEATURE_TOGGLES_FEATURETOGGLEADMINPAGE: "true"
-
-      GF_FEATURE_TOGGLES_INFLUXDBBACKENDMIGRATION: "true" ## default: Query InfluxDB InfluxQL without the proxy
-      GF_FEATURE_TOGGLES_GRPCSERVER: "true" ## public preview: Run the GRPC server
-      GF_FEATURE_TOGGLES_FORMATSTRING: "true" ## public preview: Enable format string transformer
-      GF_FEATURE_TOGGLES_TRANSFORMATIONSVARIABLESUPPORT: "true" ## public preview: Allows using variables in transformations
-      GF_FEATURE_TOGGLES_ADDFIELDFROMCALCULATIONSTATFUNCTIONS: "true" ## public preview: Add cumulative and window functions to the add field from calculation transformation
-      GF_FEATURE_TOGGLES_PDFTABLES: "true" ## public preview: Enables generating table data as PDF in reporting
-      GF_FEATURE_TOGGLES_REGRESSIONTRANSFORMATION: "true" ## public preview: Enables regression analysis transformation
-      GF_FEATURE_TOGGLES_GROUPTONESTEDTABLETRANSFORMATION: "true" ## public preview: Enables the group to nested table transformation
-      GF_FEATURE_TOGGLES_NEWPDFRENDERING: "true" ## public preview: New implementation for the dashboard-to-PDF rendering
-      GF_FEATURE_TOGGLES_SCENES: "true" ## Experimental feature toggles: Experimental framework to build interactive dashboards
-      GF_FEATURE_TOGGLES_EXTRATHEMES: "true" ## Experimental feature toggles: Enables extra themes
-      GF_FEATURE_TOGGLES_MLEXPRESSIONS: "true" ## Experimental feature toggles: Enable support for Machine Learning in server-side expressions
-      GF_FEATURE_TOGGLES_PROMETHEUSPROMQAIL: "true" ## Experimental feature toggles: Prometheus and AI/ML to assist users in creating a query
-      GF_FEATURE_TOGGLES_DASHBOARDSCENEFORVIEWERS: "true" ## Experimental feature toggles: Enables dashboard rendering using Scenes for viewer roles
-      GF_FEATURE_TOGGLES_DASHBOARDSCENESOLO: "true" ## Experimental feature toggles: Enables rendering dashboards using scenes for solo panels
-      GF_FEATURE_TOGGLES_DASHBOARDSCENE: "true" ## Experimental feature toggles: Enables dashboard rendering using scenes for all roles
-      GF_FEATURE_TOGGLES_FLAMEGRAPHITEMCOLLAPSING: "true" ## Experimental feature toggles: Allow collapsing of flame graph items
-      GF_FEATURE_TOGGLES_LOGSEXPLORETABLEDEFAULTVISUALIZATION: "true" ## Experimental feature toggles: Sets the logs table as default visualisation in logs explore
-
-
-
+      GF_FEATURE_TOGGLES_ENABLE: publicDashboards correlations exploreContentOutline cloudWatchCrossAccountQuerying nestedFolders logsContextDatasourceUi lokiQuerySplitting prometheusMetricEncyclopedia influxdbBackendMigration prometheusDataplane lokiMetricDataplane dataplaneFrontendFallback recordedQueriesMulti logsExploreTableVisualisation transformationsRedesign awsAsyncQueryCaching prometheusConfigOverhaulAuth alertingNoDataErrorExecution angularDeprecationUI dashgpt alertingInsights panelMonitoring kubernetesPlaylists recoveryThreshold lokiStructuredMetadata awsDatasourcesNewFormStyling managedPluginsInstall annotationPermissionUpdate ssoSettingsApi logsInfiniteScrolling exploreMetrics alertingSimplifiedRouting logRowsPopoverMenu lokiQueryHints betterPageScrolling cloudWatchNewLabelParsing grpcServer formatString transformationsVariableSupport addFieldFromCalculationStatFunctions pdfTables regressionTransformation groupToNestedTableTransformation newPDFRendering scenes extraThemes mlExpressions prometheusPromQAIL dashboardSceneForViewers dashboardSceneSolo dashboardScene flameGraphItemCollapsing logsExploreTableDefaultVisualization featureToggleAdminPage
       GF_ANALYTICS_ENABLED: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
@@ -199,6 +176,18 @@ services:
     networks:
       - youtrack_net
     restart: "no"
+
+
+  gatling:
+    image: 3.9.8-amazoncorretto-21-debian
+    volumes:
+      - "./src:/tmp/gatling/src:ro"
+      - "./pom.xml:/tmp/gatling/pom.xml:ro"
+    tmpfs:
+      - /tmp
+    working_dir: /tmp/gatling
+    restart: "no"
+    command: "mvn clean verify"
 
 networks:
   youtrack_net:
