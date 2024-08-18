@@ -1,0 +1,188 @@
+# https://docs.docker.com/compose/compose-file/
+# https://docs.docker.com/compose/compose-file/05-services/
+
+services:
+  youtrack:
+    image: jetbrains/youtrack:${YOUTRACK_VERSION}
+    hostname: youtrack
+    cpu_count: 4
+    cpuset: "0-3"
+    mem_reservation: 3G
+    mem_limit: 6G
+    memswap_limit: 0m
+    mem_swappiness: 0
+    oom_kill_disable: true
+    restart: "no"
+    pull_policy: "never"
+    tmpfs:
+      /tmp
+    volumes:
+      - ./volumes/youtrack_data:/opt/youtrack/data
+      - ./volumes/youtrack_conf:/opt/youtrack/conf
+      - ./volumes/youtrack_logs:/opt/youtrack/logs
+      - ./volumes/youtrack_backups:/opt/youtrack/backups
+      - ./volumes/youtrack_temp:/opt/youtrack/temp
+    networks:
+      - youtrack_net
+
+  nginx:
+    image: nginx:1.26.1
+    hostname: nginx
+    ports:
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - "./configs/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./configs/nginx/localhost.crt:/etc/nginx/ssl/server.crt:ro"
+      - "./configs/nginx/localhost.key:/etc/nginx/ssl/server.key:ro"
+      - ./volumes/nginx_client_temp:/spool/nginx/client_temp
+      - ./volumes/nginx_cache_tmp:/var/cache/tmp
+      - ./volumes/nginx_cache_cdn:/var/cache/cdn
+      - ./volumes/nginx_log:/var/log/nginx/
+    healthcheck:
+      test: ["CMD-SHELL", "curl -S -s -k -XGET https://localhost:443/health"]
+      interval: 60s
+      timeout: 1s
+      retries: 1
+      start_period: 1s
+    networks:
+      - youtrack_net
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.1.4
+    hostname: grafana
+    cpu_count: 1
+    cpuset: "4-7"
+    mem_reservation: 300m
+    mem_limit: 500m
+    ports:
+      - "3000:3000"
+      - "10000:10000"
+    volumes:
+      - "./volumes/grafana_data:/var/lib/grafana"
+      - "./volumes/grafana-apiserver:/var/lib/grafana/grafana-apiserver"
+      - "./configs/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro"
+      - "./configs/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro"
+    environment:
+      GOMEMLIMIT: 300MiB
+      GOGC: 10
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      GF_SECURITY_admin_user: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS:
+      GF_FEATURE_TOGGLES_ENABLE: newNavigation
+      GF_ANALYTICS_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_SECURITY_DISABLE_GRAVATAR: "true"
+      GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION: "true"
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
+      GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
+      GF_USERS_LOGIN_HINT: admin
+      GF_USERS_PASSWORD_HINT: admin
+      GF_USERS_ALLOW_ORG_CREATE: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      GF_QUERY_CONCURRENT_QUERY_LIMIT: 5
+      GF_FEATURE_MANAGEMENT_ALLOW_EDITING: "true"
+      GF_CACHING_ENABLED: "true"
+      GF_DATAPROXY_TIMEOUT: 30
+      GF_DATAPROXY_MAX_CONNS_PER_HOST: 5
+      GF_DATAPROXY_MAX_IDLE_CONNECTIONS: 2
+      GF_DATAPROXY_ROW_LIMIT: 10000
+      GF_ANNOTATIONS_DASHBOARD_MAX_AGE: 90d
+      GF_ANNOTATIONS_DASHBOARD_MAX_ANNOTATIONS_TO_KEEP: 10000
+      GF_ANNOTATIONS_API_MAX_AGE: 90d
+      GF_ANNOTATIONS_API_MAX_ANNOTATIONS_TO_KEEP: 10000
+      GF_EXTERNAL_IMAGE_STORAGE_PROVIDER: local
+      GF_SQL_DATASOURCES_MAX_IDLE_CONNS_DEFAULT: 2
+      GF_SQL_DATASOURCES_MAX_OPEN_CONNS_DEFAULT: 5
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO - 'http://127.0.0.1:3000/api/health'" ]
+      interval: 60s
+      timeout: 1s
+      retries: 1
+      start_period: 10s
+    networks:
+      - youtrack_net
+    restart: no
+
+  telegraf:
+    image: telegraf:1.30
+    hostname: telegraf
+    environment:
+      GOMEMLIMIT: 300MiB
+      GOGC: 10
+      NGINX_ADDRESS: "https://nginx/status"
+      GRAFANA_ADDRESS: "http://grafana:3000/metrics"
+      YOUTRACK_ADDRESS: ""
+    volumes:
+      - "./configs/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+      - "./configs/telegraf/telegraf.d:/etc/telegraf/telegraf.d:ro"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -S -s -XGET localhost:8080"]
+      interval: 30s
+      timeout: 1s
+      retries: 1
+      start_period: 10s
+    networks:
+      - youtrack_net
+    restart: no
+
+  influxdb_v2:
+    image: influxdb:2.7.10
+    environment:
+      GOMEMLIMIT: 300MiB
+      GOGC: 10
+      # https://github.com/influxdata/influxdata-docker/blob/master/influxdb/2.7/entrypoint.sh
+      INFLUXD_BOLT_PATH: "/var/lib/influxdb2/influxd.bolt"
+      INFLUXD_ENGINE_PATH: "/var/lib/influxdb2/engine"
+      INFLUXD_LOG_LEVEL: "debug"
+      INFLUXD_HTTP_BIND_ADDRESS: ":8086"
+      DOCKER_INFLUXDB_INIT_USERNAME: "admin"
+      DOCKER_INFLUXDB_INIT_PASSWORD: "admin"
+      DOCKER_INFLUXDB_INIT_ORG: "youtrack"
+      DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
+      USER_SCRIPT_DIR: "/user_script"
+      INFLUXD_REPORTING_DISABLED: true
+      INFLUXD_STORAGE_COMPACT_THROUGHPUT_BURST: 80388608
+      INFLUXD_STORAGE_MAX_CONCURRENT_COMPACTIONS: 1
+      INFLUXD_STORAGE_SERIES_FILE_MAX_CONCURRENT_SNAPSHOT_COMPACTIONS: 1
+      INFLUXD_QUERY_MEMORY_BYTES: 100000000
+      INFLUXD_QUERY_INITIAL_MEMORY_BYTES: 100000
+      INFLUXD_QUERY_CONCURRENCY: 2
+      INFLUXD_STORAGE_CACHE_MAX_MEMORY_SIZE: 100000000
+      INFLUXD_STORAGE_CACHE_SNAPSHOT_MEMORY_SIZE: 100000000
+      INFLUXD_STORAGE_WAL_MAX_WRITE_DELAY: 10m
+      INFLUXD_STORAGE_WRITE_TIMEOUT: 10s
+      INFLUXD_STORAGE_WAL_MAX_CONCURRENT_WRITES: 1
+      INFLUXD_STORAGE_SERIES_ID_SET_CACHE_SIZE: 0
+      INFLUXD_QUERY_QUEUE_SIZE: 100
+      INFLUXD_FLUX_LOG_ENABLED: false
+    ports:
+      - "8086:8086"
+    volumes:
+      - "./volumes/influx-v2-data:/var/lib/influxdb2/"
+      - "./configs/influxdb_v2/user_script:/user_script"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -S -s -XGET localhost:8086/health"]
+      interval: 60s
+      timeout: 1s
+      retries: 1
+      start_period: 10s
+    networks:
+      - youtrack_net
+    restart: no
+
+volumes:
+  nginx_client_temp:
+  nginx_cache_tmp:
+  nginx_cache_cdn:
+  nginx_log:
+  grafana_data:
+  grafana-apiserver:
+networks:
+  youtrack_net:

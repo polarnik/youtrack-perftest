@@ -1,0 +1,30 @@
+name: step 06 dockercompose up
+on:
+  workflow_dispatch:
+
+jobs:
+  step-06-dockercompose-up:
+    runs-on: self-hosted
+    env:
+      YOUTRACK_VERSION: ${{ vars.YOUTRACK_VERSION }}
+    steps:
+      - name: delete the symbolic link "volumes"
+        run: |
+          unlink ./git/volumes || true
+          ls -la ./git || true
+      - name: git checkout (with clean, into the directory git)
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v4
+        with:
+          # Relative path under $GITHUB_WORKSPACE to place the repository
+          path: './git'
+          # Whether to execute `git clean -ffdx && git reset --hard HEAD` before fetching
+          # Default: true
+          clean: 'true'
+      - name: create the symbolic link "volumes"
+        run: |
+          ln -s ./volumes ./git/volumes
+          ls -la ./git || true
+      - name: docker-compose up
+        run: |
+          docker-compose --file ./git/docker-compose-youtrack.yml up
