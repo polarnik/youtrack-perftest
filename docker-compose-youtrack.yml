@@ -141,7 +141,7 @@ services:
       DOCKER_INFLUXDB_INIT_MODE: "setup"
       DOCKER_INFLUXDB_INIT_ORG: "youtrack"
       DOCKER_INFLUXDB_INIT_PASSWORD: "password"
-      DOCKER_INFLUXDB_INIT_RETENTION: "0"
+      DOCKER_INFLUXDB_INIT_RETENTION: "72h0m0s"
       DOCKER_INFLUXDB_INIT_USERNAME: "admin"
       GOGC: 10
       GOMEMLIMIT: 300MiB
@@ -166,6 +166,7 @@ services:
       INFLUXD_STORAGE_WRITE_TIMEOUT: 10s
       INFLUX_HOST: "http://influxdb_v2:8086"
       INFLUX_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+      INFLUX_ORG: "youtrack"
       USER_SCRIPT_DIR: "/user_script"
     ports:
       - "8086:8086"

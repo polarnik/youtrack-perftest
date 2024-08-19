@@ -1,0 +1,45 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: influxdb-grafana-flux
+    orgId: 1
+
+# list of datasources to insert/update depending
+# what's available in the database
+datasources:
+  # <string, required> name of the datasource. Required
+  - name: influxdb-grafana-flux
+    # <string, required> datasource type. Required
+    type: influxdb
+    # <string, required> access mode. proxy or direct (Server or Browser in the UI). Required
+    access: proxy
+    # <string> url
+    url: http://influxdb_v2:8086
+    # <string> database name, if used
+    database: grafana
+    # <bool> enable/disable basic auth
+    basicAuth: false
+    # <string> basic auth username
+    basicAuthUser:
+    # <string> Deprecated, use secureJsonData.basicAuthPassword
+    basicAuthPassword:
+    # <bool> enable/disable with credentials headers
+    withCredentials: false
+    # <bool> mark as default datasource. Max one per org
+    isDefault: false
+    # <map> fields that will be converted to json and stored in jsonData
+    jsonData:
+      defaultBucket: 'grafana'
+      httpMode: 'POST'
+      organization: 'youtrack'
+      version: 'Flux'
+      tlsSkipVerify: true
+    # <string> json object of data that will be encrypted.
+    secureJsonData:
+      # <string> database password, if used
+      token: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+    version: 1
+    # <bool> allow users to edit datasources from the UI.
+    editable: false
