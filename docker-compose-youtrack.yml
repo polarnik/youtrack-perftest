@@ -132,6 +132,7 @@ services:
     restart: "no"
 
   influxdb_v2:
+    # influx setup --username "$DOCKER_INFLUXDB_INIT_USERNAME" --password "$DOCKER_INFLUXDB_INIT_PASSWORD" --token "$INFLUX_TOKEN" --org "$DOCKER_INFLUXDB_INIT_ORG" --bucket "$DOCKER_INFLUXDB_INIT_BUCKET" --retention 0 --force --host "http://influxdb_v2:8086"
     image: influxdb:2.7.10
     hostname: influxdb_v2
     environment:
@@ -142,8 +143,12 @@ services:
       INFLUXD_ENGINE_PATH: "/var/lib/influxdb2/engine"
       INFLUXD_LOG_LEVEL: "info"
       INFLUXD_HTTP_BIND_ADDRESS: ":8086"
+      DOCKER_INFLUXDB_INIT_MODE: "setup"
       DOCKER_INFLUXDB_INIT_USERNAME: "admin"
       DOCKER_INFLUXDB_INIT_PASSWORD: "admin"
+      INFLUX_HOST: "http://influxdb_v2:8086"
+      DOCKER_INFLUXDB_INIT_RETENTION: "0"
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
       DOCKER_INFLUXDB_INIT_ORG: "youtrack"
       DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
       USER_SCRIPT_DIR: "/user_script"
