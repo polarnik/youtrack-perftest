@@ -116,6 +116,8 @@ services:
     cpuset: "4-7"
     mem_reservation: 300m
     mem_limit: 500m
+    depends_on:
+      - influxdb_v2
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10
@@ -211,6 +213,8 @@ services:
     cpuset: "4-7"
     mem_reservation: 500m
     mem_limit: 1000m
+    depends_on:
+      - telegraf
     volumes:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
@@ -240,3 +244,16 @@ services:
 
 networks:
   youtrack_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+          ip_range: 172.28.5.0/24
+          gateway: 172.28.5.254
+          aux_addresses:
+            gatling: 172.28.1.5
+            influxdb_v2: 172.28.1.6
+            telegraf: 172.28.1.7
+            grafana: 172.28.1.7
+            nginx: 172.28.1.7
+            youtrack: 172.28.1.7
