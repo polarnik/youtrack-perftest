@@ -27,9 +27,10 @@ datasources:
     # <bool> enable/disable basic auth
     basicAuth: false
     # <string> basic auth username
-    basicAuthUser: jfr_youtrack
+    user: jfr_youtrack
     jsonData:
-      httpMode: GET
+      httpMode: POST
+      dbName: jfr_youtrack
     # <string> json object of data that will be encrypted.
     secureJsonData:
       # <string> basic auth password

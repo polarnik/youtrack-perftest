@@ -27,9 +27,10 @@ datasources:
     # <bool> enable/disable basic auth
     basicAuth: false
     # <string> basic auth username
-    basicAuthUser: youtrack
+    user: youtrack
     jsonData:
-      httpMode: GET
+      httpMode: POST
+      dbName: youtrack
     # <string> json object of data that will be encrypted.
     secureJsonData:
       # <string> basic auth password
