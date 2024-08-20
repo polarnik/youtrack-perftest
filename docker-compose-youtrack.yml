@@ -150,7 +150,7 @@ services:
     mem_reservation: 300m
     mem_limit: 500m
     environment:
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "$INFLUX_TOKEN"
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
       DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
       DOCKER_INFLUXDB_INIT_MODE: "setup"
       DOCKER_INFLUXDB_INIT_ORG: "youtrack"
