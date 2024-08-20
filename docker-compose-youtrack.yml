@@ -215,17 +215,17 @@ services:
     restart: "no"
     command: bash -x -c "
       echo 'Starting x2i in detached mode, saving PID in variable' && 
-      export x2iPID=$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling -a http://telegraf:8088 -d | awk '{print $2}') &&
+      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling -a http://telegraf:8088 -d | awk '{print $$2}') &&
       echo 'Starting g2i in detached mode, saving PID in variable' &&
-      export G2IPID=$(/tools/perfana/gatling-to-influx/g2i-linux-amd64 ./target/gatling -a http://telegraf:8089 -d | awk '{print $2}') &&
+      export G2IPID=$$(/tools/perfana/gatling-to-influx/g2i-linux-amd64 ./target/gatling -a http://telegraf:8089 -d | awk '{print $$2}') &&
       echo 'Build and execute test' &&
       mvn clean verify &&
       echo 'Waiting for parser to safely finish all its work' &&
       sleep 30 &&
       echo 'Sending interrupt signal to x2i process' &&
-      kill -INT $x2iPID &&
+      kill -INT $$x2iPID &&
       echo "Sending interrupt signal to g2i process" &&
-      kill -INT $G2IPID &&
+      kill -INT $$G2IPID &&
       echo 'Waiting for process to stop safely' &&
       sleep 30 &&
       echo 'Exiting'
