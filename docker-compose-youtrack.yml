@@ -227,7 +227,7 @@ services:
     restart: "no"
     command: bash -x -c "
       echo 'Starting x2i in detached mode, saving PID in variable' && 
-      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling --address http://telegraf:8088 --database x2i_gatling --password password --username x2i_gatling -d | awk '{print $$2}') &&
+      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling --address http://172.28.5.4::8088 --database x2i_gatling --password password --username x2i_gatling -d | awk '{print $$2}') &&
       echo 'Starting g2i in detached mode, saving PID in variable' &&
       export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 ./target/gatling --address http://influxdb_v2:8086 --database g2i_gatling --password password --username g2i_gatling -d | awk '{print $$2}') &&
       echo 'Build and execute test' &&
@@ -251,10 +251,3 @@ networks:
         - subnet: 172.28.0.0/16
           ip_range: 172.28.5.0/24
           gateway: 172.28.5.254
-          aux_addresses:
-            gatling: 172.28.5.15
-            influxdb_v2: 172.28.5.16
-            telegraf: 172.28.5.17
-            grafana: 172.28.5.18
-            nginx: 172.28.5.19
-            youtrack: 172.28.5.20
