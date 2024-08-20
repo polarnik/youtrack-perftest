@@ -119,6 +119,12 @@ services:
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10
+      GITHUB_EVENT_NAME: "$GITHUB_EVENT_NAME"
+      GITHUB_JOB: "$GITHUB_JOB"
+      GITHUB_RUN_ID: "$GITHUB_RUN_ID"
+      GITHUB_RUN_URL: "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+      GITHUB_WORKFLOW: "$GITHUB_WORKFLOW"
+      TEST_NAME: "$TEST_NAME"
       NGINX_ADDRESS: "https://nginx/status"
       GRAFANA_ADDRESS: "http://grafana:3000/metrics"
       YOUTRACK_ADDRESS: ""
@@ -215,9 +221,9 @@ services:
     restart: "no"
     command: bash -x -c "
       echo 'Starting x2i in detached mode, saving PID in variable' && 
-      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling -a http://telegraf:8088 -d | awk '{print $$2}') &&
+      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling --address http://telegraf:8088 -d | awk '{print $$2}') &&
       echo 'Starting g2i in detached mode, saving PID in variable' &&
-      export G2IPID=$$(/tools/perfana/gatling-to-influx/g2i-linux-amd64 ./target/gatling -a http://telegraf:8089 -d | awk '{print $$2}') &&
+      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 ./target/gatling -a http://telegraf:8089 -d | awk '{print $$2}') &&
       echo 'Build and execute test' &&
       mvn clean verify &&
       echo 'Waiting for parser to safely finish all its work' &&

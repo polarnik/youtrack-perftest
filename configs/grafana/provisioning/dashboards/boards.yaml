@@ -1,0 +1,31 @@
+# # config file version
+apiVersion: 1
+
+providers:
+  - name: "gatling"
+    orgId: 1
+    folder: 'gatling'
+    folderUid: 'gatling'
+    type: file
+    allowUiUpdates: true
+    updateIntervalSeconds: 600000
+    options:
+      path: /etc/grafana/provisioning/dashboards/gatling
+  - name: "infrastructure"
+    orgId: 1
+    folder: 'infrastructure'
+    folderUid: 'infrastructure'
+    type: file
+    allowUiUpdates: true
+    updateIntervalSeconds: 600000
+    options:
+      path: /etc/grafana/provisioning/dashboards/infrastructure
+  - name: "youtrack"
+    orgId: 1
+    folder: 'youtrack'
+    folderUid: 'youtrack'
+    type: file
+    allowUiUpdates: true
+    updateIntervalSeconds: 600000
+    options:
+      path: /etc/grafana/provisioning/dashboards/youtrack
