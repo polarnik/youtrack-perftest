@@ -187,12 +187,11 @@ services:
       INFLUX_HOST: "http://influxdb_v2:8086"
       INFLUX_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
       INFLUX_ORG: "youtrack"
-      USER_SCRIPT_DIR: "/user_script"
     ports:
       - "8086:8086"
     volumes:
       - "./volumes/influx-v2-data:/var/lib/influxdb2/"
-      - "./configs/influxdb_v2/user_script:/user_script"
+      - "./configs/influxdb_v2/user_script:/docker-entrypoint-initdb.d"
     healthcheck:
       test: ["CMD-SHELL", "curl -S -s -XGET localhost:8086/health"]
       interval: 60s
