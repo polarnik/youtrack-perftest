@@ -227,9 +227,9 @@ services:
     restart: "no"
     command: bash -x -c "
       echo 'Starting x2i in detached mode, saving PID in variable' && 
-      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling --address http://172.28.5.4:8088 --database x2i_gatling --password password --username x2i_gatling -d | awk '{print $$2}') &&
+      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling --address http://nginx:8088 -d | awk '{print $$2}') &&
       echo 'Starting g2i in detached mode, saving PID in variable' &&
-      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 ./target/gatling --address http://influxdb_v2:8086 --database g2i_gatling --password password --username g2i_gatling -d | awk '{print $$2}') &&
+      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 ./target/gatling --address http://nginx:8089 -d | awk '{print $$2}') &&
       echo 'Build and execute test' &&
       mvn clean verify &&
       echo 'Waiting for parser to safely finish all its work' &&
