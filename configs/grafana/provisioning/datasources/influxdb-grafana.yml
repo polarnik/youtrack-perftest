@@ -26,12 +26,12 @@ datasources:
     editable: false
     # <bool> enable/disable basic auth
     basicAuth: false
-    # <string> basic auth username
+    # <string> auth username
     user: grafana
     jsonData:
       httpMode: POST
       dbName: grafana
     # <string> json object of data that will be encrypted.
     secureJsonData:
-      # <string> basic auth password
-      basicAuthPassword: password
+      # <string> auth password
+      password: password

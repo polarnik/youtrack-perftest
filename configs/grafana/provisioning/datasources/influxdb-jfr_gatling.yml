@@ -26,12 +26,12 @@ datasources:
     editable: false
     # <bool> enable/disable basic auth
     basicAuth: false
-    # <string> basic auth username
+    # <string> auth username
     user: jfr_gatling
     jsonData:
       httpMode: POST
       dbName: jfr_gatling
     # <string> json object of data that will be encrypted.
     secureJsonData:
-      # <string> basic auth password
-      basicAuthPassword: password
+      # <string> auth password
+      password: password
