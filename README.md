@@ -100,3 +100,21 @@ Metrics include:
     - `perm:YWRtaW4=.NDctMw==.jj5BoR8noOuzeiaKgFQTbuMOodM2kt`
 - YouTrack Mobile
     - `perm:YWRtaW4=.NDctNA==.HvPy6busydG4QV4gkXcAdKgRVerFND`
+
+
+## Open API
+
+hub api:
+```shell
+curl 'http://127.0.0.1:8080/hub/api/rest/openapi.json' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' > ./src/main/resources/hub.api.json
+```
+
+youtrack api:
+```shell
+curl 'http://127.0.0.1:8080/api/openapi.json' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' > ./src/main/resources/api.json
+```
