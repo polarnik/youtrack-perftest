@@ -254,6 +254,6 @@ networks:
             gatling: 172.28.1.5
             influxdb_v2: 172.28.1.6
             telegraf: 172.28.1.7
-            grafana: 172.28.1.7
-            nginx: 172.28.1.7
-            youtrack: 172.28.1.7
+            grafana: 172.28.1.8
+            nginx: 172.28.1.9
+            youtrack: 172.28.1.10
