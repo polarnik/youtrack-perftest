@@ -116,7 +116,7 @@ services:
     cpuset: "4-7"
     mem_reservation: 300m
     mem_limit: 500m
-    user: telegraf:docker
+    user: telegraf:135
     depends_on:
       - influxdb_v2
     environment:
