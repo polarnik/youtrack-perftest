@@ -242,7 +242,8 @@ services:
       sleep 30 &&
       echo 'Exiting'
       "
-
+    networks:
+      - youtrack_net
 networks:
   youtrack_net:
     ipam:
