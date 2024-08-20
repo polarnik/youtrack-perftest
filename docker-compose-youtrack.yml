@@ -116,6 +116,7 @@ services:
     cpuset: "4-7"
     mem_reservation: 300m
     mem_limit: 500m
+    user: telegraf:docker
     depends_on:
       - influxdb_v2
     environment:
@@ -251,9 +252,9 @@ networks:
           ip_range: 172.28.5.0/24
           gateway: 172.28.5.254
           aux_addresses:
-            gatling: 172.28.1.5
-            influxdb_v2: 172.28.1.6
-            telegraf: 172.28.1.7
-            grafana: 172.28.1.8
-            nginx: 172.28.1.9
-            youtrack: 172.28.1.10
+            gatling: 172.28.5.15
+            influxdb_v2: 172.28.5.16
+            telegraf: 172.28.5.17
+            grafana: 172.28.5.18
+            nginx: 172.28.5.19
+            youtrack: 172.28.5.20
