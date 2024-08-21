@@ -23,6 +23,7 @@ services:
       - ./volumes/youtrack_backups:/opt/youtrack/backups
       - ./volumes/youtrack_temp:/opt/youtrack/temp
       - "./configs/youtrack/youtrack.6g.monitoring.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
+      - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
     networks:
       - youtrack_net
 
