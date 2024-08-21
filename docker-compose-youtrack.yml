@@ -7,8 +7,8 @@ services:
     hostname: youtrack
     cpu_count: 4
     cpuset: "0-3"
-    mem_reservation: 3G
-    mem_limit: 6G
+    mem_reservation: 8G
+    mem_limit: 10G
     memswap_limit: 0m
     mem_swappiness: 0
     oom_kill_disable: true
@@ -22,6 +22,7 @@ services:
       - ./volumes/youtrack_logs:/opt/youtrack/logs
       - ./volumes/youtrack_backups:/opt/youtrack/backups
       - ./volumes/youtrack_temp:/opt/youtrack/temp
+      - "./configs/youtrack/youtrack.6g.monitoring.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
     networks:
       - youtrack_net
 
