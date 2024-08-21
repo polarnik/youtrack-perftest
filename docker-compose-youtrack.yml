@@ -226,22 +226,22 @@ services:
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
-      echo 'Starting x2i in detached mode, saving PID in variable' && 
-      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling --address http://telegraf:8088 --log /tmp/x2i.log -d | awk '{print $$2}') &&
-      echo 'Starting g2i in detached mode, saving PID in variable' &&
-      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 ./target/gatling --address http://nginx:8089 --log /tmp/g2i.log -d | awk '{print $$2}') &&
-      echo 'Build and execute test' &&
-      mvn clean verify &&
-      echo 'Waiting for parser to safely finish all its work' &&
-      sleep 30 &&
-      cat /tmp/x2i.log &&
-      cat /tmp/g2i.log &&
-      echo 'Sending interrupt signal to x2i process' &&
-      kill -INT $$x2iPID &&
-      echo "Sending interrupt signal to g2i process" &&
-      kill -INT $$G2IPID &&
-      echo 'Waiting for process to stop safely' &&
-      sleep 30 &&
+      echo 'Starting x2i in detached mode, saving PID in variable'
+      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 ./target/gatling --address http://telegraf:8088 --log /tmp/x2i.log -d | awk '{print $$2}')
+      echo 'Starting g2i in detached mode, saving PID in variable'
+      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 ./target/gatling --address http://nginx:8089 --log /tmp/g2i.log -d | awk '{print $$2}')
+      echo 'Build and execute test'
+      mvn clean verify
+      echo 'Waiting for parser to safely finish all its work'
+      sleep 30
+      cat /tmp/x2i.log
+      cat /tmp/g2i.log
+      echo 'Sending interrupt signal to x2i process'
+      kill -INT $$x2iPID
+      echo 'Sending interrupt signal to g2i process'
+      kill -INT $$G2IPID
+      echo 'Waiting for process to stop safely'
+      sleep 30
       echo 'Exiting'
       "
     networks:
