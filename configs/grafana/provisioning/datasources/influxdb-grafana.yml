@@ -24,8 +24,6 @@ datasources:
     orgId: 1
     # <string> url
     url: http://influxdb_v2:8086
-    # <string> database name, if used
-    database: grafana
     # <bool> allow users to edit datasources from the UI.
     editable: false
     # <bool> enable/disable basic auth
