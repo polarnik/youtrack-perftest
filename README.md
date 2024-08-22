@@ -100,3 +100,65 @@ Metrics include:
     - `perm:YWRtaW4=.NDctMw==.jj5BoR8noOuzeiaKgFQTbuMOodM2kt`
 - YouTrack Mobile
     - `perm:YWRtaW4=.NDctNA==.HvPy6busydG4QV4gkXcAdKgRVerFND`
+
+
+## Open API
+
+hub api:
+```shell
+curl 'http://127.0.0.1:8080/hub/api/rest/openapi.json' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' > ./src/main/resources/hub.api.json
+```
+
+youtrack api:
+```shell
+curl 'http://127.0.0.1:8080/api/openapi.json' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' > ./src/main/resources/api.json
+```
+
+## Telemetry
+
+https://www.jetbrains.com/help/youtrack/devportal/operations-api-admin-telemetry.html
+
+youtrack api:
+```shell
+curl -k 'https://127.0.0.1:443/api/admin/telemetry?fields=databaseSize,uptime,startedTime,textIndexSize' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json'
+  
+curl -k 'https://127.0.0.1:443/api/admin/telemetry' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json'
+  
+curl -k 'https://127.0.0.1:443/api/admin/telemetry?fields=allocatedMemory,availableMemory,availableProcessors,blobStringsCacheHitRate,cachedResultsCountInDBQueriesCache,databaseBackgroundThreads,databaseLocation,databaseQueriesCacheHitRate,databaseSize,fullDatabaseSize,id,installationFolder,logsLocation,notificationAnalyzerThreads,onlineUsers,pendingAsyncJobs,reportCalculatorThreads,requestsPerSecond,startedTime,textIndexSize,totalTransactions,transactionsPerSecond,uptime,usedMemory' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json'
+```
+
+hub api:
+
+- https://www.jetbrains.com/help/youtrack/devportal/HUB-REST-API_Metrics_Get-All-Metrics.html
+- https://www.jetbrains.com/help/youtrack/devportal/HUB-REST-API_Metrics_Get-Metric.html
+
+```shell
+curl 'https://127.0.0.1:443/hub/api/rest/metrics?fields=allocatedMemory,availableMemory,availableProcessors,blobStringsCacheHitRate,cachedResultsCountInDBQueriesCache,databaseBackgroundThreads,databaseLocation,databaseQueriesCacheHitRate,databaseSize,fullDatabaseSize,id,installationFolder,logsLocation,notificationAnalyzerThreads,onlineUsers,pendingAsyncJobs,reportCalculatorThreads,requestsPerSecond,startedTime,textIndexSize,totalTransactions,transactionsPerSecond,uptime,usedMemory' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json'
+  
+curl -k 'https://127.0.0.1:443/hub/api/rest/metrics' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json'
+
+curl -k 'https://127.0.0.1:443/hub/api/rest/metrics/telemetry' \
+  -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json'
+```

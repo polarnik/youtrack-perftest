@@ -20,6 +20,7 @@
         <gson-version>2.10.1</gson-version>
         <gson-fire-version>1.9.0</gson-fire-version>
         <junit-version>4.13.2</junit-version>
+        <testng-version>6.9.8</testng-version>
         <swagger-core-version>2.2.22</swagger-core-version>
     </properties>
 
@@ -52,9 +53,9 @@
         </dependency>
         <!-- test dependencies -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit-version}</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng-version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

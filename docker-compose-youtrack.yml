@@ -7,8 +7,8 @@ services:
     hostname: youtrack
     cpu_count: 4
     cpuset: "0-3"
-    mem_reservation: 3G
-    mem_limit: 6G
+    mem_reservation: 8G
+    mem_limit: 10G
     memswap_limit: 0m
     mem_swappiness: 0
     oom_kill_disable: true
@@ -22,6 +22,8 @@ services:
       - ./volumes/youtrack_logs:/opt/youtrack/logs
       - ./volumes/youtrack_backups:/opt/youtrack/backups
       - ./volumes/youtrack_temp:/opt/youtrack/temp
+      - "./configs/youtrack/youtrack.6g.monitoring.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
+      - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
     networks:
       - youtrack_net
 
@@ -61,8 +63,7 @@ services:
       - "10000:10000"
     volumes:
       - "./volumes/grafana_data:/var/lib/grafana"
-      - "./configs/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro"
-      - "./configs/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro"
+      - "./configs/grafana/provisioning:/etc/grafana/provisioning:ro"
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10
@@ -112,15 +113,36 @@ services:
   telegraf:
     image: telegraf:1.31.3
     hostname: telegraf
+    cpu_count: 1
+    cpuset: "4-7"
+    mem_reservation: 300m
+    mem_limit: 500m
+    user: telegraf:135
+    depends_on:
+      - influxdb_v2
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10
+      GITHUB_EVENT_NAME: "$GITHUB_EVENT_NAME"
+      GITHUB_JOB: "$GITHUB_JOB"
+      GITHUB_RUN_ID: "$GITHUB_RUN_ID"
+      GITHUB_RUN_URL: "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+      GITHUB_WORKFLOW: "$GITHUB_WORKFLOW"
+      TEST_NAME: "$TEST_NAME"
       NGINX_ADDRESS: "https://nginx/status"
       GRAFANA_ADDRESS: "http://grafana:3000/metrics"
       YOUTRACK_ADDRESS: ""
+      INFLUX_HOST: "http://influxdb_v2:8086"
+      INFLUX_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+      INFLUX_ORG: "youtrack"
     volumes:
       - "./configs/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
       - "./configs/telegraf/telegraf.d:/etc/telegraf/telegraf.d:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "2003:2003" # TCP, graphite, gatling
+      - "8088:8088"
+      - "8089:8089"
     healthcheck:
       test: ["CMD-SHELL", "curl -S -s -XGET localhost:8080"]
       interval: 30s
@@ -132,41 +154,50 @@ services:
     restart: "no"
 
   influxdb_v2:
+    # influx setup --username "$DOCKER_INFLUXDB_INIT_USERNAME" --password "$DOCKER_INFLUXDB_INIT_PASSWORD" --token "$INFLUX_TOKEN" --org "$DOCKER_INFLUXDB_INIT_ORG" --bucket "$DOCKER_INFLUXDB_INIT_BUCKET" --retention 0 --force --host "http://influxdb_v2:8086"
     image: influxdb:2.7.10
     hostname: influxdb_v2
+    cpu_count: 1
+    cpuset: "4-7"
+    mem_reservation: 300m
+    mem_limit: 500m
     environment:
-      GOMEMLIMIT: 300MiB
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+      DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
+      DOCKER_INFLUXDB_INIT_MODE: "setup"
+      DOCKER_INFLUXDB_INIT_ORG: "youtrack"
+      DOCKER_INFLUXDB_INIT_PASSWORD: "password"
+      DOCKER_INFLUXDB_INIT_RETENTION: "72h0m0s"
+      DOCKER_INFLUXDB_INIT_USERNAME: "admin"
       GOGC: 10
-      # https://github.com/influxdata/influxdata-docker/blob/master/influxdb/2.7/entrypoint.sh
+      GOMEMLIMIT: 300MiB
       INFLUXD_BOLT_PATH: "/var/lib/influxdb2/influxd.bolt"
       INFLUXD_ENGINE_PATH: "/var/lib/influxdb2/engine"
-      INFLUXD_LOG_LEVEL: "info"
+      INFLUXD_FLUX_LOG_ENABLED: "false"
       INFLUXD_HTTP_BIND_ADDRESS: ":8086"
-      DOCKER_INFLUXDB_INIT_USERNAME: "admin"
-      DOCKER_INFLUXDB_INIT_PASSWORD: "admin"
-      DOCKER_INFLUXDB_INIT_ORG: "youtrack"
-      DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
-      USER_SCRIPT_DIR: "/user_script"
+      INFLUXD_LOG_LEVEL: "info"
+      INFLUXD_QUERY_CONCURRENCY: 2
+      INFLUXD_QUERY_INITIAL_MEMORY_BYTES: 100000
+      INFLUXD_QUERY_MEMORY_BYTES: 100000000
+      INFLUXD_QUERY_QUEUE_SIZE: 100
       INFLUXD_REPORTING_DISABLED: "true"
+      INFLUXD_STORAGE_CACHE_MAX_MEMORY_SIZE: 100000000
+      INFLUXD_STORAGE_CACHE_SNAPSHOT_MEMORY_SIZE: 100000000
       INFLUXD_STORAGE_COMPACT_THROUGHPUT_BURST: 80388608
       INFLUXD_STORAGE_MAX_CONCURRENT_COMPACTIONS: 1
       INFLUXD_STORAGE_SERIES_FILE_MAX_CONCURRENT_SNAPSHOT_COMPACTIONS: 1
-      INFLUXD_QUERY_MEMORY_BYTES: 100000000
-      INFLUXD_QUERY_INITIAL_MEMORY_BYTES: 100000
-      INFLUXD_QUERY_CONCURRENCY: 2
-      INFLUXD_STORAGE_CACHE_MAX_MEMORY_SIZE: 100000000
-      INFLUXD_STORAGE_CACHE_SNAPSHOT_MEMORY_SIZE: 100000000
+      INFLUXD_STORAGE_SERIES_ID_SET_CACHE_SIZE: 0
+      INFLUXD_STORAGE_WAL_MAX_CONCURRENT_WRITES: 1
       INFLUXD_STORAGE_WAL_MAX_WRITE_DELAY: 10m
       INFLUXD_STORAGE_WRITE_TIMEOUT: 10s
-      INFLUXD_STORAGE_WAL_MAX_CONCURRENT_WRITES: 1
-      INFLUXD_STORAGE_SERIES_ID_SET_CACHE_SIZE: 0
-      INFLUXD_QUERY_QUEUE_SIZE: 100
-      INFLUXD_FLUX_LOG_ENABLED: "false"
+      INFLUX_HOST: "http://influxdb_v2:8086"
+      INFLUX_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+      INFLUX_ORG: "youtrack"
     ports:
       - "8086:8086"
     volumes:
       - "./volumes/influx-v2-data:/var/lib/influxdb2/"
-      - "./configs/influxdb_v2/user_script:/user_script"
+      - "./configs/influxdb_v2/user_script:/docker-entrypoint-initdb.d"
     healthcheck:
       test: ["CMD-SHELL", "curl -S -s -XGET localhost:8086/health"]
       interval: 60s
@@ -180,15 +211,69 @@ services:
 
   gatling:
     image: maven:3.9.8-amazoncorretto-21-debian
+    cpu_count: 1
+    cpuset: "4-7"
+    mem_reservation: 500m
+    mem_limit: 1000m
+    depends_on:
+      - telegraf
     volumes:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
       - "./volumes/gatling/repository:/root/.m2/repository"
+      - "./tools/perfana:/tools/perfana:ro"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
     restart: "no"
-    command: "mvn clean verify"
-
+    command: bash -x -c "
+      echo 'Starting x2i in detached mode, saving PID in variable'
+      &&
+      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 
+        ./target/gatling --address http://nginx:8088 
+        --database x2i_gatling --password password --username x2i_gatling 
+        --log /tmp/x2i.log -d | awk '{print $$2}')
+      &&
+      echo 'Starting g2i in detached mode, saving PID in variable'
+      &&
+      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 
+        ./target/gatling --address http://nginx:8089
+        --database g2i_gatling --password password --username g2i_gatling
+        --log /tmp/g2i.log -d | awk '{print $$2}')
+      &&
+      echo 'Build and execute test'
+      &&
+      mvn clean verify
+      &&
+      echo 'Waiting for parser to safely finish all its work'
+      &&
+      sleep 30
+      &&
+      cat /tmp/x2i.log
+      &&
+      cat /tmp/g2i.log
+      &&
+      echo 'Sending interrupt signal to x2i process'
+      &&
+      kill -INT $$x2iPID
+      &&
+      echo 'Sending interrupt signal to g2i process'
+      &&
+      kill -INT $$G2IPID
+      &&
+      echo 'Waiting for process to stop safely'
+      &&
+      sleep 30
+      &&
+      echo 'Exiting'
+      "
+    networks:
+      - youtrack_net
 networks:
   youtrack_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+          ip_range: 172.28.5.0/24
+          gateway: 172.28.5.254

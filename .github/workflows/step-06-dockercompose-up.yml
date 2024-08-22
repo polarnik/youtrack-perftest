@@ -7,6 +7,7 @@ jobs:
     runs-on: self-hosted
     env:
       YOUTRACK_VERSION: ${{ vars.YOUTRACK_VERSION }}
+
     steps:
       - name: docker-compose down
         run: |
@@ -33,6 +34,14 @@ jobs:
           cd ./git
           ln -s ../volumes volumes
           ls -la .
+          cd ..
+
+      - name: chmod tools
+        run: |
+          cd ./git
+          chmod +x ./tools/perfana/gatling-to-influxdb/g2i-linux-amd64
+          chmod +x ./tools/perfana/x2i/x2i-linux-amd64
+          chmod +x ./configs/influxdb_v2/user_script/init.script.sh
           cd ..
 
       - name: create volume folders youtrack
