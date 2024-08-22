@@ -63,8 +63,7 @@ services:
       - "10000:10000"
     volumes:
       - "./volumes/grafana_data:/var/lib/grafana"
-      - "./configs/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro"
-      - "./configs/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro"
+      - "./configs/grafana/provisioning:/etc/grafana/provisioning:ro"
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10

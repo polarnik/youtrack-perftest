@@ -19,6 +19,6 @@ providers:
     allowUiUpdates: false
     options:
       # <string, required> path to dashboard files on disk. Required when using the 'file' type
-      path: /var/lib/grafana/dashboards/youtrack
+      path: /etc/grafana/provisioning/youtrack
       # <bool> use folder names from filesystem to create folders in Grafana
       foldersFromFilesStructure: false
