@@ -1,47 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXDB_JFR",
-      "label": "InfluxDB JFR",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "10.1.5"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -68,13 +25,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -157,12 +114,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -181,7 +139,7 @@
           "measurement": "CPU",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(*) FROM \"CPU\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(*) FROM \"CPU\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -226,7 +184,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -310,12 +268,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -334,7 +293,7 @@
           "measurement": "heap",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(*) FROM \"heap\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(*) FROM \"heap\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -379,7 +338,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -464,12 +423,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -488,7 +448,7 @@
           "measurement": "threads",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(*) FROM \"threads\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(*) FROM \"threads\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -533,7 +493,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -616,18 +576,19 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "bytes per second",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "allocation-rate-bytes",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"bytes\" FROM \"allocation-rate-bytes\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"bytes\" FROM \"allocation-rate-bytes\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -668,7 +629,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -746,11 +707,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -769,7 +731,7 @@
           "measurement": "youngGc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"duration-ms\") FROM \"youngGc\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"duration-ms\") FROM \"youngGc\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -814,7 +776,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -853,6 +815,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -860,21 +823,22 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "youngGc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"duration-ms\") FROM \"youngGc\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT max(\"duration-ms\") FROM \"youngGc\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -919,7 +883,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -958,6 +922,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -965,21 +930,22 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "youngGc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"duration-ms\") FROM \"youngGc\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT sum(\"duration-ms\") FROM \"youngGc\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1024,7 +990,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -1069,7 +1035,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1101,12 +1068,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "Old GC duration",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -1125,7 +1093,7 @@
           "measurement": "oldGc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"duration-ms\") FROM \"oldGc\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"duration-ms\") FROM \"oldGc\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1170,7 +1138,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -1183,7 +1151,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1208,6 +1177,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -1215,21 +1185,22 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "oldGc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"duration-ms\") FROM \"oldGc\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT max(\"duration-ms\") FROM \"oldGc\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1274,7 +1245,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -1287,7 +1258,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1312,6 +1284,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -1319,21 +1292,22 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "oldGc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"duration-ms\") FROM \"oldGc\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT sum(\"duration-ms\") FROM \"oldGc\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1378,7 +1352,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -1423,7 +1397,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1455,12 +1430,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "Safe point duration",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -1479,7 +1455,7 @@
           "measurement": "safepoint",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"duration-ms\") FROM \"safepoint\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"duration-ms\") FROM \"safepoint\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1524,7 +1500,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -1537,7 +1513,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1562,6 +1539,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -1569,21 +1547,22 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "safepoint",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"duration-ms\") FROM \"safepoint\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT distinct(\"duration-ms\") FROM \"safepoint\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1628,7 +1607,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -1641,7 +1620,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1666,6 +1646,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -1673,21 +1654,22 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "safepoint",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"duration-ms\") FROM \"safepoint\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT sum(\"duration-ms\") FROM \"safepoint\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1732,7 +1714,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -1780,7 +1762,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1814,12 +1797,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "big allocation size",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -1838,7 +1822,7 @@
           "measurement": "big-allocations",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"bytes\") FROM \"big-allocations\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT distinct(\"bytes\") FROM \"big-allocations\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1883,7 +1867,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1902,7 +1886,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1964,18 +1949,18 @@
           }
         ]
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "big-allocations",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"bytes\" FROM \"big-allocations\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"bytes\" FROM \"big-allocations\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2012,7 +1997,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "hide": false,
@@ -2111,7 +2096,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -2159,7 +2144,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2193,12 +2179,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "allocation sample",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -2217,7 +2204,7 @@
           "measurement": "object-allocation-sample",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"bytes\") FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT distinct(\"bytes\") FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2262,7 +2249,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2281,7 +2268,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2343,18 +2331,18 @@
           }
         ]
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "object-allocation-sample",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"bytes\" FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"bytes\" FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2391,14 +2379,14 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "hide": false,
           "measurement": "object-allocation-sample",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"stacktrace\", \"objectClass\", \"thread\" FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"stacktrace\", \"objectClass\", \"thread\" FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2490,7 +2478,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -2540,7 +2528,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2574,18 +2563,19 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "monitor duration",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "java-monitor-enter",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"duration-ns\" FROM \"java-monitor-enter\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"duration-ns\" FROM \"java-monitor-enter\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2626,7 +2616,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2645,7 +2635,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2707,18 +2698,18 @@
           }
         ]
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "java-monitor-enter",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"duration-ns\" FROM \"java-monitor-enter\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"duration-ns\" FROM \"java-monitor-enter\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2755,7 +2746,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "hide": false,
@@ -2874,7 +2865,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -2924,7 +2915,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2958,17 +2950,18 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "java-monitor-wait",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"duration-ns\" FROM \"java-monitor-wait\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"duration-ns\" FROM \"java-monitor-wait\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3009,7 +3002,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3028,7 +3021,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3090,18 +3084,18 @@
           }
         ]
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "java-monitor-wait",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"duration-ns\" FROM \"java-monitor-wait\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT \"duration-ns\" FROM \"java-monitor-wait\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3138,7 +3132,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "hide": false,
@@ -3260,7 +3254,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -3310,7 +3304,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3344,12 +3339,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$tag_host $tag_address $tag_port",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -3380,7 +3376,7 @@
           "measurement": "socket-read-rate-bytes",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"bytes\") FROM \"socket-read-rate-bytes\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval), \"port\"::tag, \"host\"::tag, \"address\"::tag",
+          "query": "SELECT sum(\"bytes\") FROM \"socket-read-rate-bytes\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval), \"port\"::tag, \"host\"::tag, \"address\"::tag",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3425,7 +3421,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -3475,7 +3471,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3509,12 +3506,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$tag_host $tag_address $tag_port",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -3551,7 +3549,7 @@
           "measurement": "socket-write-rate-bytes",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"bytes\") FROM \"socket-write-rate-bytes\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval), \"port\"::tag, \"address\"::tag, \"host\"::tag fill(null)",
+          "query": "SELECT sum(\"bytes\") FROM \"socket-write-rate-bytes\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval), \"port\"::tag, \"address\"::tag, \"host\"::tag fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3596,7 +3594,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -3647,7 +3645,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3681,11 +3680,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -3704,7 +3704,7 @@
           "measurement": "classes-loaded",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"loadedClassCount\") FROM \"classes-loaded\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"loadedClassCount\") FROM \"classes-loaded\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3749,7 +3749,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -3798,7 +3798,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3830,12 +3831,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -3854,7 +3856,7 @@
           "measurement": "memory-resident-set-size",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(*) FROM \"memory-resident-set-size\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(*) FROM \"memory-resident-set-size\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3899,7 +3901,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -3948,7 +3950,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3982,12 +3985,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$tag_type",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -4012,7 +4016,7 @@
           "measurement": "memory-native",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"committed\") FROM \"memory-native\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval), \"type\"::tag fill(null)",
+          "query": "SELECT max(\"committed\") FROM \"memory-native\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval), \"type\"::tag fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4057,7 +4061,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -4106,7 +4110,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4140,12 +4145,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$tag_type",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -4170,7 +4176,7 @@
           "measurement": "memory-native",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"reserved\") FROM \"memory-native\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval), \"type\"::tag fill(null)",
+          "query": "SELECT max(\"reserved\") FROM \"memory-native\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval), \"type\"::tag fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4215,7 +4221,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -4264,7 +4270,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4298,12 +4305,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -4322,7 +4330,7 @@
           "measurement": "memory-native-total",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(*) FROM \"memory-native-total\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(*) FROM \"memory-native-total\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4367,7 +4375,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -4417,7 +4425,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4452,12 +4461,13 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "switch rate",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [
             {
@@ -4476,7 +4486,7 @@
           "measurement": "thread-context-switch-rate",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"switchRate\") FROM \"thread-context-switch-rate\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"switchRate\") FROM \"thread-context-switch-rate\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4521,7 +4531,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -4570,7 +4580,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4604,18 +4615,19 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "container-cpu-throttling-time",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT difference(*) FROM \"container-cpu-throttling-time\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT difference(*) FROM \"container-cpu-throttling-time\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4660,7 +4672,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -4709,7 +4721,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4743,18 +4756,19 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "container-cpu-throttling-slices",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT difference(*) FROM \"container-cpu-throttling-slices\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT difference(*) FROM \"container-cpu-throttling-slices\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4799,7 +4813,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -4848,7 +4862,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4882,18 +4897,19 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "container-memory-usage",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(*) FROM \"container-memory-usage\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT max(*) FROM \"container-memory-usage\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4934,7 +4950,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_JFR}"
+        "uid": "${source}"
       },
       "description": "",
       "fieldConfig": {
@@ -4983,7 +4999,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5017,18 +5034,19 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.1.4",
       "targets": [
         {
           "alias": "$col",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_JFR}"
+            "uid": "${source}"
           },
           "groupBy": [],
           "measurement": "container-memory-usage-failures",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT difference(*) FROM \"container-memory-usage-failures\" WHERE (\"service\"::tag =~ /^$service$/ AND \"testEnvironment\"::tag =~ /^$test_environment$/ AND \"systemUnderTest\"::tag =~ /^$system_under_test$/) AND $timeFilter",
+          "query": "SELECT difference(*) FROM \"container-memory-usage-failures\" WHERE (\"service\"::tag =~ /^${service::regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5081,72 +5099,87 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "text": "influxdb-jfr_youtrack",
+          "value": "P4F3B14C3B22971E8"
+        },
+        "name": "source",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "youtrack_6g",
+          "value": "youtrack_6g"
+        },
         "datasource": {
           "type": "influxdb",
-          "uid": "${DS_INFLUXDB_JFR}"
+          "uid": "${source}"
         },
         "definition": "SHOW TAG VALUES WITH KEY = \"systemUnderTest\"",
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "system_under_test",
         "options": [],
         "query": "SHOW TAG VALUES WITH KEY = \"systemUnderTest\"",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "local_docker_compose",
+          "value": "local_docker_compose"
+        },
         "datasource": {
           "type": "influxdb",
-          "uid": "${DS_INFLUXDB_JFR}"
+          "uid": "${source}"
         },
-        "definition": "SHOW TAG VALUES WITH KEY = \"testEnvironment\" WHERE \"systemUnderTest\" =~ /$system_under_test/",
-        "hide": 0,
+        "definition": "SHOW TAG VALUES WITH KEY = \"testEnvironment\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/",
         "includeAll": false,
-        "multi": false,
         "name": "test_environment",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY = \"testEnvironment\" WHERE \"systemUnderTest\" =~ /$system_under_test/",
+        "query": {
+          "query": "SHOW TAG VALUES WITH KEY = \"testEnvironment\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "youtrack",
+          "value": "youtrack"
+        },
         "datasource": {
           "type": "influxdb",
-          "uid": "${DS_INFLUXDB_JFR}"
+          "uid": "${source}"
         },
-        "definition": "SHOW TAG VALUES WITH KEY = \"service\" WHERE \"systemUnderTest\" =~ /$system_under_test/ AND \"testEnvironment\" =~ /$test_environment/",
-        "hide": 0,
+        "definition": "SHOW TAG VALUES WITH KEY = \"service\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/ AND \"testEnvironment\" =~ /${test_environment:regex}/",
         "includeAll": false,
-        "multi": false,
         "name": "service",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY = \"service\" WHERE \"systemUnderTest\" =~ /$system_under_test/ AND \"testEnvironment\" =~ /$test_environment/",
+        "query": {
+          "query": "SHOW TAG VALUES WITH KEY = \"service\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/ AND \"testEnvironment\" =~ /${test_environment:regex}/",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Perfana JFR Metrics 0.5",
   "uid": "perfana-jfr-metrics-0-5",
-  "version": 21,
+  "version": 1,
   "weekStart": ""
 }

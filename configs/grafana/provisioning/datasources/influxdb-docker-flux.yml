@@ -15,6 +15,10 @@ datasources:
     type: influxdb
     # <string, required> access mode. proxy or direct (Server or Browser in the UI). Required
     access: proxy
+    # <string> Sets a custom UID to reference this
+    # data source in other parts of the configuration.
+    # If not specified, Grafana generates one.
+    uid: influxdb-docker-flux
     # <string> url
     url: http://influxdb_v2:8086
     # <string> database name, if used

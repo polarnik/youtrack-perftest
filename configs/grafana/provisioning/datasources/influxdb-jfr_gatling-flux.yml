@@ -11,6 +11,10 @@ deleteDatasources:
 datasources:
   # <string, required> name of the datasource. Required
   - name: influxdb-jfr_gatling-flux
+    # <string> Sets a custom UID to reference this
+    # data source in other parts of the configuration.
+    # If not specified, Grafana generates one.
+    uid: influxdb-jfr_gatling-flux
     # <string, required> datasource type. Required
     type: influxdb
     # <string, required> access mode. proxy or direct (Server or Browser in the UI). Required

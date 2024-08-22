@@ -12,6 +12,10 @@ deleteDatasources:
 datasources:
   # <string, required> name of the datasource. Required
   - name: influxdb-jfr_youtrack
+    # <string> Sets a custom UID to reference this
+    # data source in other parts of the configuration.
+    # If not specified, Grafana generates one.
+    uid: influxdb-jfr_youtrack
     # <string, required> datasource type. Required
     type: influxdb
     # <string, required> access mode. direct or proxy. Required
