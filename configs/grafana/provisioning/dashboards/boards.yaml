@@ -8,7 +8,7 @@ providers:
     folderUid: 'gatling'
     type: file
     allowUiUpdates: true
-    updateIntervalSeconds: 600000
+    updateIntervalSeconds: 0
     options:
       path: /etc/grafana/provisioning/dashboards/gatling
   - name: "infrastructure"
@@ -17,7 +17,7 @@ providers:
     folderUid: 'infrastructure'
     type: file
     allowUiUpdates: true
-    updateIntervalSeconds: 600000
+    updateIntervalSeconds: 0
     options:
       path: /etc/grafana/provisioning/dashboards/infrastructure
   - name: "youtrack"
@@ -26,6 +26,6 @@ providers:
     folderUid: 'youtrack'
     type: file
     allowUiUpdates: true
-    updateIntervalSeconds: 600000
+    updateIntervalSeconds: 0
     options:
       path: /etc/grafana/provisioning/dashboards/youtrack
