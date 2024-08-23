@@ -52,6 +52,7 @@ public class GetTelemetry {
 
         Function<Session, Session> telemetryPutInQueue = session -> {
             String telemetryJson = session.getString("telemetryJson");
+            log.debug("Retrieved the Telemetry content from the server: {}", telemetryJson);
             Telemetry telemetry = new Gson().fromJson(telemetryJson, Telemetry.class);
             log.debug("Retrieved the Telemetry from the server: {}", telemetry);
             if(telemetry != null) {
