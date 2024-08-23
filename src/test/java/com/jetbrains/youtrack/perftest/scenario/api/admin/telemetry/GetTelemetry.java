@@ -82,7 +82,10 @@ public class GetTelemetry {
             return session;
         };
 
-        return CoreDsl.scenario("Telemetry scenario").exec(telemetryGet).exec(telemetryPutInQueue);
+        return CoreDsl.scenario("Telemetry scenario")
+                .exec(telemetryGet)
+                .exitHereIfFailed()
+                .exec(telemetryPutInQueue);
     }
 
 

@@ -38,6 +38,7 @@ public class SaveTelemetry {
 
                     return session.set("telemetry", builder.toString());
                 })
+                .exitHereIfFailed()
                 .exec(sendMetrics);
 
         return applicationScenario.injectOpen(
