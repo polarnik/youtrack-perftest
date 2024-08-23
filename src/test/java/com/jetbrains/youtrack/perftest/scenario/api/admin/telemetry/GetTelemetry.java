@@ -1,4 +1,4 @@
-package com.jetbrains.youtrack.perftest.simulation.api.admin.telemetry;
+package com.jetbrains.youtrack.perftest.scenario.api.admin.telemetry;
 
 import com.google.gson.Gson;
 import com.influxdb.client.write.Point;
@@ -39,13 +39,13 @@ public class GetTelemetry {
     }
 
     private double percentStringToDouble(String str) {
-        return Double.parseDouble(str.replace(" %", ""));
+        return Double.parseDouble(str.replace("%", ""));
     }
 
     private ScenarioBuilder buildTelemetry(ConcurrentLinkedQueue<Point> influxdbPoints) {
 
         HttpRequestActionBuilder telemetryGet = HttpDsl
-                .http("(GET)/api/admin/telemetry")
+                .http("youtrack(GET)/api/admin/telemetry")
                 .get("/api/admin/telemetry?fields=allocatedMemory,availableMemory,availableProcessors,blobStringsCacheHitRate,cachedResultsCountInDBQueriesCache,databaseBackgroundThreads,databaseQueriesCacheHitRate,databaseSize,fullDatabaseSize,notificationAnalyzerThreads,onlineUsers,pendingAsyncJobs,reportCalculatorThreads,requestsPerSecond,textIndexSize,totalTransactions,transactionsPerSecond,usedMemory")
                 .check(status().is(200))
                 .check(bodyString().saveAs("telemetryJson"));
@@ -86,7 +86,7 @@ public class GetTelemetry {
 
     public PopulationBuilder storeIn(ConcurrentLinkedQueue<Point> influxdbPoints) {
         return buildTelemetry(influxdbPoints)
-                .injectOpen(CoreDsl.constantUsersPerSec(1).during(Long.MAX_VALUE))
+                .injectOpen(CoreDsl.constantUsersPerSec(1).during(24 * 60 * 60))
                 .protocols(protocolBuilders.build());
     }
 }

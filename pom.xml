@@ -25,6 +25,8 @@
 
         <lombok-version>1.18.34</lombok-version>
         <influxdb-client-java-version>7.1.0</influxdb-client-java-version>
+        <logback-classic-version>1.5.7</logback-classic-version>
+        <maven-surefire-plugin-version>3.4.0</maven-surefire-plugin-version>
     </properties>
 
     <dependencies>
@@ -66,6 +68,12 @@
             <groupId>com.influxdb</groupId>
             <artifactId>influxdb-client-java</artifactId>
             <version>${influxdb-client-java-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic-version}</version>
             <scope>test</scope>
         </dependency>
         <!-- provided -->
@@ -113,63 +121,143 @@
                 <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
                 <version>${swagger}</version>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <id>api</id>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <inputSpec>${project.basedir}/src/main/resources/api.json</inputSpec>-->
-<!--                            <language>java</language>-->
-<!--                            <withXml>false</withXml>-->
-<!--                            <modelPackage>com.jetbrains.youtrack</modelPackage>-->
-<!--                            <generateApis>false</generateApis>-->
-<!--                            <generateApiTests>false</generateApiTests>-->
-<!--                            <generateApiDocumentation>false</generateApiDocumentation>-->
-<!--                            <generateModels>true</generateModels>-->
-<!--                            <generateModelTests>false</generateModelTests>-->
-<!--                            <generateModelDocumentation>false</generateModelDocumentation>-->
-<!--                            <generateSupportingFiles>false</generateSupportingFiles>-->
-<!--                            <output>${project.basedir}</output>-->
-<!--                            <configOptions>-->
-<!--                                <hideGenerationTimestamp>true</hideGenerationTimestamp>-->
-<!--                                <java11>true</java11>-->
-<!--                                <dateLibrary>java11</dateLibrary>-->
-<!--                                <checkDuplicatedModelName>true</checkDuplicatedModelName>-->
-<!--                            </configOptions>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <id>hub</id>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <inputSpec>${project.basedir}/src/main/resources/hub.api.json</inputSpec>-->
-<!--                            <language>java</language>-->
-<!--                            <withXml>false</withXml>-->
-<!--                            <modelPackage>com.jetbrains.hub</modelPackage>-->
-<!--                            <generateApis>false</generateApis>-->
-<!--                            <generateApiTests>false</generateApiTests>-->
-<!--                            <generateApiDocumentation>false</generateApiDocumentation>-->
-<!--                            <generateModels>true</generateModels>-->
-<!--                            <generateModelTests>false</generateModelTests>-->
-<!--                            <generateModelDocumentation>false</generateModelDocumentation>-->
-<!--                            <generateSupportingFiles>false</generateSupportingFiles>-->
-<!--                            <output>${project.basedir}</output>-->
-<!--                            <configOptions>-->
-<!--                                <hideGenerationTimestamp>true</hideGenerationTimestamp>-->
-<!--                                <java11>true</java11>-->
-<!--                                <dateLibrary>java11</dateLibrary>-->
-<!--                                <checkDuplicatedModelName>true</checkDuplicatedModelName>-->
-<!--                            </configOptions>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin-version}</version>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>monitoring</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire-plugin-version}</version>
+                        <configuration>
+                            <groups>monitoring</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>user-generation</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire-plugin-version}</version>
+                        <configuration>
+                            <groups>user-generation</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>issue-generation</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire-plugin-version}</version>
+                        <configuration>
+                            <groups>issue-generation</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>main</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire-plugin-version}</version>
+                        <configuration>
+                            <groups>main</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>swagger</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.swagger.codegen.v3</groupId>
+                        <artifactId>swagger-codegen-maven-plugin</artifactId>
+                        <version>${swagger}</version>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <id>api</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.basedir}/src/main/resources/api.json</inputSpec>
+                                    <language>java</language>
+                                    <withXml>false</withXml>
+                                    <modelPackage>com.jetbrains.youtrack</modelPackage>
+                                    <generateApis>false</generateApis>
+                                    <generateApiTests>false</generateApiTests>
+                                    <generateApiDocumentation>false</generateApiDocumentation>
+                                    <generateModels>true</generateModels>
+                                    <generateModelTests>false</generateModelTests>
+                                    <generateModelDocumentation>false</generateModelDocumentation>
+                                    <generateSupportingFiles>false</generateSupportingFiles>
+                                    <output>${project.basedir}</output>
+                                    <configOptions>
+                                        <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                        <java11>true</java11>
+                                        <dateLibrary>java11</dateLibrary>
+                                        <checkDuplicatedModelName>true</checkDuplicatedModelName>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <phase>validate</phase>
+                                <id>hub</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.basedir}/src/main/resources/hub.api.json</inputSpec>
+                                    <language>java</language>
+                                    <withXml>false</withXml>
+                                    <modelPackage>com.jetbrains.hub</modelPackage>
+                                    <generateApis>false</generateApis>
+                                    <generateApiTests>false</generateApiTests>
+                                    <generateApiDocumentation>false</generateApiDocumentation>
+                                    <generateModels>true</generateModels>
+                                    <generateModelTests>false</generateModelTests>
+                                    <generateModelDocumentation>false</generateModelDocumentation>
+                                    <generateSupportingFiles>false</generateSupportingFiles>
+                                    <output>${project.basedir}</output>
+                                    <configOptions>
+                                        <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                        <java11>true</java11>
+                                        <dateLibrary>java11</dateLibrary>
+                                        <checkDuplicatedModelName>true</checkDuplicatedModelName>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

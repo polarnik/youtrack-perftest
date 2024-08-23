@@ -11,12 +11,13 @@ public class GatlingTest {
     void runSimulation(Class simulationClass) {
         runSimulation(simulationClass, "");
     }
+
     void runSimulation(Class simulationClass, String description) {
-
-        String[] gatlingArgs = {config(GatlingCliOptions.Simulation, simulationClass.getCanonicalName()),
+        String[] gatlingArgs = {
+                config(GatlingCliOptions.Simulation, simulationClass.getCanonicalName()),
                 config(GatlingCliOptions.ResultsFolder, "target/load-test-results"),
-                config(GatlingCliOptions.RunDescription, description)};
-
+                config(GatlingCliOptions.RunDescription, description)
+        };
         Gatling.main(gatlingArgs);
     }
     private String config(CliOption option, String value) {
