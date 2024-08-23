@@ -54,29 +54,30 @@ public class GetTelemetry {
             String telemetryJson = session.getString("telemetryJson");
             Telemetry telemetry = new Gson().fromJson(telemetryJson, Telemetry.class);
             log.debug("Retrieved the Telemetry from the server: {}", telemetry);
-            Point point = Point.measurement("telemetry");
-            point.addField("allocatedMemoryMB", sizeStringToMegaBytes(telemetry.getAllocatedMemory()));
-            point.addField("availableMemoryMB", sizeStringToMegaBytes(telemetry.getAvailableMemory()));
-            point.addField("availableProcessors", telemetry.getAvailableProcessors());
-            point.addField("blobStringsCacheHitRate", percentStringToDouble(telemetry.getBlobStringsCacheHitRate()));
-            point.addField("cachedResultsCountInDBQueriesCache", telemetry.getCachedResultsCountInDBQueriesCache());
-            point.addField("databaseBackgroundThreads", telemetry.getDatabaseBackgroundThreads());
-            point.addField("databaseQueriesCacheHitRate", percentStringToDouble(telemetry.getDatabaseQueriesCacheHitRate()));
-            point.addField("databaseSizeMB", sizeStringToMegaBytes(telemetry.getDatabaseSize()));
-            point.addField("fullDatabaseSizeMB", sizeStringToMegaBytes(telemetry.getFullDatabaseSize()));
-            point.addField("notificationAnalyzerThreads", telemetry.getNotificationAnalyzerThreads());
-            point.addField("pendingAsyncJobs", telemetry.getPendingAsyncJobs());
-            point.addField("reportCalculatorThreads", telemetry.getReportCalculatorThreads());
-            point.addField("requestsPerSecond", Double.parseDouble(telemetry.getRequestsPerSecond()));
-            point.addField("textIndexSizeMB", sizeStringToMegaBytes(telemetry.getTextIndexSize()));
-            point.addField("totalTransactions", telemetry.getTotalTransactions());
-            point.addField("transactionsPerSecond", Double.parseDouble(telemetry.getTransactionsPerSecond()));
-            point.addField("usedMemoryMB", sizeStringToMegaBytes(telemetry.getUsedMemory()));
+            if(telemetry != null) {
+                Point point = Point.measurement("telemetry");
+                point.addField("allocatedMemoryMB", sizeStringToMegaBytes(telemetry.getAllocatedMemory()));
+                point.addField("availableMemoryMB", sizeStringToMegaBytes(telemetry.getAvailableMemory()));
+                point.addField("availableProcessors", telemetry.getAvailableProcessors());
+                point.addField("blobStringsCacheHitRate", percentStringToDouble(telemetry.getBlobStringsCacheHitRate()));
+                point.addField("cachedResultsCountInDBQueriesCache", telemetry.getCachedResultsCountInDBQueriesCache());
+                point.addField("databaseBackgroundThreads", telemetry.getDatabaseBackgroundThreads());
+                point.addField("databaseQueriesCacheHitRate", percentStringToDouble(telemetry.getDatabaseQueriesCacheHitRate()));
+                point.addField("databaseSizeMB", sizeStringToMegaBytes(telemetry.getDatabaseSize()));
+                point.addField("fullDatabaseSizeMB", sizeStringToMegaBytes(telemetry.getFullDatabaseSize()));
+                point.addField("notificationAnalyzerThreads", telemetry.getNotificationAnalyzerThreads());
+                point.addField("pendingAsyncJobs", telemetry.getPendingAsyncJobs());
+                point.addField("reportCalculatorThreads", telemetry.getReportCalculatorThreads());
+                point.addField("requestsPerSecond", Double.parseDouble(telemetry.getRequestsPerSecond()));
+                point.addField("textIndexSizeMB", sizeStringToMegaBytes(telemetry.getTextIndexSize()));
+                point.addField("totalTransactions", telemetry.getTotalTransactions());
+                point.addField("transactionsPerSecond", Double.parseDouble(telemetry.getTransactionsPerSecond()));
+                point.addField("usedMemoryMB", sizeStringToMegaBytes(telemetry.getUsedMemory()));
 
-            influxdbPoints.add(point);
-            log.debug("InfluxDB Point: {}", point.toLineProtocol());
-            log.debug("Queue size: {}", influxdbPoints.size());
-
+                influxdbPoints.add(point);
+                log.debug("InfluxDB Point: {}", point.toLineProtocol());
+                log.debug("Queue size: {}", influxdbPoints.size());
+            }
             return session;
         };
 
