@@ -231,7 +231,7 @@ services:
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
-      sleep 20 && 
+      sleep 60 && 
       mvn test -P monitoring
       "
     networks:
@@ -256,7 +256,7 @@ services:
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
-      sleep 30 &&
+      sleep 60 &&
       echo 'Starting x2i in detached mode, saving PID in variable' &&
       export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 
         ./target/load-test-results --address http://nginx:8088 
