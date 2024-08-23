@@ -30,6 +30,10 @@ services:
   nginx:
     image: nginx:1.26.1
     hostname: nginx
+    cpu_count: 1
+    cpuset: "4-7"
+    mem_reservation: 100m
+    mem_limit: 300m
     ports:
       - "8080:8080"
       - "443:443"
@@ -148,7 +152,7 @@ services:
       interval: 30s
       timeout: 1s
       retries: 1
-      start_period: 10s
+      start_period: 15s
     networks:
       - youtrack_net
     restart: "no"
@@ -238,6 +242,7 @@ services:
     mem_limit: 1000m
     depends_on:
       - telegraf
+      - youtrack
     volumes:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
