@@ -1,4 +1,4 @@
-package com.jetbrains.youtrack.api.admin.telemetry;
+package com.jetbrains.youtrack.perftest.scenario.api.admin.telemetry;
 
 import org.testng.annotations.*;
 
