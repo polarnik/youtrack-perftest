@@ -91,7 +91,7 @@ public class GetTelemetry {
 
     public PopulationBuilder storeIn(ConcurrentLinkedQueue<Point> influxdbPoints) {
         return buildTelemetry(influxdbPoints)
-                .injectOpen(CoreDsl.constantUsersPerSec(1.0 / 5).during(24 * 60 * 60))
+                .injectOpen(CoreDsl.constantUsersPerSec(1.0).during(24 * 60 * 60))
                 .protocols(protocolBuilders.build());
     }
 }
