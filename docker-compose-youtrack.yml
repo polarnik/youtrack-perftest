@@ -1,19 +1,32 @@
 # https://docs.docker.com/compose/compose-file/
 # https://docs.docker.com/compose/compose-file/05-services/
 
+name: youtrack-local
+
 services:
   youtrack:
-    image: jetbrains/youtrack:${YOUTRACK_VERSION}
+    #image: jetbrains/youtrack:${YOUTRACK_VERSION:?}
+    build:
+      context: docker/jetbrains-youtrack
+      dockerfile: youtrack-with-tools.Dockerfile
     hostname: youtrack
     cpu_count: 4
-    cpuset: "0-3"
-    mem_reservation: 8G
+    cpuset: "0-4"
+    mem_reservation: 7G
     mem_limit: 10G
     memswap_limit: 0m
     mem_swappiness: 0
     oom_kill_disable: true
     restart: "no"
     pull_policy: "never"
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "curl -S -s -k -XGET 'http://127.0.0.1:8080/api/admin/telemetry?fields=uptime,startedTime' -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry'" ]
+      interval: 60s
+      timeout: 1s
+      retries: 1
+      start_period: 10s
     tmpfs:
       /tmp
     volumes:
@@ -31,7 +44,7 @@ services:
     image: nginx:1.26.1
     hostname: nginx
     cpu_count: 1
-    cpuset: "4-7"
+    cpuset: "5-7"
     mem_reservation: 100m
     mem_limit: 300m
     ports:
@@ -59,7 +72,7 @@ services:
     image: grafana/grafana:11.1.4
     hostname: grafana
     cpu_count: 1
-    cpuset: "4-7"
+    cpuset: "5-7"
     mem_reservation: 300m
     mem_limit: 500m
     ports:
@@ -118,7 +131,7 @@ services:
     image: telegraf:1.31.3
     hostname: telegraf
     cpu_count: 1
-    cpuset: "4-7"
+    cpuset: "5-7"
     mem_reservation: 300m
     mem_limit: 500m
     user: telegraf:135
@@ -137,7 +150,7 @@ services:
       GRAFANA_ADDRESS: "http://grafana:3000/metrics"
       YOUTRACK_ADDRESS: ""
       INFLUX_HOST: "http://influxdb_v2:8086"
-      INFLUX_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+      INFLUX_TOKEN: ${INFLUX_TOKEN:?F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
       INFLUX_ORG: "youtrack"
     volumes:
       - "./configs/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
@@ -162,11 +175,11 @@ services:
     image: influxdb:2.7.10
     hostname: influxdb_v2
     cpu_count: 1
-    cpuset: "4-7"
+    cpuset: "5-7"
     mem_reservation: 300m
     mem_limit: 500m
     environment:
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:?F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
       DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
       DOCKER_INFLUXDB_INIT_MODE: "setup"
       DOCKER_INFLUXDB_INIT_ORG: "youtrack"
@@ -195,7 +208,7 @@ services:
       INFLUXD_STORAGE_WAL_MAX_WRITE_DELAY: 10m
       INFLUXD_STORAGE_WRITE_TIMEOUT: 10s
       INFLUX_HOST: "http://influxdb_v2:8086"
-      INFLUX_TOKEN: "F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw=="
+      INFLUX_TOKEN: ${INFLUX_TOKEN:?F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
       INFLUX_ORG: "youtrack"
     ports:
       - "8086:8086"
@@ -214,9 +227,12 @@ services:
 
 
   gatling-monitoring:
-    image: maven:3.9.8-amazoncorretto-21-debian
+    # image: maven:3.9.8-amazoncorretto-21-debian
+    build:
+      context: docker/maven-gatling
+      dockerfile: maven-gatling.Dockerfile
     cpu_count: 1
-    cpuset: "4-7"
+    cpuset: "5-7"
     mem_reservation: 500m
     mem_limit: 1000m
     depends_on:
@@ -238,9 +254,12 @@ services:
       - youtrack_net
 
   gatling-main:
-    image: maven:3.9.8-amazoncorretto-21-debian
+    #image: maven:3.9.8-amazoncorretto-21-debian
+    build:
+      context: docker/maven-gatling
+      dockerfile: maven-gatling.Dockerfile
     cpu_count: 1
-    cpuset: "4-7"
+    cpuset: "5-7"
     mem_reservation: 500m
     mem_limit: 1000m
     depends_on:
