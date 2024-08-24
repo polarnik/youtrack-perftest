@@ -225,8 +225,13 @@ services:
 
 
   gatling-monitoring:
-    # image: maven:3.9.8-amazoncorretto-21-debian
-    image: maven:3.9.9-ibm-semeru-21-jammy
+    image: maven:3.9.9-amazoncorretto-21-debian
+#    image: maven:3.9.9-amazoncorretto-21-al2023
+#    image: maven:3.9.9-ibm-semeru-21-jammy
+#    image: maven:3.9.9-eclipse-temurin-21-alpine
+#    image: maven:3.9.9-sapmachine-21
+#    image: maven:3.9.9-eclipse-temurin-21-jammy
+#    image:
 #    build:
 #      context: docker/maven-gatling
 #      dockerfile: maven-gatling.Dockerfile
@@ -243,22 +248,20 @@ services:
       - "./volumes/gatling/repository:/root/.m2/repository"
       - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
       - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
+      - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
     restart: "no"
-    command: bash -x -c "
-      mvn -DskipTests=true install &&
-      mvn test -P monitoring,docker
-      "
+    command: mvn -X test -P monitoring
     networks:
       - youtrack_net
 
   gatling-main:
-    #image: maven:3.9.8-amazoncorretto-21-debian
-    build:
-      context: docker/maven-gatling
-      dockerfile: maven-gatling.Dockerfile
+    image: maven:3.9.9-amazoncorretto-21-debian
+#    build:
+#      context: docker/maven-gatling
+#      dockerfile: maven-gatling.Dockerfile
     cpu_count: 1
     cpuset: "5-7"
     mem_reservation: 500m
@@ -271,6 +274,9 @@ services:
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
       - "./volumes/gatling/repository:/root/.m2/repository"
       - "./tools/perfana:/tools/perfana:ro"
+      - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
+      - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
+      - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
@@ -290,7 +296,7 @@ services:
         --log /tmp/g2i.log -d | awk '{print $$2}')
       &&
       echo 'Build and execute test' &&
-      mvn test -P main,docker
+      mvn test -P main
       &&
       echo 'Waiting for parser to safely finish all its work' &&
       sleep 30
@@ -314,9 +320,3 @@ services:
 
 networks:
   youtrack_net:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.28.0.0/16
-          ip_range: 172.28.5.0/24
-          gateway: 172.28.5.254

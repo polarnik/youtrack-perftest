@@ -42,7 +42,7 @@ public class SaveTelemetry {
                 .exec(sendMetrics);
 
         return applicationScenario.injectOpen(
-                        CoreDsl.constantUsersPerSec(1.0 / 20).during(24 * 60 * 60))
+                        CoreDsl.constantUsersPerSec(1.0 / 60).during(24 * 60 * 60))
                 .protocols(protocolBuilders.build());
     }
 }
