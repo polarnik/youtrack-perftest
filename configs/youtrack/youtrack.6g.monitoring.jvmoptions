@@ -30,7 +30,7 @@
 #@debug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$/%DEBUG_PORT%/
 #@sdebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=$/%DEBUG_PORT%/
 #@yourkit=-agentpath:%YOURKIT_AGENT_LIBRARY_PATH%=port=$/%YOURKIT_AGENT_PORT%/,sessionname=youtrack,dir=%APP_LOGS_DIR%,logdir=%APP_LOGS_DIR%
-@jfrexporter=-javaagent:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar=debug,tag=service/youtrack,tag=systemUnderTest/youtrack_6g,tag=testEnvironment/local_docker_compose,influxUrl=http://nginx:8086,influxDatabase=jfr_youtrack,influxUser=jfr_youtrack,influxPassword=password
+@jfrexporter=-javaagent:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar=debug,tag=service/youtrack,tag=systemUnderTest/youtrack_6g,tag=testEnvironment/local_docker_compose,influxUrl=http://nginx:8086,influxDatabase=jfr_youtrack,influxUser=jfr_youtrack,influxPassword=password,bigObjectThreshold=300000,bigObjectSampleWeightThreshold=300000
 @jolokia=
 
 -XX:NativeMemoryTracking=summary
@@ -47,6 +47,7 @@
 #-da
 #-XX:MaxMetaspaceSize=500m
 -Xmx6g
+-XX:NativeMemoryTracking=summary
 #-Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000
 #-Dorg.eclipse.jetty.server.Request.maxFormKeys=10000
 #-Djetbrains.http.request.header.buffer.size=102400

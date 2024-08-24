@@ -237,8 +237,8 @@ services:
 #      dockerfile: maven-gatling.Dockerfile
     cpu_count: 1
     cpuset: "5-7"
-    mem_reservation: 500m
-    mem_limit: 1000m
+    mem_reservation: 200m
+    mem_limit: 256m
     depends_on:
       - telegraf
       - youtrack
