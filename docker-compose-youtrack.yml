@@ -249,7 +249,7 @@ services:
     restart: "no"
     command: bash -x -c "
       mvn -DskipTests=true install &&
-      mvn test -P monitoring -P docker
+      mvn test -P monitoring,docker
       "
     networks:
       - youtrack_net
@@ -290,7 +290,7 @@ services:
         --log /tmp/g2i.log -d | awk '{print $$2}')
       &&
       echo 'Build and execute test' &&
-      mvn test -P main
+      mvn test -P main,docker
       &&
       echo 'Waiting for parser to safely finish all its work' &&
       sleep 30

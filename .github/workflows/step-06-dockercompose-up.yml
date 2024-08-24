@@ -67,7 +67,10 @@ jobs:
       - name: create volume folders gatling
         run: |
           mkdir -p -m 777 \
-            ./volumes/gatling/repository || true
+            ./volumes/gatling/repository \
+            ./volumes/gatling/jansi.tmpdir \
+            ./volumes/gatling/io.netty.native.workdir \
+          || true
 
       - name: set an influx folders owner
         run: |
