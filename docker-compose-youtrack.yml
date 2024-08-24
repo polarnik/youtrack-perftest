@@ -226,7 +226,7 @@ services:
 
   gatling-monitoring:
     # image: maven:3.9.8-amazoncorretto-21-debian
-    image: 3.9.9-ibm-semeru-21-jammy
+    image: maven:3.9.9-ibm-semeru-21-jammy
 #    build:
 #      context: docker/maven-gatling
 #      dockerfile: maven-gatling.Dockerfile
