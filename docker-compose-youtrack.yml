@@ -140,17 +140,17 @@ services:
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10
-      GITHUB_EVENT_NAME: "$GITHUB_EVENT_NAME"
-      GITHUB_JOB: "$GITHUB_JOB"
-      GITHUB_RUN_ID: "$GITHUB_RUN_ID"
+      GITHUB_EVENT_NAME: "${GITHUB_EVENT_NAME}"
+      GITHUB_JOB: "${GITHUB_JOB}"
+      GITHUB_RUN_ID: "${GITHUB_RUN_ID}"
       GITHUB_RUN_URL: "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-      GITHUB_WORKFLOW: "$GITHUB_WORKFLOW"
-      TEST_NAME: "$TEST_NAME"
+      GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}
+      TEST_NAME: ${TEST_NAME}
       NGINX_ADDRESS: "https://nginx/status"
       GRAFANA_ADDRESS: "http://grafana:3000/metrics"
       YOUTRACK_ADDRESS: ""
       INFLUX_HOST: "http://influxdb_v2:8086"
-      INFLUX_TOKEN: ${INFLUX_TOKEN:?F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
+      INFLUX_TOKEN: ${INFLUX_TOKEN:-F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
       INFLUX_ORG: "youtrack"
     volumes:
       - "./configs/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
@@ -179,7 +179,7 @@ services:
     mem_reservation: 300m
     mem_limit: 500m
     environment:
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:?F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:-F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
       DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
       DOCKER_INFLUXDB_INIT_MODE: "setup"
       DOCKER_INFLUXDB_INIT_ORG: "youtrack"
@@ -208,7 +208,7 @@ services:
       INFLUXD_STORAGE_WAL_MAX_WRITE_DELAY: 10m
       INFLUXD_STORAGE_WRITE_TIMEOUT: 10s
       INFLUX_HOST: "http://influxdb_v2:8086"
-      INFLUX_TOKEN: ${INFLUX_TOKEN:?F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
+      INFLUX_TOKEN: ${INFLUX_TOKEN:-F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
       INFLUX_ORG: "youtrack"
     ports:
       - "8086:8086"
