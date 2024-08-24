@@ -245,7 +245,7 @@ services:
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
-      mvn compile &&
+      mvn -DskipTests=true install &&
       mvn test -P monitoring
       "
     networks:
