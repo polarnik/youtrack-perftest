@@ -226,9 +226,10 @@ services:
 
   gatling-monitoring:
     # image: maven:3.9.8-amazoncorretto-21-debian
-    build:
-      context: docker/maven-gatling
-      dockerfile: maven-gatling.Dockerfile
+    image: 3.9.9-ibm-semeru-21-jammy
+#    build:
+#      context: docker/maven-gatling
+#      dockerfile: maven-gatling.Dockerfile
     cpu_count: 1
     cpuset: "5-7"
     mem_reservation: 500m
