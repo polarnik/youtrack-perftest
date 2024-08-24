@@ -241,13 +241,15 @@ services:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
       - "./volumes/gatling/repository:/root/.m2/repository"
+      - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
+      - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
       mvn -DskipTests=true install &&
-      mvn test -P monitoring
+      mvn test -P monitoring -P docker
       "
     networks:
       - youtrack_net
