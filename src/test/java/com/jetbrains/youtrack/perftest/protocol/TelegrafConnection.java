@@ -7,7 +7,7 @@ import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class TelegrafConnection {
     public HttpProtocolBuilder build() {
-        return http.baseUrl("http://telegraf:8090")
+        return http.baseUrl(System.getProperty("telegraf"))
                 .acceptHeader("application/json")
                 .shareConnections()
                 .check(status().is(204))

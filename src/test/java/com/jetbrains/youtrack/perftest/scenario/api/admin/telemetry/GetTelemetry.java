@@ -90,8 +90,13 @@ public class GetTelemetry {
 
 
     public PopulationBuilder storeIn(ConcurrentLinkedQueue<Point> influxdbPoints) {
+        String rps = System.getProperty("rps");
+        double rps_val = Double.parseDouble(rps != null ? rps : "1.0" );
+        String duration = System.getProperty("duration");
+        long duration_val = Long.parseLong(duration != null ? duration : "600" );
+
         return buildTelemetry(influxdbPoints)
-                .injectOpen(CoreDsl.constantUsersPerSec(1.0).during(24 * 60 * 60))
+                .injectOpen(CoreDsl.constantUsersPerSec(rps_val).during(duration_val))
                 .protocols(protocolBuilders.build());
     }
 }

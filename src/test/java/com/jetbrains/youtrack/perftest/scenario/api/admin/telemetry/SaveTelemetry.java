@@ -41,8 +41,11 @@ public class SaveTelemetry {
                 .exitHereIfFailed()
                 .exec(sendMetrics);
 
+        String duration = System.getProperty("duration");
+        long duration_val = Long.parseLong(duration != null ? duration : "600" );
+
         return applicationScenario.injectOpen(
-                        CoreDsl.constantUsersPerSec(1.0 / 60).during(24 * 60 * 60))
+                        CoreDsl.constantUsersPerSec(1.0 / 60).during(duration_val))
                 .protocols(protocolBuilders.build());
     }
 }
