@@ -25,7 +25,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
   "links": [],
   "panels": [
     {
@@ -827,7 +826,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -934,7 +933,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -1035,8 +1034,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1151,8 +1149,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1258,8 +1255,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1397,8 +1393,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1513,8 +1508,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1620,8 +1614,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1762,8 +1755,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1886,8 +1878,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2144,8 +2135,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2268,8 +2258,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2528,8 +2517,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2635,8 +2623,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2915,8 +2902,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3021,8 +3007,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3304,8 +3289,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3471,8 +3455,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3645,8 +3628,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3798,8 +3780,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3950,8 +3931,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4110,8 +4090,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4270,8 +4249,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4425,8 +4403,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4580,8 +4557,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4721,8 +4697,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4862,8 +4837,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4999,8 +4973,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5100,18 +5073,24 @@
     "list": [
       {
         "current": {
+          "selected": false,
           "text": "influxdb-jfr_youtrack",
-          "value": "P4F3B14C3B22971E8"
+          "value": "influxdb-jfr_youtrack"
         },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
         "name": "source",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
+          "selected": false,
           "text": "youtrack_6g",
           "value": "youtrack_6g"
         },
@@ -5120,16 +5099,21 @@
           "uid": "${source}"
         },
         "definition": "SHOW TAG VALUES WITH KEY = \"systemUnderTest\"",
+        "hide": 0,
         "includeAll": false,
+        "multi": false,
         "name": "system_under_test",
         "options": [],
         "query": "SHOW TAG VALUES WITH KEY = \"systemUnderTest\"",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
         "current": {
+          "selected": false,
           "text": "local_docker_compose",
           "value": "local_docker_compose"
         },
@@ -5138,19 +5122,21 @@
           "uid": "${source}"
         },
         "definition": "SHOW TAG VALUES WITH KEY = \"testEnvironment\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/",
+        "hide": 0,
         "includeAll": false,
+        "multi": false,
         "name": "test_environment",
         "options": [],
-        "query": {
-          "query": "SHOW TAG VALUES WITH KEY = \"testEnvironment\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/",
-          "refId": "InfluxVariableQueryEditor-VariableQuery"
-        },
+        "query": "SHOW TAG VALUES WITH KEY = \"testEnvironment\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
         "current": {
+          "selected": false,
           "text": "youtrack",
           "value": "youtrack"
         },
@@ -5159,15 +5145,16 @@
           "uid": "${source}"
         },
         "definition": "SHOW TAG VALUES WITH KEY = \"service\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/ AND \"testEnvironment\" =~ /${test_environment:regex}/",
+        "hide": 0,
         "includeAll": false,
+        "multi": false,
         "name": "service",
         "options": [],
-        "query": {
-          "query": "SHOW TAG VALUES WITH KEY = \"service\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/ AND \"testEnvironment\" =~ /${test_environment:regex}/",
-          "refId": "InfluxVariableQueryEditor-VariableQuery"
-        },
+        "query": "SHOW TAG VALUES WITH KEY = \"service\" WHERE \"systemUnderTest\" =~ /${system_under_test:regex}/ AND \"testEnvironment\" =~ /${test_environment:regex}/",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       }
     ]
