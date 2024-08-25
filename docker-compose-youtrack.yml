@@ -67,7 +67,7 @@ services:
     restart: "unless-stopped"
 
   grafana:
-    image: grafana/grafana:11.1.4 # 10.4.7
+    image: grafana/grafana:10.4.7 # 11.1.4
     hostname: grafana
     cpu_count: 1
     cpuset: "5-7"
