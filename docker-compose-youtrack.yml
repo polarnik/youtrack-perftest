@@ -254,7 +254,7 @@ services:
       - "./tools/perfana:/tools/perfana:ro"
       - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
       - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
-      - "./volumes/gatling/monitoring:/tmp/target/load-test-results"
+      - "./volumes/gatling/monitoring:/tmp/gatling/target/load-test-results"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
@@ -319,7 +319,7 @@ services:
       - "./tools/perfana:/tools/perfana:ro"
       - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
       - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
-      - "./volumes/gatling/main:/tmp/target/load-test-results"
+      - "./volumes/gatling/main:/tmp/gatling/target/load-test-results"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
