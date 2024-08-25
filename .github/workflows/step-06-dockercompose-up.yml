@@ -70,6 +70,10 @@ jobs:
             ./volumes/gatling/repository \
             ./volumes/gatling/jansi.tmpdir \
             ./volumes/gatling/io.netty.native.workdir \
+            ./volumes/gatling/monitoring \
+            ./volumes/gatling/main \
+            ./volumes/gatling/issue-generation \
+            ./volumes/gatling/user-generation \
           || true
 
       - name: set an influx folders owner

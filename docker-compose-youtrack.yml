@@ -134,7 +134,8 @@ services:
     mem_limit: 500m
     user: telegraf:135
     depends_on:
-      - influxdb_v2
+      influxdb_v2:
+        condition: service_healthy
     environment:
       GOMEMLIMIT: 300MiB
       GOGC: 10
@@ -240,8 +241,12 @@ services:
     mem_reservation: 256m
     mem_limit: 512m
     depends_on:
-      - telegraf
-      - youtrack
+      telegraf:
+        condition: service_healthy
+      influxdb_v2:
+        condition: service_healthy
+      youtrack:
+        condition: service_started
     volumes:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
@@ -249,12 +254,12 @@ services:
       - "./tools/perfana:/tools/perfana:ro"
       - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
       - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
+      - "./volumes/gatling/monitoring:/tmp/target/load-test-results"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
-      sleep 60 &&
       echo 'Starting x2i in detached mode, saving PID in variable' &&
       export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64
       ./target/load-test-results --address http://nginx:8088
@@ -301,8 +306,12 @@ services:
     mem_reservation: 500m
     mem_limit: 1000m
     depends_on:
-      - telegraf
-      - youtrack
+      telegraf:
+        condition: service_healthy
+      influxdb_v2:
+        condition: service_healthy
+      youtrack:
+        condition: service_healthy
     volumes:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"
@@ -310,12 +319,12 @@ services:
       - "./tools/perfana:/tools/perfana:ro"
       - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
       - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
+      - "./volumes/gatling/main:/tmp/target/load-test-results"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
-      sleep 60 &&
       echo 'Starting x2i in detached mode, saving PID in variable' &&
       export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 
         ./target/load-test-results --address http://nginx:8088
