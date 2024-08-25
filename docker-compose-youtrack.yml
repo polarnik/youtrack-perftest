@@ -67,7 +67,7 @@ services:
     restart: "unless-stopped"
 
   grafana:
-    image: grafana/grafana:11.1.4
+    image: grafana/grafana:11.1.4 # 10.4.7
     hostname: grafana
     cpu_count: 1
     cpuset: "5-7"
@@ -86,7 +86,7 @@ services:
       GF_SECURITY_admin_user: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
       GF_INSTALL_PLUGINS:
-      GF_FEATURE_TOGGLES_ENABLE: publicDashboards correlations exploreContentOutline cloudWatchCrossAccountQuerying nestedFolders logsContextDatasourceUi lokiQuerySplitting prometheusMetricEncyclopedia influxdbBackendMigration prometheusDataplane lokiMetricDataplane dataplaneFrontendFallback recordedQueriesMulti logsExploreTableVisualisation transformationsRedesign awsAsyncQueryCaching prometheusConfigOverhaulAuth alertingNoDataErrorExecution angularDeprecationUI dashgpt alertingInsights panelMonitoring kubernetesPlaylists recoveryThreshold lokiStructuredMetadata awsDatasourcesNewFormStyling managedPluginsInstall annotationPermissionUpdate ssoSettingsApi logsInfiniteScrolling exploreMetrics alertingSimplifiedRouting logRowsPopoverMenu lokiQueryHints betterPageScrolling cloudWatchNewLabelParsing grpcServer formatString transformationsVariableSupport addFieldFromCalculationStatFunctions pdfTables regressionTransformation groupToNestedTableTransformation newPDFRendering scenes extraThemes mlExpressions prometheusPromQAIL dashboardSceneForViewers dashboardSceneSolo dashboardScene flameGraphItemCollapsing logsExploreTableDefaultVisualization featureToggleAdminPage
+      # GF_FEATURE_TOGGLES_ENABLE: publicDashboards correlations exploreContentOutline cloudWatchCrossAccountQuerying nestedFolders logsContextDatasourceUi lokiQuerySplitting prometheusMetricEncyclopedia influxdbBackendMigration prometheusDataplane lokiMetricDataplane dataplaneFrontendFallback recordedQueriesMulti logsExploreTableVisualisation transformationsRedesign awsAsyncQueryCaching prometheusConfigOverhaulAuth alertingNoDataErrorExecution angularDeprecationUI dashgpt alertingInsights panelMonitoring kubernetesPlaylists recoveryThreshold lokiStructuredMetadata awsDatasourcesNewFormStyling managedPluginsInstall annotationPermissionUpdate ssoSettingsApi logsInfiniteScrolling exploreMetrics alertingSimplifiedRouting logRowsPopoverMenu lokiQueryHints betterPageScrolling cloudWatchNewLabelParsing grpcServer formatString transformationsVariableSupport addFieldFromCalculationStatFunctions pdfTables regressionTransformation groupToNestedTableTransformation newPDFRendering scenes extraThemes mlExpressions prometheusPromQAIL dashboardSceneForViewers dashboardSceneSolo dashboardScene flameGraphItemCollapsing logsExploreTableDefaultVisualization featureToggleAdminPage
       GF_ANALYTICS_ENABLED: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
