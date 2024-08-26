@@ -10,6 +10,7 @@ public class TelegrafConnection {
         return http.baseUrl(System.getProperty("telegraf"))
                 .acceptHeader("application/json")
                 .shareConnections()
+                .warmUp(System.getProperty("telegraf"))
                 .check(status().is(204))
                 .header("Content-Encoding", "identity")
                 .contentTypeHeader("plain/text");

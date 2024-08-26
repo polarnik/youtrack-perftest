@@ -1,6 +1,7 @@
 package com.jetbrains;
 
 import com.jetbrains.youtrack.perftest.simulation.api.admin.telemetry.TelemetrySimulation;
+import com.jetbrains.youtrack.perftest.simulation.createUser.CreateOneUser;
 import io.gatling.app.Gatling;
 import io.gatling.shared.cli.CliOption;
 import io.gatling.shared.cli.GatlingCliOptions;
@@ -53,12 +54,33 @@ public class GatlingTest {
         System.setProperty("gatling.charting.indicators.lowerBound", "200");
         System.setProperty("gatling.charting.indicators.higherBound", "500");
 
-        System.setProperty("duration", String.valueOf(3 * 60));
+        System.setProperty("duration", String.valueOf(10 * 60));
         System.setProperty("rps", String.valueOf(50));
 
         Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.INFO);
 
         runSimulation(TelemetrySimulation.class);
+    }
+
+    @Test(groups = {"createUser-debug-local"})
+    public void createUsers() {
+        System.setProperty("youtrack", "https://127.0.0.1:443");
+        System.setProperty("youtrack_token", "perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry");
+
+        System.setProperty("gatling.ssl.useOpenSsl", "false");
+        System.setProperty("gatling.data.console.writePeriod", "5");
+        System.setProperty("gatling.http.requestTimeout", "70000");
+        System.setProperty("gatling.charting.indicators.lowerBound", "500");
+        System.setProperty("gatling.charting.indicators.higherBound", "1000");
+
+        System.setProperty("users", String.valueOf(100 ));
+        System.setProperty("users_path", "target/load-test-results/100-users.json");
+        System.setProperty("users_password", "Password123456!@#");
+
+        Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.INFO);
+
+        runSimulation(CreateOneUser.class);
     }
 }

@@ -12,6 +12,7 @@ public class HttpAdminConnection  {
                 .enableHttp2()
                 .check(status().is(200))
                 .shareConnections()
+                .warmUp(System.getProperty("youtrack"))
                 .header("Authorization", "Bearer " + System.getProperty("youtrack_token"))
                 .contentTypeHeader("application/json");
     }

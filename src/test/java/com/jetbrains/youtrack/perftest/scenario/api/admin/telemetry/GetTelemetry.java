@@ -1,6 +1,7 @@
 package com.jetbrains.youtrack.perftest.scenario.api.admin.telemetry;
 
 import com.google.gson.Gson;
+import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import com.jetbrains.youtrack.Telemetry;
 import com.jetbrains.youtrack.perftest.protocol.HttpAdminConnection;
@@ -12,6 +13,7 @@ import io.gatling.javaapi.http.HttpDsl;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Instant;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 
@@ -57,6 +59,8 @@ public class GetTelemetry {
             log.debug("Retrieved the Telemetry from the server: {}", telemetry);
             if(telemetry != null) {
                 Point point = Point.measurement("telemetry");
+                Instant instant = Instant.now();
+                point.time(instant.toEpochMilli(), WritePrecision.MS);
                 point.addField("allocatedMemoryMB", sizeStringToMegaBytes(telemetry.getAllocatedMemory()));
                 point.addField("availableMemoryMB", sizeStringToMegaBytes(telemetry.getAvailableMemory()));
                 point.addField("availableProcessors", telemetry.getAvailableProcessors());
@@ -91,7 +95,7 @@ public class GetTelemetry {
 
     public PopulationBuilder storeIn(ConcurrentLinkedQueue<Point> influxdbPoints) {
         String rps = System.getProperty("rps");
-        double rps_val = Double.parseDouble(rps != null ? rps : "1.0" );
+        int rps_val = Integer.parseInt(rps != null ? rps : "1" );
         String duration = System.getProperty("duration");
         long duration_val = Long.parseLong(duration != null ? duration : "600" );
 
