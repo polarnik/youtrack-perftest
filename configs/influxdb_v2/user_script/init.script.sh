@@ -14,6 +14,8 @@ influx bucket create --name jfr_gatling --description "jfr_gatling metrics" --re
 influx bucket create --name jfr_youtrack --description "jfr_youtrack metrics" --retention "90d" --shard-group-duration "12h"
 influx bucket create --name x2i_gatling --description "x2i_gatling metrics" --retention "90d" --shard-group-duration "12h"
 influx bucket create --name g2i_gatling --description "g2i_gatling metrics" --retention "90d" --shard-group-duration "12h"
+influx bucket create --name youtrack_telemetry --description "youtrack_telemetry metrics" --retention "90d" --shard-group-duration "12h"
+influx bucket create --name influxdb --description "influxdb metrics" --retention "90d" --shard-group-duration "12h"
 
 export BUCKET_ID=$( influx bucket list --hide-headers --name nginx | awk '{ print $1}' )
 influx v1 auth create --description "nginx" --username "nginx" --password ${DOCKER_INFLUXDB_INIT_PASSWORD} --read-bucket ${BUCKET_ID} --write-bucket ${BUCKET_ID}
@@ -44,3 +46,9 @@ influx v1 auth create --description "x2i_gatling" --username "x2i_gatling" --pas
 
 export BUCKET_ID=$( influx bucket list --hide-headers --name g2i_gatling | awk '{ print $1}' )
 influx v1 auth create --description "g2i_gatling" --username "g2i_gatling" --password ${DOCKER_INFLUXDB_INIT_PASSWORD} --read-bucket ${BUCKET_ID} --write-bucket ${BUCKET_ID}
+
+export BUCKET_ID=$( influx bucket list --hide-headers --name youtrack_telemetry | awk '{ print $1}' )
+influx v1 auth create --description "youtrack_telemetry" --username "youtrack_telemetry" --password ${DOCKER_INFLUXDB_INIT_PASSWORD} --read-bucket ${BUCKET_ID} --write-bucket ${BUCKET_ID}
+
+export BUCKET_ID=$( influx bucket list --hide-headers --name influxdb | awk '{ print $1}' )
+influx v1 auth create --description "influxdb" --username "influxdb" --password ${DOCKER_INFLUXDB_INIT_PASSWORD} --read-bucket ${BUCKET_ID} --write-bucket ${BUCKET_ID}
