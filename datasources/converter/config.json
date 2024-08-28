@@ -1,0 +1,42 @@
+{
+  "Posts": {
+    "headers": [
+      "Id",
+      "PostTypeId",
+      "AcceptedAnswerId",
+      "CreationDate",
+      "Score",
+      "ViewCount",
+      "Body",
+      "OwnerUserId",
+      "LastEditorUserId",
+      "LastEditDate",
+      "LastActivityDate",
+      "Title",
+      "Tags",
+      "AnswerCount",
+      "CommentCount",
+      "ClosedDate",
+      "FavoriteCount",
+      "CommunityOwnedDate",
+      "ContentLicense"
+    ],
+    "include": [
+      "ViewCount",
+      "Score",
+      "Title",
+      "Tags",
+      "Body"
+    ],
+    "filters": {
+      "PostTypeId": ["==", "1"]
+    },
+    "fixes": {
+      "Title": ["\"", "\"\""],
+      "Body": ["\"", "\"\""]
+    },
+    "markdown": [
+      "Body"
+    ]
+  }
+}

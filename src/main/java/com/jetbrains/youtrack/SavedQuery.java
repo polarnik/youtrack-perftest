@@ -24,26 +24,12 @@ import java.util.Objects;
 
 
 public class SavedQuery extends WatchFolder {
-    @SerializedName("id")
-    private final String savedQueryId = null;
-
     @SerializedName("query")
-    private String query = null;
+    protected String query = null;
 
     @SerializedName("issues")
-    private final List<Issue> issues = null;
+    protected final List<Issue> issues = null;
 
-    @SerializedName("visibleFor")
-    private UserGroup savedQueryVisibleFor = null;
-
-    @SerializedName("updateableBy")
-    private UserGroup savedQueryUpdateableBy = null;
-
-    @SerializedName("readSharingSettings")
-    private WatchFolderSharingSettings savedQueryReadSharingSettings = null;
-
-    @SerializedName("updateSharingSettings")
-    private WatchFolderSharingSettings savedQueryUpdateSharingSettings = null;
 
     /**
      * Get savedQueryId
@@ -52,7 +38,7 @@ public class SavedQuery extends WatchFolder {
      **/
     @Schema(description = "")
     public String getSavedQueryId() {
-        return savedQueryId;
+        return id;
     }
 
     public SavedQuery query(String query) {
@@ -85,7 +71,7 @@ public class SavedQuery extends WatchFolder {
     }
 
     public SavedQuery savedQueryVisibleFor(UserGroup savedQueryVisibleFor) {
-        this.savedQueryVisibleFor = savedQueryVisibleFor;
+        this.visibleFor = savedQueryVisibleFor;
         return this;
     }
 
@@ -96,15 +82,15 @@ public class SavedQuery extends WatchFolder {
      **/
     @Schema(description = "")
     public UserGroup getSavedQueryVisibleFor() {
-        return savedQueryVisibleFor;
+        return visibleFor;
     }
 
     public void setSavedQueryVisibleFor(UserGroup savedQueryVisibleFor) {
-        this.savedQueryVisibleFor = savedQueryVisibleFor;
+        this.visibleFor = savedQueryVisibleFor;
     }
 
     public SavedQuery savedQueryUpdateableBy(UserGroup savedQueryUpdateableBy) {
-        this.savedQueryUpdateableBy = savedQueryUpdateableBy;
+        this.updateableBy = savedQueryUpdateableBy;
         return this;
     }
 
@@ -115,15 +101,15 @@ public class SavedQuery extends WatchFolder {
      **/
     @Schema(description = "")
     public UserGroup getSavedQueryUpdateableBy() {
-        return savedQueryUpdateableBy;
+        return updateableBy;
     }
 
     public void setSavedQueryUpdateableBy(UserGroup savedQueryUpdateableBy) {
-        this.savedQueryUpdateableBy = savedQueryUpdateableBy;
+        this.updateableBy = savedQueryUpdateableBy;
     }
 
     public SavedQuery savedQueryReadSharingSettings(WatchFolderSharingSettings savedQueryReadSharingSettings) {
-        this.savedQueryReadSharingSettings = savedQueryReadSharingSettings;
+        this.readSharingSettings = savedQueryReadSharingSettings;
         return this;
     }
 
@@ -134,15 +120,15 @@ public class SavedQuery extends WatchFolder {
      **/
     @Schema(description = "")
     public WatchFolderSharingSettings getSavedQueryReadSharingSettings() {
-        return savedQueryReadSharingSettings;
+        return readSharingSettings;
     }
 
     public void setSavedQueryReadSharingSettings(WatchFolderSharingSettings savedQueryReadSharingSettings) {
-        this.savedQueryReadSharingSettings = savedQueryReadSharingSettings;
+        this.readSharingSettings = savedQueryReadSharingSettings;
     }
 
     public SavedQuery savedQueryUpdateSharingSettings(WatchFolderSharingSettings savedQueryUpdateSharingSettings) {
-        this.savedQueryUpdateSharingSettings = savedQueryUpdateSharingSettings;
+        this.updateSharingSettings = savedQueryUpdateSharingSettings;
         return this;
     }
 
@@ -153,11 +139,11 @@ public class SavedQuery extends WatchFolder {
      **/
     @Schema(description = "")
     public WatchFolderSharingSettings getSavedQueryUpdateSharingSettings() {
-        return savedQueryUpdateSharingSettings;
+        return updateSharingSettings;
     }
 
     public void setSavedQueryUpdateSharingSettings(WatchFolderSharingSettings savedQueryUpdateSharingSettings) {
-        this.savedQueryUpdateSharingSettings = savedQueryUpdateSharingSettings;
+        this.updateSharingSettings = savedQueryUpdateSharingSettings;
     }
 
 
@@ -170,19 +156,19 @@ public class SavedQuery extends WatchFolder {
             return false;
         }
         SavedQuery savedQuery = (SavedQuery) o;
-        return Objects.equals(this.savedQueryId, savedQuery.savedQueryId) &&
+        return Objects.equals(this.id, savedQuery.id) &&
                 Objects.equals(this.query, savedQuery.query) &&
                 Objects.equals(this.issues, savedQuery.issues) &&
-                Objects.equals(this.savedQueryVisibleFor, savedQuery.savedQueryVisibleFor) &&
-                Objects.equals(this.savedQueryUpdateableBy, savedQuery.savedQueryUpdateableBy) &&
-                Objects.equals(this.savedQueryReadSharingSettings, savedQuery.savedQueryReadSharingSettings) &&
-                Objects.equals(this.savedQueryUpdateSharingSettings, savedQuery.savedQueryUpdateSharingSettings) &&
+                Objects.equals(this.visibleFor, savedQuery.visibleFor) &&
+                Objects.equals(this.updateableBy, savedQuery.updateableBy) &&
+                Objects.equals(this.readSharingSettings, savedQuery.readSharingSettings) &&
+                Objects.equals(this.updateSharingSettings, savedQuery.updateSharingSettings) &&
                 super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(savedQueryId, query, issues, savedQueryVisibleFor, savedQueryUpdateableBy, savedQueryReadSharingSettings, savedQueryUpdateSharingSettings, super.hashCode());
+        return Objects.hash(id, query, issues, visibleFor, updateableBy, readSharingSettings, updateSharingSettings, super.hashCode());
     }
 
 
@@ -190,13 +176,13 @@ public class SavedQuery extends WatchFolder {
     public String toString() {
         String sb = "class SavedQuery {\n" +
                 "    " + toIndentedString(super.toString()) + "\n" +
-                "    savedQueryId: " + toIndentedString(savedQueryId) + "\n" +
+                "    savedQueryId: " + toIndentedString(id) + "\n" +
                 "    query: " + toIndentedString(query) + "\n" +
                 "    issues: " + toIndentedString(issues) + "\n" +
-                "    savedQueryVisibleFor: " + toIndentedString(savedQueryVisibleFor) + "\n" +
-                "    savedQueryUpdateableBy: " + toIndentedString(savedQueryUpdateableBy) + "\n" +
-                "    savedQueryReadSharingSettings: " + toIndentedString(savedQueryReadSharingSettings) + "\n" +
-                "    savedQueryUpdateSharingSettings: " + toIndentedString(savedQueryUpdateSharingSettings) + "\n" +
+                "    savedQueryVisibleFor: " + toIndentedString(visibleFor) + "\n" +
+                "    savedQueryUpdateableBy: " + toIndentedString(updateableBy) + "\n" +
+                "    savedQueryReadSharingSettings: " + toIndentedString(readSharingSettings) + "\n" +
+                "    savedQueryUpdateSharingSettings: " + toIndentedString(updateSharingSettings) + "\n" +
                 "}";
         return sb;
     }

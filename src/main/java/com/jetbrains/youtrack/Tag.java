@@ -25,32 +25,20 @@ import java.util.Objects;
 
 
 public class Tag extends WatchFolder {
-    @SerializedName("id")
-    private final String tagId = null;
 
     @SerializedName("issues")
-    private List<Issue> issues = null;
+    protected List<Issue> issues = null;
 
     @SerializedName("color")
-    private FieldStyle color = null;
+    protected FieldStyle color = null;
 
     @SerializedName("untagOnResolve")
-    private Boolean untagOnResolve = null;
+    protected Boolean untagOnResolve = null;
 
-    @SerializedName("visibleFor")
-    private UserGroup tagVisibleFor = null;
-
-    @SerializedName("updateableBy")
-    private UserGroup tagUpdateableBy = null;
-
-    @SerializedName("readSharingSettings")
-    private WatchFolderSharingSettings tagReadSharingSettings = null;
 
     @SerializedName("tagSharingSettings")
-    private TagSharingSettings tagSharingSettings = null;
+    protected TagSharingSettings tagSharingSettings = null;
 
-    @SerializedName("updateSharingSettings")
-    private WatchFolderSharingSettings tagUpdateSharingSettings = null;
 
     /**
      * Get tagId
@@ -59,7 +47,7 @@ public class Tag extends WatchFolder {
      **/
     @Schema(description = "")
     public String getTagId() {
-        return tagId;
+        return id;
     }
 
     public Tag issues(List<Issue> issues) {
@@ -128,7 +116,7 @@ public class Tag extends WatchFolder {
     }
 
     public Tag tagVisibleFor(UserGroup tagVisibleFor) {
-        this.tagVisibleFor = tagVisibleFor;
+        this.visibleFor = tagVisibleFor;
         return this;
     }
 
@@ -139,15 +127,15 @@ public class Tag extends WatchFolder {
      **/
     @Schema(description = "")
     public UserGroup getTagVisibleFor() {
-        return tagVisibleFor;
+        return visibleFor;
     }
 
     public void setTagVisibleFor(UserGroup tagVisibleFor) {
-        this.tagVisibleFor = tagVisibleFor;
+        this.visibleFor = tagVisibleFor;
     }
 
     public Tag tagUpdateableBy(UserGroup tagUpdateableBy) {
-        this.tagUpdateableBy = tagUpdateableBy;
+        this.updateableBy = tagUpdateableBy;
         return this;
     }
 
@@ -158,15 +146,15 @@ public class Tag extends WatchFolder {
      **/
     @Schema(description = "")
     public UserGroup getTagUpdateableBy() {
-        return tagUpdateableBy;
+        return updateableBy;
     }
 
     public void setTagUpdateableBy(UserGroup tagUpdateableBy) {
-        this.tagUpdateableBy = tagUpdateableBy;
+        this.updateableBy = tagUpdateableBy;
     }
 
     public Tag tagReadSharingSettings(WatchFolderSharingSettings tagReadSharingSettings) {
-        this.tagReadSharingSettings = tagReadSharingSettings;
+        this.readSharingSettings = tagReadSharingSettings;
         return this;
     }
 
@@ -177,11 +165,11 @@ public class Tag extends WatchFolder {
      **/
     @Schema(description = "")
     public WatchFolderSharingSettings getTagReadSharingSettings() {
-        return tagReadSharingSettings;
+        return readSharingSettings;
     }
 
     public void setTagReadSharingSettings(WatchFolderSharingSettings tagReadSharingSettings) {
-        this.tagReadSharingSettings = tagReadSharingSettings;
+        this.readSharingSettings = tagReadSharingSettings;
     }
 
     public Tag tagSharingSettings(TagSharingSettings tagSharingSettings) {
@@ -204,7 +192,7 @@ public class Tag extends WatchFolder {
     }
 
     public Tag tagUpdateSharingSettings(WatchFolderSharingSettings tagUpdateSharingSettings) {
-        this.tagUpdateSharingSettings = tagUpdateSharingSettings;
+        this.updateSharingSettings = tagUpdateSharingSettings;
         return this;
     }
 
@@ -215,11 +203,11 @@ public class Tag extends WatchFolder {
      **/
     @Schema(description = "")
     public WatchFolderSharingSettings getTagUpdateSharingSettings() {
-        return tagUpdateSharingSettings;
+        return updateSharingSettings;
     }
 
     public void setTagUpdateSharingSettings(WatchFolderSharingSettings tagUpdateSharingSettings) {
-        this.tagUpdateSharingSettings = tagUpdateSharingSettings;
+        this.updateSharingSettings = tagUpdateSharingSettings;
     }
 
 
@@ -232,21 +220,21 @@ public class Tag extends WatchFolder {
             return false;
         }
         Tag tag = (Tag) o;
-        return Objects.equals(this.tagId, tag.tagId) &&
+        return Objects.equals(this.id, tag.id) &&
                 Objects.equals(this.issues, tag.issues) &&
                 Objects.equals(this.color, tag.color) &&
                 Objects.equals(this.untagOnResolve, tag.untagOnResolve) &&
-                Objects.equals(this.tagVisibleFor, tag.tagVisibleFor) &&
-                Objects.equals(this.tagUpdateableBy, tag.tagUpdateableBy) &&
-                Objects.equals(this.tagReadSharingSettings, tag.tagReadSharingSettings) &&
+                Objects.equals(this.visibleFor, tag.visibleFor) &&
+                Objects.equals(this.updateableBy, tag.updateableBy) &&
+                Objects.equals(this.readSharingSettings, tag.readSharingSettings) &&
                 Objects.equals(this.tagSharingSettings, tag.tagSharingSettings) &&
-                Objects.equals(this.tagUpdateSharingSettings, tag.tagUpdateSharingSettings) &&
+                Objects.equals(this.updateSharingSettings, tag.updateSharingSettings) &&
                 super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tagId, issues, color, untagOnResolve, tagVisibleFor, tagUpdateableBy, tagReadSharingSettings, tagSharingSettings, tagUpdateSharingSettings, super.hashCode());
+        return Objects.hash(id, issues, color, untagOnResolve, visibleFor, updateableBy, readSharingSettings, tagSharingSettings, updateSharingSettings, super.hashCode());
     }
 
 
@@ -254,15 +242,15 @@ public class Tag extends WatchFolder {
     public String toString() {
         String sb = "class Tag {\n" +
                 "    " + toIndentedString(super.toString()) + "\n" +
-                "    tagId: " + toIndentedString(tagId) + "\n" +
+                "    tagId: " + toIndentedString(id) + "\n" +
                 "    issues: " + toIndentedString(issues) + "\n" +
                 "    color: " + toIndentedString(color) + "\n" +
                 "    untagOnResolve: " + toIndentedString(untagOnResolve) + "\n" +
-                "    tagVisibleFor: " + toIndentedString(tagVisibleFor) + "\n" +
-                "    tagUpdateableBy: " + toIndentedString(tagUpdateableBy) + "\n" +
-                "    tagReadSharingSettings: " + toIndentedString(tagReadSharingSettings) + "\n" +
+                "    tagVisibleFor: " + toIndentedString(visibleFor) + "\n" +
+                "    tagUpdateableBy: " + toIndentedString(updateableBy) + "\n" +
+                "    tagReadSharingSettings: " + toIndentedString(readSharingSettings) + "\n" +
                 "    tagSharingSettings: " + toIndentedString(tagSharingSettings) + "\n" +
-                "    tagUpdateSharingSettings: " + toIndentedString(tagUpdateSharingSettings) + "\n" +
+                "    tagUpdateSharingSettings: " + toIndentedString(updateSharingSettings) + "\n" +
                 "}";
         return sb;
     }

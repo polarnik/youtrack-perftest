@@ -11,7 +11,6 @@
  */
 
 package com.jetbrains.youtrack;
-
 import com.google.gson.annotations.SerializedName;
 import io.swagger.v3.oas.annotations.media.Schema;
 
