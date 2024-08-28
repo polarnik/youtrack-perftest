@@ -1,6 +1,10 @@
 package com.jetbrains;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.jetbrains.youtrack.Issue;
 import com.jetbrains.youtrack.perftest.simulation.api.admin.telemetry.TelemetrySimulation;
+import com.jetbrains.youtrack.perftest.simulation.createTask.Create_100_000_Tasks;
 import com.jetbrains.youtrack.perftest.simulation.createUser.CreateOneUser;
 import io.gatling.app.Gatling;
 import io.gatling.shared.cli.CliOption;
@@ -10,6 +14,11 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import org.testng.annotations.*;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Properties;
+
+@Slf4j
 public class GatlingTest {
 
     void runSimulation(Class simulationClass) {
@@ -69,7 +78,7 @@ public class GatlingTest {
         System.setProperty("youtrack_token", "perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry");
 
         System.setProperty("gatling.ssl.useOpenSsl", "false");
-        System.setProperty("gatling.data.console.writePeriod", "5");
+        System.setProperty("gatling.data.console.writePeriod", "500");
         System.setProperty("gatling.http.requestTimeout", "70000");
         System.setProperty("gatling.charting.indicators.lowerBound", "500");
         System.setProperty("gatling.charting.indicators.higherBound", "1000");
@@ -83,4 +92,22 @@ public class GatlingTest {
 
         runSimulation(CreateOneUser.class);
     }
+
+    @Test(groups = {"createTasks-debug-local"})
+    public void createIssue() {
+        System.setProperty("youtrack", "https://127.0.0.1:443");
+        System.setProperty("gatling.ssl.useOpenSsl", "false");
+        System.setProperty("gatling.data.console.writePeriod", "5");
+        System.setProperty("gatling.http.requestTimeout", "70000");
+        System.setProperty("gatling.charting.indicators.lowerBound", "500");
+        System.setProperty("gatling.charting.indicators.higherBound", "1000");
+        System.setProperty("userTokensPath", "datasources/token.users.csv");
+        System.setProperty("postsPath", "datasources/Posts.csv");
+
+        Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.INFO);
+
+        runSimulation(Create_100_000_Tasks.class);
+    }
+
 }
