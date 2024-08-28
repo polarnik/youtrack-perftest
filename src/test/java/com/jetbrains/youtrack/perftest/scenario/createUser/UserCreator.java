@@ -1,7 +1,4 @@
 package com.jetbrains.youtrack.perftest.scenario.createUser;
-import com.google.gson.Gson;
-import com.influxdb.client.write.Point;
-import com.jetbrains.youtrack.Telemetry;
 import com.jetbrains.youtrack.perftest.protocol.HttpAdminConnection;
 import io.gatling.javaapi.core.CoreDsl;
 import io.gatling.javaapi.core.PopulationBuilder;
@@ -11,12 +8,10 @@ import io.gatling.javaapi.http.HttpDsl;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
-import static io.gatling.javaapi.core.CoreDsl.bodyString;
 import static io.gatling.javaapi.core.CoreDsl.jmesPath;
 import static io.gatling.javaapi.core.CoreDsl.jsonPath;
 import static io.gatling.javaapi.http.HttpDsl.status;
@@ -134,7 +129,7 @@ public class UserCreator {
 
         Function<Session, Session> putUserInQueue = session -> {
             if(session.contains("token")) {
-                log.error("token,userid,{},{}", session.get("token"), session.userId());
+                log.error("{},{}", session.userId(), session.get("token"));
             }
             return session;
         };
@@ -150,6 +145,31 @@ public class UserCreator {
                     ;
         };
 
+        HttpRequestActionBuilder getRoles = HttpDsl
+                .http("(GET)/hub/api/rest/roles?fields=id,name&orderBy=name")
+                .get("/hub/api/rest/roles?fields=id,name&orderBy=name")
+                .check(status().is(200))
+                .check(jmesPath("roles[?name == 'Contributor'].id | [0]").saveAs("Contributor"))
+                ;
+        HttpRequestActionBuilder addRole_Contributor = HttpDsl
+                .http("(POST)/hub/api/rest/users/{ID}/projectroles?failOnPermissionReduce=true")
+                .post("/hub/api/rest/users/#{user_id}/projectroles/?failOnPermissionReduce=true")
+                .body(StringBody("""
+                        {
+                          "project": {
+                            "id": "0",
+                            "name": "Global"
+                          },
+                          "role": {
+                            "id": "#{Contributor}",
+                            "name": "Contributor",
+                            "immutable": false
+                          }
+                        }
+                    """.trim())).asJson()
+                .check(status().is(200))
+                .check(jmesPath("token").saveAs("token"));
+
         return CoreDsl.scenario("UserCreator")
                 .exec(feedValues)
                 .exec(createUser)
@@ -157,7 +177,8 @@ public class UserCreator {
                 .exec(getYouTrackID)
                 .exitHereIfFailed()
                 .exec(createToken)
-                .exitHereIfFailed()
+//                .exec(getRoles)
+//                .exec(addRole_Contributor)
                 .exec(putUserInQueue)
                 ;
     }
@@ -169,10 +190,11 @@ public class UserCreator {
                 .protocols(protocolBuilders.build());
     }
 
-    public PopulationBuilder ten() {
+    public PopulationBuilder users100() {
 
         return userCreator()
                 .injectOpen(CoreDsl.atOnceUsers(100))
                 .protocols(protocolBuilders.build())
                 ;
-    }}
+    }
+}

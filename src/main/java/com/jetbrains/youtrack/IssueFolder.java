@@ -25,13 +25,13 @@ import java.util.Objects;
 
 public class IssueFolder {
     @SerializedName("id")
-    private final String id = null;
+    protected final String id = null;
 
     @SerializedName("name")
-    private String name = null;
+    protected String name = null;
 
     @SerializedName("$type")
-    private String $type = null;
+    protected String $type = null;
 
     public IssueFolder() {
         this.$type = this.getClass().getSimpleName();

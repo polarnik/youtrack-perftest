@@ -24,23 +24,21 @@ import java.util.Objects;
 
 
 public class WatchFolder extends IssueFolder {
-    @SerializedName("id")
-    private final String watchFolderId = null;
 
     @SerializedName("owner")
-    private User owner = null;
+    protected User owner = null;
 
     @SerializedName("visibleFor")
-    private UserGroup visibleFor = null;
+    protected UserGroup visibleFor = null;
 
     @SerializedName("updateableBy")
-    private UserGroup updateableBy = null;
+    protected UserGroup updateableBy = null;
 
     @SerializedName("readSharingSettings")
-    private WatchFolderSharingSettings readSharingSettings = null;
+    protected WatchFolderSharingSettings readSharingSettings = null;
 
     @SerializedName("updateSharingSettings")
-    private WatchFolderSharingSettings updateSharingSettings = null;
+    protected WatchFolderSharingSettings updateSharingSettings = null;
 
     /**
      * Get watchFolderId
@@ -49,7 +47,7 @@ public class WatchFolder extends IssueFolder {
      **/
     @Schema(description = "")
     public String getWatchFolderId() {
-        return watchFolderId;
+        return id;
     }
 
     public WatchFolder owner(User owner) {
@@ -157,7 +155,7 @@ public class WatchFolder extends IssueFolder {
             return false;
         }
         WatchFolder watchFolder = (WatchFolder) o;
-        return Objects.equals(this.watchFolderId, watchFolder.watchFolderId) &&
+        return Objects.equals(this.id, watchFolder.id) &&
                 Objects.equals(this.owner, watchFolder.owner) &&
                 Objects.equals(this.visibleFor, watchFolder.visibleFor) &&
                 Objects.equals(this.updateableBy, watchFolder.updateableBy) &&
@@ -168,7 +166,7 @@ public class WatchFolder extends IssueFolder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(watchFolderId, owner, visibleFor, updateableBy, readSharingSettings, updateSharingSettings, super.hashCode());
+        return Objects.hash(id, owner, visibleFor, updateableBy, readSharingSettings, updateSharingSettings, super.hashCode());
     }
 
 
@@ -176,7 +174,7 @@ public class WatchFolder extends IssueFolder {
     public String toString() {
         String sb = "class WatchFolder {\n" +
                 "    " + toIndentedString(super.toString()) + "\n" +
-                "    watchFolderId: " + toIndentedString(watchFolderId) + "\n" +
+                "    watchFolderId: " + toIndentedString(id) + "\n" +
                 "    owner: " + toIndentedString(owner) + "\n" +
                 "    visibleFor: " + toIndentedString(visibleFor) + "\n" +
                 "    updateableBy: " + toIndentedString(updateableBy) + "\n" +

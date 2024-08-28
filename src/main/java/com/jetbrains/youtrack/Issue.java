@@ -43,6 +43,9 @@ public class Issue {
     @SerializedName("customFields")
     private final List<IssueCustomField> customFields = null;
 
+    @SerializedName("fields")
+    private final List<IssueCustomField> fields = null;
+
     @SerializedName("description")
     private String description = null;
 
@@ -209,7 +212,10 @@ public class Issue {
     public List<IssueCustomField> getCustomFields() {
         return customFields;
     }
-
+    @Schema(description = "")
+    public List<IssueCustomField> getFields() {
+        return fields;
+    }
     public Issue description(String description) {
         this.description = description;
         return this;
@@ -581,6 +587,7 @@ public class Issue {
                 Objects.equals(this.commentsCount, issue.commentsCount) &&
                 Objects.equals(this.created, issue.created) &&
                 Objects.equals(this.customFields, issue.customFields) &&
+                Objects.equals(this.fields, issue.fields) &&
                 Objects.equals(this.description, issue.description) &&
                 Objects.equals(this.draftOwner, issue.draftOwner) &&
                 Objects.equals(this.externalIssue, issue.externalIssue) &&

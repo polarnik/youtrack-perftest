@@ -25,50 +25,45 @@ import java.util.Objects;
 
 
 public class Project extends IssueFolder {
-    @SerializedName("id")
-    private final String projectId = null;
 
     @SerializedName("archived")
-    private Boolean archived = null;
+    protected Boolean archived = null;
 
     @SerializedName("createdBy")
-    private User createdBy = null;
+    protected User createdBy = null;
 
     @SerializedName("customFields")
-    private final Object customFields = null;
+    protected final Object customFields = null;
 
     @SerializedName("description")
-    private String description = null;
+    protected String description = null;
 
     @SerializedName("fromEmail")
-    private String fromEmail = null;
+    protected String fromEmail = null;
 
     @SerializedName("iconUrl")
-    private final String iconUrl = null;
+    protected final String iconUrl = null;
 
     @SerializedName("issues")
-    private List<Issue> issues = null;
+    protected List<Issue> issues = null;
 
     @SerializedName("leader")
-    private User leader = null;
-
-    @SerializedName("name")
-    private String projectName = null;
+    protected User leader = null;
 
     @SerializedName("replyToEmail")
-    private String replyToEmail = null;
+    protected String replyToEmail = null;
 
     @SerializedName("shortName")
-    private String shortName = null;
+    protected String shortName = null;
 
     @SerializedName("startingNumber")
-    private Long startingNumber = null;
+    protected Long startingNumber = null;
 
     @SerializedName("team")
-    private UserGroup team = null;
+    protected UserGroup team = null;
 
     @SerializedName("template")
-    private Boolean template = null;
+    protected Boolean template = null;
 
     /**
      * Get projectId
@@ -77,7 +72,7 @@ public class Project extends IssueFolder {
      **/
     @Schema(description = "")
     public String getProjectId() {
-        return projectId;
+        return id;
     }
 
     public Project archived(Boolean archived) {
@@ -223,7 +218,7 @@ public class Project extends IssueFolder {
     }
 
     public Project projectName(String projectName) {
-        this.projectName = projectName;
+        this.name = projectName;
         return this;
     }
 
@@ -234,11 +229,11 @@ public class Project extends IssueFolder {
      **/
     @Schema(description = "")
     public String getProjectName() {
-        return projectName;
+        return name;
     }
 
     public void setProjectName(String projectName) {
-        this.projectName = projectName;
+        this.name = projectName;
     }
 
     public Project replyToEmail(String replyToEmail) {
@@ -346,7 +341,7 @@ public class Project extends IssueFolder {
             return false;
         }
         Project project = (Project) o;
-        return Objects.equals(this.projectId, project.projectId) &&
+        return Objects.equals(this.id, project.id) &&
                 Objects.equals(this.archived, project.archived) &&
                 Objects.equals(this.createdBy, project.createdBy) &&
                 Objects.equals(this.customFields, project.customFields) &&
@@ -355,7 +350,7 @@ public class Project extends IssueFolder {
                 Objects.equals(this.iconUrl, project.iconUrl) &&
                 Objects.equals(this.issues, project.issues) &&
                 Objects.equals(this.leader, project.leader) &&
-                Objects.equals(this.projectName, project.projectName) &&
+                Objects.equals(this.name, project.name) &&
                 Objects.equals(this.replyToEmail, project.replyToEmail) &&
                 Objects.equals(this.shortName, project.shortName) &&
                 Objects.equals(this.startingNumber, project.startingNumber) &&
@@ -366,7 +361,7 @@ public class Project extends IssueFolder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectId, archived, createdBy, customFields, description, fromEmail, iconUrl, issues, leader, projectName, replyToEmail, shortName, startingNumber, team, template, super.hashCode());
+        return Objects.hash(id, archived, createdBy, customFields, description, fromEmail, iconUrl, issues, leader, name, replyToEmail, shortName, startingNumber, team, template, super.hashCode());
     }
 
 
@@ -374,7 +369,7 @@ public class Project extends IssueFolder {
     public String toString() {
         String sb = "class Project {\n" +
                 "    " + toIndentedString(super.toString()) + "\n" +
-                "    projectId: " + toIndentedString(projectId) + "\n" +
+                "    projectId: " + toIndentedString(id) + "\n" +
                 "    archived: " + toIndentedString(archived) + "\n" +
                 "    createdBy: " + toIndentedString(createdBy) + "\n" +
                 "    customFields: " + toIndentedString(customFields) + "\n" +
@@ -383,7 +378,7 @@ public class Project extends IssueFolder {
                 "    iconUrl: " + toIndentedString(iconUrl) + "\n" +
                 "    issues: " + toIndentedString(issues) + "\n" +
                 "    leader: " + toIndentedString(leader) + "\n" +
-                "    projectName: " + toIndentedString(projectName) + "\n" +
+                "    projectName: " + toIndentedString(name) + "\n" +
                 "    replyToEmail: " + toIndentedString(replyToEmail) + "\n" +
                 "    shortName: " + toIndentedString(shortName) + "\n" +
                 "    startingNumber: " + toIndentedString(startingNumber) + "\n" +
