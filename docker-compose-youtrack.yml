@@ -227,15 +227,6 @@ services:
 
   gatling-monitoring:
     image: maven:3.9.9-amazoncorretto-21-debian
-#    image: maven:3.9.9-amazoncorretto-21-al2023
-#    image: maven:3.9.9-ibm-semeru-21-jammy
-#    image: maven:3.9.9-eclipse-temurin-21-alpine
-#    image: maven:3.9.9-sapmachine-21
-#    image: maven:3.9.9-eclipse-temurin-21-jammy
-#    image:
-#    build:
-#      context: docker/maven-gatling
-#      dockerfile: maven-gatling.Dockerfile
     cpu_count: 1
     cpuset: "5-7"
     mem_reservation: 256m
@@ -259,52 +250,16 @@ services:
       - /tmp
     working_dir: /tmp/gatling
     restart: "no"
-    command: bash -x -c "
-      echo 'Starting x2i in detached mode, saving PID in variable' &&
-      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64
-      ./target/load-test-results --address http://nginx:8088
-      --system-under-test monitoring --test-environment local --stop-timeout 90
-      --database x2i_gatling --password password --username x2i_gatling
-      --log /tmp/x2i.log -d | awk '{print $$2}')
-      &&
-      echo 'Starting g2i in detached mode, saving PID in variable' &&
-      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64
-      ./target/load-test-results --address http://nginx:8089 --stop-timeout 90
-      --system-under-test monitoring --test-environment local
-      --database g2i_gatling --password password --username g2i_gatling
-      --log /tmp/g2i.log -d | awk '{print $$2}')
-      &&
-      echo 'Build and execute test' &&
-      mvn test -P monitoring
-      &&
-      echo 'Waiting for parser to safely finish all its work' &&
-      sleep 30
-      &&
-      cat /tmp/x2i.log &&
-      cat /tmp/g2i.log &&
-      echo 'Sending interrupt signal to x2i process' &&
-      kill -INT $$x2iPID
-      &&
-      echo 'Sending interrupt signal to g2i process' &&
-      kill -INT $$G2IPID
-      &&
-      echo 'Waiting for process to stop safely' &&
-      sleep 30
-      &&
-      echo 'Exiting'
-      "
+    command: mvn test -P monitoring
     networks:
       - youtrack_net
 
-  gatling-main:
+  gatling-issue-generation:
     image: maven:3.9.9-amazoncorretto-21-debian
-#    build:
-#      context: docker/maven-gatling
-#      dockerfile: maven-gatling.Dockerfile
-    cpu_count: 1
+    cpu_count: 2
     cpuset: "5-7"
-    mem_reservation: 500m
-    mem_limit: 1000m
+    mem_reservation: 2000m
+    mem_limit: 3000m
     depends_on:
       telegraf:
         condition: service_healthy
@@ -319,37 +274,27 @@ services:
       - "./tools/perfana:/tools/perfana:ro"
       - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
       - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
-      - "./volumes/gatling/main:/tmp/gatling/target/load-test-results"
+      - "./volumes/gatling/issue-generation:/tmp/gatling/target/load-test-results"
+      - "./volumes/gatling/big.dataset:/big.dataset"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling
     restart: "no"
     command: bash -x -c "
-      echo 'Starting x2i in detached mode, saving PID in variable' &&
-      export x2iPID=$$(/tools/perfana/x2i/x2i-linux-amd64 
-        ./target/load-test-results --address http://nginx:8088
-        --system-under-test main --test-environment local --stop-timeout 90
-        --database x2i_gatling --password password --username x2i_gatling 
-        --log /tmp/x2i.log -d | awk '{print $$2}')
-      &&
       echo 'Starting g2i in detached mode, saving PID in variable' &&
       export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64 
         ./target/load-test-results --address http://nginx:8089
-        --system-under-test main --test-environment local --stop-timeout 90
+        --system-under-test issue_generation --test-environment local --stop-timeout 90
         --database g2i_gatling --password password --username g2i_gatling
         --log /tmp/g2i.log -d | awk '{print $$2}')
       &&
       echo 'Build and execute test' &&
-      mvn test -P main
+      mvn test -P issue-generation
       &&
       echo 'Waiting for parser to safely finish all its work' &&
       sleep 30
       &&
-      cat /tmp/x2i.log &&
       cat /tmp/g2i.log &&
-      echo 'Sending interrupt signal to x2i process' &&
-      kill -INT $$x2iPID
-      &&
       echo 'Sending interrupt signal to g2i process' &&
       kill -INT $$G2IPID
       &&

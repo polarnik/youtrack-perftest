@@ -144,7 +144,7 @@
                         <version>${maven-surefire-plugin-version}</version>
                         <configuration>
                             <groups>monitoring</groups>
-                            <argLine>-Djansi.mode=force -Djansi.passthrough=true -Djansi.tmpdir=/jansi.tmpdir -Dio.netty.native.workdir=/io.netty.native.workdir -javaagent:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar=tag=service/monitoring,tag=systemUnderTest/gatling,tag=testEnvironment/local_docker_compose,influxUrl=http://nginx:8087,influxDatabase=jfr_gatling,influxUser=jfr_gatling,influxPassword=password,bigObjectThreshold=300000,bigObjectSampleWeightThreshold=300000 -Xms64m -Xmx100m -XX:NativeMemoryTracking=summary</argLine>
+                            <argLine>-Djansi.mode=force -Djansi.passthrough=true -Djansi.tmpdir=/jansi.tmpdir -Dio.netty.native.workdir=/io.netty.native.workdir -Xms64m -Xmx100m</argLine>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -176,7 +176,7 @@
                         <version>${maven-surefire-plugin-version}</version>
                         <configuration>
                             <groups>issue-generation</groups>
-                            <argLine>-Djansi.mode=force -Djansi.passthrough=true -Djansi.tmpdir=/jansi.tmpdir -Dio.netty.native.workdir=/io.netty.native.workdir -javaagent:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar=tag=service/issue_generation,tag=systemUnderTest/gatling,tag=testEnvironment/local_docker_compose,influxUrl=http://nginx:8087,influxDatabase=jfr_gatling,influxUser=jfr_gatling,influxPassword=password</argLine>
+                            <argLine>-Xmx2500M -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false -server -Djansi.mode=force -Djansi.passthrough=true -Djansi.tmpdir=/jansi.tmpdir -Dio.netty.native.workdir=/io.netty.native.workdir -javaagent:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar=tag=service/issue_generation,tag=systemUnderTest/gatling,tag=testEnvironment/local,influxUrl=http://nginx:8087,influxDatabase=jfr_gatling,influxUser=jfr_gatling,influxPassword=password</argLine>
                         </configuration>
                     </plugin>
                 </plugins>
