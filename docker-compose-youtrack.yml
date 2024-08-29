@@ -275,7 +275,8 @@ services:
       - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
       - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
       - "./volumes/gatling/issue-generation:/tmp/gatling/target/load-test-results"
-      - "./volumes/gatling/big.dataset:/big.dataset"
+      - "./volumes/gatling/big.dataset:/big.dataset:ro"
+      - "./datasources:/datasources:ro"
     tmpfs:
       - /tmp
     working_dir: /tmp/gatling

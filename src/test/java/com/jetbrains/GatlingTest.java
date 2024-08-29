@@ -113,12 +113,11 @@ public class GatlingTest {
     @Test(groups = {"issue-generation"})
     public void createIssue() {
         System.setProperty("youtrack", "https://nginx:443");
-        System.setProperty("gatling.ssl.useOpenSsl", "false");
         System.setProperty("gatling.data.console.writePeriod", "5");
         System.setProperty("gatling.http.requestTimeout", "5000");
         System.setProperty("gatling.charting.indicators.lowerBound", "500");
         System.setProperty("gatling.charting.indicators.higherBound", "1000");
-        System.setProperty("userTokensPath", "datasources/token.users.csv");
+        System.setProperty("userTokensPath", "/datasources/token.users.csv");
         System.setProperty("postsPath", "/big.dataset/Posts.big.csv");
         System.setProperty("maxLoadAverage", "20.0");
 
