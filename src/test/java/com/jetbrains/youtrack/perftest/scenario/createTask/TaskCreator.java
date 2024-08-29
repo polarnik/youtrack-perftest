@@ -48,7 +48,7 @@ public class TaskCreator {
             String description = session.getString("Body");
             if(summary == null || summary.isEmpty()) {
                 if(description == null || description.isEmpty()) {
-                    log.error("Title and Body were empty");
+                    log.warn("Title and Body were empty");
                     newSession = newSession.set("summary",
                             String.format("User %d has some problems with Title and Body at %s",
                                     session.userId(), new Date().toString())
@@ -70,7 +70,7 @@ public class TaskCreator {
                 newSession = newSession.set("summary", summary);
             }
             if(description == null || description.isEmpty()) {
-                log.error("Body is empty");
+                log.warn("Body is empty");
                 newSession = newSession.set("description",
                         String.format("User %d has some problems with Title and Body at %s",
                                 session.userId(), new Date().toString())
@@ -78,7 +78,7 @@ public class TaskCreator {
             } else {
                 newSession = newSession.set("description", description);
             }
-            log.warn("userId: {}, youtrackUserId: {}, summary: {}",
+            log.debug("userId: {}, youtrackUserId: {}, summary: {}",
                     newSession.userId(),
                     newSession.getString("youtrackUserId"),
                     newSession.getString("summary")
@@ -105,16 +105,9 @@ public class TaskCreator {
 
         Function<Session, Session> prepareIssueWithout_projectCustomField = session -> {
             String draftJson = session.getString("draftJson");
-            //log.info("userId: {}, draftJson:\n{}", session.userId(), draftJson);
             Issue issue = new Issue();
             Gson gson = new GsonBuilder().create();
-            try {
-                issue = gson.fromJson(draftJson, Issue.class);
-            } catch (Exception e) {
-                log.error("userId: {}, e: {}", session.userId(), e.getMessage());
-                log.error(e.toString());
-            }
-            SingleEnumIssueCustomField e;
+            issue = gson.fromJson(draftJson, Issue.class);
             for(IssueCustomField issueCustomField : issue.getFields()) {
                 issueCustomField.setProjectCustomField(null);
             }
@@ -260,12 +253,12 @@ public class TaskCreator {
         double rps_in_one_vu = 1000.0 / meanResponseTimeMS;
         double tps = tps_in_one_vu * rps / rps_in_one_vu;
 
-        log.info("""
+        log.debug("""
                 \n
                 One VU will provide {} rps. 
                 For one VU (1 active user) we should use TPS = {}.
                   
-                I would line to have {} rps, the target RPS is {}.
+                I would like to have {} rps, the target RPS is {}.
                 The target RPS in X time higher then one VU rps, X = {}.
                 
                 We will start "One VU TPS" x "X" = {} x {} == {} tps
@@ -275,7 +268,7 @@ public class TaskCreator {
                 1.0 * rps / rps_in_one_vu,
                 tps_in_one_vu, 1.0 * rps / rps_in_one_vu, tps
                 );
-        log.info("tps: {}, rps: {}", tps, rps);
+        log.debug("tps: {}, rps: {}", tps, rps);
         Duration step_duration = Duration.ofSeconds(60);
         Duration rumpUp_duration = Duration.ofSeconds(10);
         return taskCreator()
