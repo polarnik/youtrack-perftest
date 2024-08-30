@@ -94,15 +94,15 @@ public class GatlingTest {
     }
 
     @Test(groups = {"createTasks-debug-local"})
-    public void createIssue() {
+    public void createIssue_local() {
         System.setProperty("youtrack", "https://127.0.0.1:443");
         System.setProperty("gatling.ssl.useOpenSsl", "false");
         System.setProperty("gatling.data.console.writePeriod", "5");
-        System.setProperty("gatling.http.requestTimeout", "70000");
-        System.setProperty("gatling.charting.indicators.lowerBound", "500");
-        System.setProperty("gatling.charting.indicators.higherBound", "1000");
+        System.setProperty("gatling.http.requestTimeout", "5000");
+        System.setProperty("gatling.charting.indicators.lowerBound", "1000");
+        System.setProperty("gatling.charting.indicators.higherBound", "2000");
         System.setProperty("userTokensPath", "datasources/token.users.csv");
-        System.setProperty("postsPath", "datasources/Posts.csv");
+        System.setProperty("postsPath", "datasources/Posts.big.csv");
 
         Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.INFO);
@@ -110,4 +110,20 @@ public class GatlingTest {
         runSimulation(Create_100_000_Tasks.class);
     }
 
+    @Test(groups = {"issue-generation"})
+    public void createIssue() {
+        System.setProperty("youtrack", "https://nginx:443");
+        System.setProperty("gatling.data.console.writePeriod", "5");
+        System.setProperty("gatling.http.requestTimeout", "5000");
+        System.setProperty("gatling.charting.indicators.lowerBound", "500");
+        System.setProperty("gatling.charting.indicators.higherBound", "1000");
+        System.setProperty("userTokensPath", "/datasources/token.users.csv");
+        System.setProperty("postsPath", "/big.dataset/Posts.big.csv");
+        System.setProperty("maxLoadAverage", "20.0");
+
+        Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.INFO);
+
+        runSimulation(Create_100_000_Tasks.class);
+    }
 }

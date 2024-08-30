@@ -15,6 +15,7 @@ import io.gatling.javaapi.http.HttpDsl;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.management.OperatingSystemMXBean;
 import java.time.Duration;
 import java.util.Date;
 import java.util.function.Function;
@@ -48,7 +49,7 @@ public class TaskCreator {
             String description = session.getString("Body");
             if(summary == null || summary.isEmpty()) {
                 if(description == null || description.isEmpty()) {
-                    log.error("Title and Body were empty");
+                    log.warn("Title and Body were empty");
                     newSession = newSession.set("summary",
                             String.format("User %d has some problems with Title and Body at %s",
                                     session.userId(), new Date().toString())
@@ -70,7 +71,7 @@ public class TaskCreator {
                 newSession = newSession.set("summary", summary);
             }
             if(description == null || description.isEmpty()) {
-                log.error("Body is empty");
+                log.warn("Body is empty");
                 newSession = newSession.set("description",
                         String.format("User %d has some problems with Title and Body at %s",
                                 session.userId(), new Date().toString())
@@ -78,7 +79,7 @@ public class TaskCreator {
             } else {
                 newSession = newSession.set("description", description);
             }
-            log.warn("userId: {}, youtrackUserId: {}, summary: {}",
+            log.debug("userId: {}, youtrackUserId: {}, summary: {}",
                     newSession.userId(),
                     newSession.getString("youtrackUserId"),
                     newSession.getString("summary")
@@ -86,7 +87,8 @@ public class TaskCreator {
             return newSession;
         };
 
-
+        Double maxLoadAverage = Double.parseDouble(System.getProperty("maxLoadAverage") != null ?
+                System.getProperty("maxLoadAverage") : "15.0");
 
         String draftFields = "description,updated,attachments(id,name,author(ringId,avatarUrl,canReadProfile,isLocked,login,name),created,updated,mimeType,url,size,visibility(@visibility),imageDimensions(width,height),thumbnailURL,recognizedText,searchResults(textSearchResult(highlightRanges(@textRange))),comment(id,visibility(@visibility)),embeddedIntoDocument(id),embeddedIntoComments(id)),mentionedUsers(@reporter),mentionedIssues(id,reporter(@reporter),resolved,updated,created,unauthenticatedReporter,fields(@fields),project(@project),visibility(@visibility),tags(@tags),votes,voters(hasVote),watchers(hasStar),usersTyping(timestamp,user(@permittedUsers)),canUndoComment,idReadable,summary),mentionedArticles(id,idReadable,reporter(@permittedUsers),summary,project(@project),parentArticle(idReadable),ordinal,visibility(@visibility),hasUnpublishedChanges,hasChildren,tags(@tags)),widgets(id,key,appId,description,appName,name,collapsed,indexPath,extensionPoint(),iconPath,appIconPath,expectedHeight,expectedWidth),canUpdateVisibility,canAddPublicComment,id,summary,created,project(@project),reporter(@reporter),fields(@fields),visibility(@visibility),tags(id,name,color(@color),query,issuesUrl,isDeletable,isShareable,isUpdatable,isUsable,pinnedByDefault,untagOnResolve,owner(@permittedUsers),readSharingSettings(@updateSharingSettings),tagSharingSettings(@updateSharingSettings),updateSharingSettings(@updateSharingSettings)),watchers(hasStar),markdownEmbeddings(key,settings,widget(id));@fields:value(id,minutes,presentation,name,description,localizedName,isResolved,color(@color),buildIntegration,buildLink,text,issueRelatedGroup(@permittedGroups),ringId,login,email,isEmailVerified,guest,fullName,avatarUrl,online,banned,banBadge,canReadProfile,isLocked,userType(id),allUsersGroup,icon,teamForProject(name,shortName)),id,$type,hasStateMachine,isUpdatable,projectCustomField($type,id,field(id,name,ordinal,aliases,localizedName,fieldType(id,presentation,isBundleType,valueType,isMultiValue)),bundle(id,$type),canBeEmpty,emptyFieldText,hasRunningJob,ordinal,isSpentTime,isPublic),searchResults(id,textSearchResult(highlightRanges(@textRange),textRange(@textRange))),pausedTime;@visibility:$type,implicitPermittedUsers(@permittedUsers),permittedGroups(@permittedGroups),permittedUsers(@permittedUsers);@project:id,ringId,name,shortName,iconUrl,template,pinned,archived,isDemo,organization(),hasArticles,team(@permittedGroups),fieldsSorted,restricted,plugins(timeTrackingSettings(id,enabled),helpDeskSettings(id,enabled,defaultForm(uuid,title)),vcsIntegrationSettings(hasVcsIntegrations),grazie(disabled));@updateSharingSettings:permittedGroups(@permittedGroups),permittedUsers(@permittedUsers);@reporter:issueRelatedGroup(@permittedGroups),id,ringId,login,name,email,isEmailVerified,guest,fullName,avatarUrl,online,banned,banBadge,canReadProfile,isLocked,userType(id);@permittedUsers:id,ringId,login,name,email,isEmailVerified,guest,fullName,avatarUrl,online,banned,banBadge,canReadProfile,isLocked,userType(id);@permittedGroups:id,name,ringId,allUsersGroup,icon,teamForProject(name,shortName);@tags:id,name,color(@color);@color:id,background,foreground;@textRange:startOffset,endOffset";
         String issueFields = "description,updater(@reporter),creator(@reporter),attachments(@attachments),mentionedUsers(@reporter),mentionedIssues(@mentionedIssues),mentionedArticles(@mentionedArticles),workItems(id,author(@user),creator(@user),text,type(@value),duration(minutes,presentation),textPreview,created,updated,date,usesMarkdown,attributes(id,name,value(@value))),usesMarkdown,hasEmail,wikifiedDescription,messages,tags(id,name,color(@color),query,issuesUrl,isDeletable,isShareable,isUpdatable,isUsable,pinnedByDefault,untagOnResolve,owner(@user),readSharingSettings(@updateSharingSettings),tagSharingSettings(@updateSharingSettings),updateSharingSettings(@updateSharingSettings)),pinnedComments(author(@user),id,text,textPreview,deleted,pinned,visibility(@visibility),attachments(@attachments),mentionedUsers(@reporter),mentionedIssues(@mentionedIssues),mentionedArticles(@mentionedArticles),reactions(id,reaction,author(@user)),reactionOrder,usesMarkdown,hasEmail,canUpdateVisibility,suspiciousEmail,created,updated,issue(id,project(id)),markdownEmbeddings(@markdownEmbeddings)),canUpdateVisibility,canAddPublicComment,widgets(id,key,appId,description,appName,name,collapsed,indexPath,extensionPoint(),iconPath,appIconPath,expectedHeight,expectedWidth),externalIssue(key,name,url),summaryTextSearchResult(@textSearchResult),descriptionTextSearchResult(@textSearchResult),channel($type,id,name,mailboxRule(id)),id,reporter(@reporter),resolved,updated,created,unauthenticatedReporter,fields(@fields),project(@project),visibility(@visibility),votes,voters(hasVote),watchers(hasStar),usersTyping(@usersTyping),canUndoComment,idReadable,summary,markdownEmbeddings(@markdownEmbeddings);@mentionedIssues:id,reporter(@reporter),resolved,updated,created,unauthenticatedReporter,fields(@fields),project(@project),visibility(@visibility),tags(@tags),votes,voters(hasVote),watchers(hasStar),usersTyping(@usersTyping),canUndoComment,idReadable,summary;@attachments:id,name,author(ringId,avatarUrl,canReadProfile,isLocked,login,name),created,updated,mimeType,url,size,visibility(@visibility),imageDimensions(width,height),thumbnailURL,recognizedText,searchResults(textSearchResult(highlightRanges(@textRange))),comment(id,visibility(@visibility)),embeddedIntoDocument(id),embeddedIntoComments(id);@mentionedArticles:id,idReadable,reporter(@user),summary,project(@project),parentArticle(idReadable),ordinal,visibility(@visibility),hasUnpublishedChanges,hasChildren,tags(@tags);@fields:value(id,minutes,presentation,name,description,localizedName,isResolved,color(@color),buildIntegration,buildLink,text,issueRelatedGroup(@permittedGroups),ringId,login,email,isEmailVerified,guest,fullName,avatarUrl,online,banned,banBadge,canReadProfile,isLocked,userType(id),allUsersGroup,icon,teamForProject(name,shortName)),id,$type,hasStateMachine,isUpdatable,projectCustomField($type,id,field(id,name,ordinal,aliases,localizedName,fieldType(id,presentation,isBundleType,valueType,isMultiValue)),bundle(id,$type),canBeEmpty,emptyFieldText,hasRunningJob,ordinal,isSpentTime,isPublic),searchResults(id,textSearchResult(@textSearchResult)),pausedTime;@visibility:$type,implicitPermittedUsers(@user),permittedGroups(@permittedGroups),permittedUsers(@user);@project:id,ringId,name,shortName,iconUrl,template,pinned,archived,isDemo,organization(),hasArticles,team(@permittedGroups),fieldsSorted,restricted,plugins(timeTrackingSettings(id,enabled),helpDeskSettings(id,enabled,defaultForm(uuid,title)),vcsIntegrationSettings(hasVcsIntegrations),grazie(disabled));@updateSharingSettings:permittedGroups(@permittedGroups),permittedUsers(@user);@reporter:issueRelatedGroup(@permittedGroups),id,ringId,login,name,email,isEmailVerified,guest,fullName,avatarUrl,online,banned,banBadge,canReadProfile,isLocked,userType(id);@usersTyping:timestamp,user(@user);@value:id,name,autoAttach,description,hasRunningJobs,color(@color),attributes(id,timeTrackingSettings(id,project(id)));@user:id,ringId,login,name,email,isEmailVerified,guest,fullName,avatarUrl,online,banned,banBadge,canReadProfile,isLocked,userType(id);@textSearchResult:highlightRanges(@textRange),textRange(@textRange);@permittedGroups:id,name,ringId,allUsersGroup,icon,teamForProject(name,shortName);@tags:id,name,color(@color);@color:id,background,foreground;@markdownEmbeddings:key,settings,widget(id);@textRange:startOffset,endOffset";
@@ -105,16 +107,9 @@ public class TaskCreator {
 
         Function<Session, Session> prepareIssueWithout_projectCustomField = session -> {
             String draftJson = session.getString("draftJson");
-            //log.info("userId: {}, draftJson:\n{}", session.userId(), draftJson);
             Issue issue = new Issue();
             Gson gson = new GsonBuilder().create();
-            try {
-                issue = gson.fromJson(draftJson, Issue.class);
-            } catch (Exception e) {
-                log.error("userId: {}, e: {}", session.userId(), e.getMessage());
-                log.error(e.toString());
-            }
-            SingleEnumIssueCustomField e;
+            issue = gson.fromJson(draftJson, Issue.class);
             for(IssueCustomField issueCustomField : issue.getFields()) {
                 issueCustomField.setProjectCustomField(null);
             }
@@ -229,7 +224,20 @@ public class TaskCreator {
                 .header("scenario", session -> { return String.valueOf(session.scenario()); } )
                 ;
 
+        Function<Session, Session> checkCpuUsage = session -> {
+            OperatingSystemMXBean os = java.lang.management.ManagementFactory.getOperatingSystemMXBean();
+            if(os.getSystemLoadAverage() > maxLoadAverage) {
+                log.error("the system load average for the last minute: {}", os.getSystemLoadAverage());
+                return session.markAsFailed();
+            }
+            else {
+                log.debug("the system load average for the last minute: {}", os.getSystemLoadAverage());
+                return session.markAsSucceeded();
+            }
+        };
         return CoreDsl.scenario("TaskCreator")
+                .exec(checkCpuUsage)
+                .exitHereIfFailed()
                 .feed(csv(userTokensPath).circular())
                 .feed(csv(postsPath).circular().batch(100))
                 .exec(prepareValues)
@@ -260,12 +268,12 @@ public class TaskCreator {
         double rps_in_one_vu = 1000.0 / meanResponseTimeMS;
         double tps = tps_in_one_vu * rps / rps_in_one_vu;
 
-        log.info("""
+        log.debug("""
                 \n
                 One VU will provide {} rps. 
                 For one VU (1 active user) we should use TPS = {}.
                   
-                I would line to have {} rps, the target RPS is {}.
+                I would like to have {} rps, the target RPS is {}.
                 The target RPS in X time higher then one VU rps, X = {}.
                 
                 We will start "One VU TPS" x "X" = {} x {} == {} tps
@@ -275,13 +283,13 @@ public class TaskCreator {
                 1.0 * rps / rps_in_one_vu,
                 tps_in_one_vu, 1.0 * rps / rps_in_one_vu, tps
                 );
-        log.info("tps: {}, rps: {}", tps, rps);
+        log.debug("tps: {}, rps: {}", tps, rps);
         Duration step_duration = Duration.ofSeconds(60);
         Duration rumpUp_duration = Duration.ofSeconds(10);
         return taskCreator()
                 .injectOpen(
                         CoreDsl.incrementUsersPerSec(tps)
-                                .times(3)
+                                .times(50)
                                 .eachLevelLasting(step_duration)
                                 .separatedByRampsLasting(rumpUp_duration)
                                 .startingFrom(tps)
