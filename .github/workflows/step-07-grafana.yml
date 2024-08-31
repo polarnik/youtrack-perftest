@@ -1,0 +1,43 @@
+name: step 07 grafana
+on:
+  workflow_dispatch:
+
+jobs:
+  step-07-grafana:
+    runs-on: self-hosted
+
+
+    steps:
+      - name: docker-compose down
+        run: |
+          docker-compose --file ./git/docker-compose-youtrack.yml down || true
+      - name: docker-compose down
+        run: |
+          docker-compose --file ./git/docker-compose-monitoring.yml down || true
+      - name: delete the symbolic link "volumes"
+        run: |
+          unlink ./git/volumes || true
+          ls -la ./git || true
+      - name: delete git folder
+        run: |
+          sudo rm -rf ./git || true
+      - name: git checkout (with clean, into the directory git)
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v4
+        with:
+          # Relative path under $GITHUB_WORKSPACE to place the repository
+          path: './git'
+          # Whether to execute `git clean -ffdx && git reset --hard HEAD` before fetching
+          # Default: true
+          clean: 'true'
+
+      - name: create the symbolic link "volumes"
+        run: |
+          cd ./git
+          ln -s ../volumes volumes
+          ls -la .
+          cd ..
+
+      - name: docker-compose up --detach
+        run: |
+          docker-compose --file ./git/docker-compose-monitoring.yml up --detach --force-recreate
