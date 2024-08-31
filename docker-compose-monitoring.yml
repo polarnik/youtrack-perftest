@@ -1,0 +1,119 @@
+# https://docs.docker.com/compose/compose-file/
+# https://docs.docker.com/compose/compose-file/05-services/
+
+services:
+
+  grafana:
+    image: grafana/grafana:10.4.7 # 11.1.4
+    hostname: grafana
+    mem_reservation: 300m
+    mem_limit: 5000m
+    ports:
+      - "3000:3000"
+      - "10000:10000"
+    volumes:
+      - "./volumes/grafana_data:/var/lib/grafana"
+      - "./configs/grafana/provisioning:/etc/grafana/provisioning:ro"
+    environment:
+      GOMEMLIMIT: 3000MiB
+      GOGC: 10
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      GF_SECURITY_admin_user: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS:
+      # GF_FEATURE_TOGGLES_ENABLE: publicDashboards correlations exploreContentOutline cloudWatchCrossAccountQuerying nestedFolders logsContextDatasourceUi lokiQuerySplitting prometheusMetricEncyclopedia influxdbBackendMigration prometheusDataplane lokiMetricDataplane dataplaneFrontendFallback recordedQueriesMulti logsExploreTableVisualisation transformationsRedesign awsAsyncQueryCaching prometheusConfigOverhaulAuth alertingNoDataErrorExecution angularDeprecationUI dashgpt alertingInsights panelMonitoring kubernetesPlaylists recoveryThreshold lokiStructuredMetadata awsDatasourcesNewFormStyling managedPluginsInstall annotationPermissionUpdate ssoSettingsApi logsInfiniteScrolling exploreMetrics alertingSimplifiedRouting logRowsPopoverMenu lokiQueryHints betterPageScrolling cloudWatchNewLabelParsing grpcServer formatString transformationsVariableSupport addFieldFromCalculationStatFunctions pdfTables regressionTransformation groupToNestedTableTransformation newPDFRendering scenes extraThemes mlExpressions prometheusPromQAIL dashboardSceneForViewers dashboardSceneSolo dashboardScene flameGraphItemCollapsing logsExploreTableDefaultVisualization featureToggleAdminPage
+      GF_ANALYTICS_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_SECURITY_DISABLE_GRAVATAR: "true"
+      GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION: "true"
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
+      GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
+      GF_USERS_LOGIN_HINT: admin
+      GF_USERS_PASSWORD_HINT: admin
+      GF_USERS_ALLOW_ORG_CREATE: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      GF_QUERY_CONCURRENT_QUERY_LIMIT: 5
+      GF_FEATURE_MANAGEMENT_ALLOW_EDITING: "true"
+      GF_CACHING_ENABLED: "true"
+      GF_DATAPROXY_TIMEOUT: 30
+      GF_DATAPROXY_MAX_CONNS_PER_HOST: 5
+      GF_DATAPROXY_MAX_IDLE_CONNECTIONS: 2
+      GF_DATAPROXY_ROW_LIMIT: 10000
+      GF_ANNOTATIONS_DASHBOARD_MAX_AGE: 90d
+      GF_ANNOTATIONS_DASHBOARD_MAX_ANNOTATIONS_TO_KEEP: 10000
+      GF_ANNOTATIONS_API_MAX_AGE: 90d
+      GF_ANNOTATIONS_API_MAX_ANNOTATIONS_TO_KEEP: 10000
+      GF_EXTERNAL_IMAGE_STORAGE_PROVIDER: local
+      GF_SQL_DATASOURCES_MAX_IDLE_CONNS_DEFAULT: 2
+      GF_SQL_DATASOURCES_MAX_OPEN_CONNS_DEFAULT: 5
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO - 'http://127.0.0.1:3000/api/health'" ]
+      interval: 60s
+      timeout: 1s
+      retries: 1
+      start_period: 10s
+    networks:
+      - youtrack_net
+    restart: "no"
+
+
+  influxdb_v2:
+    # influx setup --username "$DOCKER_INFLUXDB_INIT_USERNAME" --password "$DOCKER_INFLUXDB_INIT_PASSWORD" --token "$INFLUX_TOKEN" --org "$DOCKER_INFLUXDB_INIT_ORG" --bucket "$DOCKER_INFLUXDB_INIT_BUCKET" --retention 0 --force --host "http://influxdb_v2:8086"
+    image: influxdb:2.7.10
+    hostname: influxdb_v2
+    mem_reservation: 300m
+    mem_limit: 10000m
+    environment:
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:-F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
+      DOCKER_INFLUXDB_INIT_BUCKET: "gatling"
+      DOCKER_INFLUXDB_INIT_MODE: "setup"
+      DOCKER_INFLUXDB_INIT_ORG: "youtrack"
+      DOCKER_INFLUXDB_INIT_PASSWORD: "password"
+      DOCKER_INFLUXDB_INIT_RETENTION: "72h0m0s"
+      DOCKER_INFLUXDB_INIT_USERNAME: "admin"
+      GOGC: 10
+      GOMEMLIMIT: 8000MiB
+      INFLUXD_BOLT_PATH: "/var/lib/influxdb2/influxd.bolt"
+      INFLUXD_ENGINE_PATH: "/var/lib/influxdb2/engine"
+      INFLUXD_FLUX_LOG_ENABLED: "false"
+      INFLUXD_HTTP_BIND_ADDRESS: ":8086"
+      INFLUXD_LOG_LEVEL: "info"
+      INFLUXD_QUERY_CONCURRENCY: 2
+      INFLUXD_QUERY_INITIAL_MEMORY_BYTES: 10000000
+      INFLUXD_QUERY_MEMORY_BYTES: 1000000000
+      INFLUXD_QUERY_QUEUE_SIZE: 100
+      INFLUXD_REPORTING_DISABLED: "true"
+      INFLUXD_STORAGE_CACHE_MAX_MEMORY_SIZE: 300000000
+      INFLUXD_STORAGE_CACHE_SNAPSHOT_MEMORY_SIZE: 100000000
+      INFLUXD_STORAGE_COMPACT_THROUGHPUT_BURST: 80388608
+      INFLUXD_STORAGE_MAX_CONCURRENT_COMPACTIONS: 1
+      INFLUXD_STORAGE_SERIES_FILE_MAX_CONCURRENT_SNAPSHOT_COMPACTIONS: 1
+      INFLUXD_STORAGE_SERIES_ID_SET_CACHE_SIZE: 0
+      INFLUXD_STORAGE_WAL_MAX_CONCURRENT_WRITES: 1
+      INFLUXD_STORAGE_WAL_MAX_WRITE_DELAY: 10m
+      INFLUXD_STORAGE_WRITE_TIMEOUT: 10s
+      INFLUX_HOST: "http://influxdb_v2:8086"
+      INFLUX_TOKEN: ${INFLUX_TOKEN:-F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
+      INFLUX_ORG: "youtrack"
+    ports:
+      - "8086:8086"
+    volumes:
+      - "./volumes/influx-v2-data:/var/lib/influxdb2/"
+      - "./configs/influxdb_v2/user_script:/docker-entrypoint-initdb.d"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -S -s -XGET localhost:8086/health"]
+      interval: 60s
+      timeout: 1s
+      retries: 1
+      start_period: 10s
+    networks:
+      - youtrack_net
+    restart: "no"
+
+
+networks:
+  youtrack_net:
