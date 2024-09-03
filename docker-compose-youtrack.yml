@@ -237,7 +237,7 @@ services:
       influxdb_v2:
         condition: service_healthy
       youtrack:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - "./src:/tmp/gatling/src:ro"
       - "./pom.xml:/tmp/gatling/pom.xml:ro"

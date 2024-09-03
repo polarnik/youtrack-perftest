@@ -1236,7 +1236,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "YouTrack Telemetry",
+  "title": "YouTrack Telemetry 0.1",
   "uid": "telemetry",
   "version": 13,
   "weekStart": ""

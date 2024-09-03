@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.jetbrains.youtrack.Issue;
 import com.jetbrains.youtrack.perftest.simulation.api.admin.telemetry.TelemetrySimulation;
 import com.jetbrains.youtrack.perftest.simulation.createTask.Create_100_000_Tasks;
+import com.jetbrains.youtrack.perftest.simulation.createTask.Tasks_40_rps;
 import com.jetbrains.youtrack.perftest.simulation.createUser.CreateOneUser;
 import io.gatling.app.Gatling;
 import io.gatling.shared.cli.CliOption;
@@ -110,7 +111,7 @@ public class GatlingTest {
         runSimulation(Create_100_000_Tasks.class);
     }
 
-    @Test(groups = {"issue-generation"})
+    @Test(groups = {"issue-generation-40-rps"})
     public void createIssue() {
         System.setProperty("youtrack", "https://nginx:443");
         System.setProperty("gatling.data.console.writePeriod", "5");
@@ -119,11 +120,11 @@ public class GatlingTest {
         System.setProperty("gatling.charting.indicators.higherBound", "1000");
         System.setProperty("userTokensPath", "/datasources/token.users.csv");
         System.setProperty("postsPath", "/big.dataset/Posts.big.csv");
-        System.setProperty("maxLoadAverage", "20.0");
+        System.setProperty("maxLoadAverage", "30.0");
 
         Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.INFO);
 
-        runSimulation(Create_100_000_Tasks.class);
+        runSimulation(Tasks_40_rps.class);
     }
 }

@@ -1704,7 +1704,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "InfluxDB Docker",
+  "title": "InfluxDB Docker 0.1",
   "uid": "influxdb_docker",
   "version": 14,
   "weekStart": ""

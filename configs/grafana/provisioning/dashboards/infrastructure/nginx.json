@@ -19,7 +19,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 10,
   "links": [],
   "panels": [
     {
@@ -38,6 +37,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "$db"
       },
       "fieldConfig": {
@@ -164,6 +164,12 @@
                   "$__interval"
                 ],
                 "type": "non_negative_derivative"
+              },
+              {
+                "params": [
+                  "* 1000 / $__interval_ms"
+                ],
+                "type": "math"
               },
               {
                 "params": [
@@ -431,6 +437,7 @@
       "type": "timeseries"
     }
   ],
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [
     "Nginx",
@@ -441,27 +448,37 @@
     "list": [
       {
         "current": {
+          "selected": false,
           "text": "influxdb-nginx",
           "value": "influxdb-nginx"
         },
+        "hide": 0,
         "includeAll": false,
+        "multi": false,
         "name": "db",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
         "regex": "/^.*nginx.*$/",
+        "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
-          "tags": [],
-          "text": "web1",
+          "selected": true,
+          "text": [
+            "telegraf"
+          ],
           "value": [
-            "web1"
+            "telegraf"
           ]
         },
-        "datasource": "$db",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "$db"
+        },
         "definition": "",
+        "hide": 0,
         "includeAll": false,
         "multi": true,
         "name": "host",
@@ -469,6 +486,8 @@
         "query": "SHOW TAG VALUES FROM \"nginx\" WITH KEY = \"host\"",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       }
     ]
@@ -481,6 +500,6 @@
   "timezone": "browser",
   "title": "Nginx",
   "uid": "nginx",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

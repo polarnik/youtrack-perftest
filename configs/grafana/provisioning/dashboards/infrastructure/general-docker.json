@@ -2462,7 +2462,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "General Docker metrics per host and container",
+  "title": "General Docker metrics per host and container 0.1",
   "uid": "general_docker",
   "version": 3,
   "weekStart": ""

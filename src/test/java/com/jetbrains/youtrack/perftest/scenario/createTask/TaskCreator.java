@@ -385,4 +385,54 @@ public class TaskCreator {
                 .protocols(protocolBuilders.build())
                 ;
     }
+
+    public PopulationBuilder tasks_40_rps() {
+        int meanResponseTimeMS = 900;
+        int requests = 16;
+        int rps = 5;
+        double tps_in_one_vu = 1000.0 / (meanResponseTimeMS * requests);
+        double rps_in_one_vu = 1000.0 / meanResponseTimeMS;
+        double tps = tps_in_one_vu * rps / rps_in_one_vu;
+
+        log.debug("""
+                \n
+                One VU will provide {} rps. 
+                For one VU (1 active user) we should use TPS = {}.
+                  
+                I would like to have {} rps, the target RPS is {}.
+                The target RPS in X time higher then one VU rps, X = {}.
+                
+                We will start "One VU TPS" x "X" = {} x {} == {} tps
+                """,
+                rps_in_one_vu, tps_in_one_vu,
+                rps, rps,
+                1.0 * rps / rps_in_one_vu,
+                tps_in_one_vu, 1.0 * rps / rps_in_one_vu, tps
+        );
+        log.debug("tps: {}, rps: {}", tps, rps);
+        Duration step_duration = Duration.ofSeconds(180);
+        Duration rumpUp_duration = Duration.ofSeconds(10);
+        return taskCreator()
+                .injectOpen(
+                        CoreDsl.incrementUsersPerSec(tps)
+                                .times(7)
+                                .eachLevelLasting(step_duration)
+                                .separatedByRampsLasting(rumpUp_duration)
+                                .startingFrom(tps)
+                )
+                .throttle(
+                        // 18 HTTP request per scenario
+                        reachRps(1 * rps).in(rumpUp_duration), holdFor(step_duration),
+                        reachRps(2 * rps).in(rumpUp_duration), holdFor(step_duration),
+                        reachRps(3 * rps).in(rumpUp_duration), holdFor(step_duration),
+                        reachRps(4 * rps).in(rumpUp_duration), holdFor(step_duration),
+                        reachRps(5 * rps).in(rumpUp_duration), holdFor(step_duration),
+                        reachRps(6 * rps).in(rumpUp_duration), holdFor(step_duration),
+                        reachRps(7 * rps).in(rumpUp_duration), holdFor(step_duration),
+                        reachRps(8 * rps).in(rumpUp_duration), holdFor(step_duration.getSeconds() * 3),
+                        reachRps(0).in(step_duration)
+                )
+                .protocols(protocolBuilders.build())
+                ;
+    }
 }

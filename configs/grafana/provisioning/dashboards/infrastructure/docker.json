@@ -866,7 +866,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "InfluxDB 2.x Telegraf Docker Dashboard",
+  "title": "InfluxDB 2.x Telegraf Docker Dashboard 0.1",
   "uid": "docker",
   "version": 3,
   "weekStart": ""

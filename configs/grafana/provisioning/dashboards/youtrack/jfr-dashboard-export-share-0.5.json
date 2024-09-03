@@ -25,8 +25,22 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 23,
   "links": [],
   "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 36,
+      "panels": [],
+      "title": "General info",
+      "type": "row"
+    },
     {
       "datasource": {
         "type": "influxdb",
@@ -95,7 +109,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 2,
       "interval": "10s",
@@ -249,7 +263,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 1
       },
       "id": 7,
       "interval": "10s",
@@ -404,7 +418,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "id": 6,
       "interval": "10s",
@@ -557,7 +571,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 10
       },
       "id": 4,
       "interval": "10s",
@@ -690,7 +704,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 19
       },
       "id": 3,
       "interval": "10s",
@@ -805,7 +819,7 @@
         "h": 9,
         "w": 6,
         "x": 12,
-        "y": 18
+        "y": 19
       },
       "id": 10,
       "interval": "10s",
@@ -912,7 +926,7 @@
         "h": 9,
         "w": 6,
         "x": 18,
-        "y": 18
+        "y": 19
       },
       "id": 24,
       "interval": "10s",
@@ -1034,7 +1048,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1050,7 +1065,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 28
       },
       "id": 8,
       "interval": "10s",
@@ -1149,7 +1164,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1165,7 +1181,7 @@
         "h": 9,
         "w": 6,
         "x": 12,
-        "y": 27
+        "y": 28
       },
       "id": 12,
       "interval": "10s",
@@ -1186,7 +1202,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -1255,7 +1271,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1271,7 +1288,7 @@
         "h": 9,
         "w": 6,
         "x": 18,
-        "y": 27
+        "y": 28
       },
       "id": 22,
       "interval": "10s",
@@ -1292,7 +1309,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -1393,7 +1410,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1409,7 +1427,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 37
       },
       "id": 9,
       "interval": "10s",
@@ -1508,7 +1526,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1524,7 +1543,7 @@
         "h": 9,
         "w": 6,
         "x": 12,
-        "y": 36
+        "y": 37
       },
       "id": 11,
       "interval": "10s",
@@ -1545,7 +1564,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -1614,7 +1633,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1630,7 +1650,7 @@
         "h": 9,
         "w": 6,
         "x": 18,
-        "y": 36
+        "y": 37
       },
       "id": 23,
       "interval": "10s",
@@ -1651,7 +1671,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -1755,7 +1775,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1771,7 +1792,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 45
+        "y": 46
       },
       "id": 13,
       "interval": "10s",
@@ -1878,7 +1899,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1918,7 +1940,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 45
+        "y": 46
       },
       "id": 15,
       "interval": "10s",
@@ -1940,7 +1962,7 @@
           }
         ]
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -2085,6 +2107,21 @@
       "type": "table"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 55
+      },
+      "id": 37,
+      "panels": [],
+      "repeat": "object_size",
+      "repeatDirection": "h",
+      "title": "Large allocation: ${object_size}",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "influxdb",
         "uid": "${source}"
@@ -2135,7 +2172,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2143,7 +2181,7 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -2151,9 +2189,9 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 54
+        "y": 56
       },
-      "id": 16,
+      "id": 39,
       "interval": "10s",
       "options": {
         "legend": {
@@ -2194,7 +2232,7 @@
           "measurement": "object-allocation-sample",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"bytes\") FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT distinct(\"bytes\") FROM \"object-allocation-sample\" WHERE ${object_size:raw} AND (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2258,7 +2296,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2283,12 +2322,16 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "object-allocation-sample.bytes"
+              "options": "size"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "decbytes"
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
               }
             ]
           }
@@ -2298,9 +2341,9 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 54
+        "y": 56
       },
-      "id": 17,
+      "id": 38,
       "interval": "10s",
       "options": {
         "cellHeight": "sm",
@@ -2312,6 +2355,7 @@
           ],
           "show": false
         },
+        "frameIndex": 1,
         "showHeader": true,
         "sortBy": [
           {
@@ -2320,51 +2364,8 @@
           }
         ]
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${source}"
-          },
-          "groupBy": [],
-          "measurement": "object-allocation-sample",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"bytes\" FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "service::tag",
-              "operator": "=~",
-              "value": "/^$service$/"
-            },
-            {
-              "condition": "AND",
-              "key": "testEnvironment::tag",
-              "operator": "=~",
-              "value": "/^$test_environment$/"
-            },
-            {
-              "condition": "AND",
-              "key": "systemUnderTest::tag",
-              "operator": "=~",
-              "value": "/^$system_under_test$/"
-            }
-          ]
-        },
         {
           "datasource": {
             "type": "influxdb",
@@ -2375,10 +2376,10 @@
           "measurement": "object-allocation-sample",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"stacktrace\", \"objectClass\", \"thread\" FROM \"object-allocation-sample\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
+          "query": "SELECT \"stacktrace\", \"objectClass\", \"thread\", \"bytes\" FROM \"object-allocation-sample\" WHERE ${object_size:raw} AND (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "B",
-          "resultFormat": "time_series",
+          "resultFormat": "table",
           "select": [
             [
               {
@@ -2429,40 +2430,824 @@
       "title": "Large allocation samples stacktraces",
       "transformations": [
         {
-          "id": "filterFieldsByName",
+          "id": "organize",
           "options": {
-            "include": {
-              "names": [
-                "Time",
-                "object-allocation-sample.bytes",
-                "object-allocation-sample.stacktrace",
-                "object-allocation-sample.objectClass",
-                "object-allocation-sample.thread"
-              ]
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "bytes": "size"
             }
           }
         },
         {
-          "id": "seriesToColumns",
+          "id": "sortBy",
           "options": {
-            "byField": "Time"
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "size"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 50
+              },
+              {
+                "color": "blue",
+                "value": 60
+              },
+              {
+                "color": "dark-blue",
+                "value": 70
+              },
+              {
+                "color": "dark-purple",
+                "value": 80
+              },
+              {
+                "color": "dark-red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "size (sum)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 65
+      },
+      "id": 92,
+      "interval": "10s",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "object-allocation-sample",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"stacktrace\", \"objectClass\", \"thread\", \"bytes\" FROM \"object-allocation-sample\" WHERE ${object_size:raw} AND (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "stacktrace"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "objectClass"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "thread"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "service::tag",
+              "operator": "=~",
+              "value": "/^$service$/"
+            },
+            {
+              "condition": "AND",
+              "key": "testEnvironment::tag",
+              "operator": "=~",
+              "value": "/^$test_environment$/"
+            },
+            {
+              "condition": "AND",
+              "key": "systemUnderTest::tag",
+              "operator": "=~",
+              "value": "/^$system_under_test$/"
+            }
+          ]
+        }
+      ],
+      "title": "Large allocation samples stacktraces",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "bytes": {
+                "aggregations": [
+                  "sum",
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "objectClass": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "size": {
+                "aggregations": [
+                  "sum",
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "thread": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "bytes (sum)"
+              }
+            ]
           }
         },
         {
           "id": "organize",
           "options": {
             "excludeByName": {},
-            "indexByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "bytes (count)": 3,
+              "bytes (sum)": 2,
+              "objectClass": 1,
+              "thread": 0
+            },
             "renameByName": {
-              "object-allocation-sample.bytes": "size",
-              "object-allocation-sample.objectClass": "object class",
-              "object-allocation-sample.stacktrace": "stacktrace",
-              "object-allocation-sample.thread": "thread"
+              "bytes": "size",
+              "bytes (count)": "count",
+              "bytes (sum)": "size (sum)"
             }
           }
         }
       ],
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "light-green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 50
+              },
+              {
+                "color": "blue",
+                "value": 60
+              },
+              {
+                "color": "dark-blue",
+                "value": 70
+              },
+              {
+                "color": "dark-purple",
+                "value": 80
+              },
+              {
+                "color": "dark-red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "size (sum)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 65
+      },
+      "id": 93,
+      "interval": "10s",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "size"
+          }
+        ]
+      },
+      "pluginVersion": "10.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "object-allocation-sample",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"stacktrace\", \"objectClass\", \"thread\", \"bytes\" FROM \"object-allocation-sample\" WHERE ${object_size:raw} AND (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "stacktrace"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "objectClass"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "thread"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "service::tag",
+              "operator": "=~",
+              "value": "/^$service$/"
+            },
+            {
+              "condition": "AND",
+              "key": "testEnvironment::tag",
+              "operator": "=~",
+              "value": "/^$test_environment$/"
+            },
+            {
+              "condition": "AND",
+              "key": "systemUnderTest::tag",
+              "operator": "=~",
+              "value": "/^$system_under_test$/"
+            }
+          ]
+        }
+      ],
+      "title": "Large allocation samples stacktraces",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "bytes": {
+                "aggregations": [
+                  "sum",
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "objectClass": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "size": {
+                "aggregations": [
+                  "sum",
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "stacktrace": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "thread": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "bytes (sum)"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "bytes (count)": 4,
+              "bytes (sum)": 3,
+              "objectClass": 1,
+              "stacktrace": 2,
+              "thread": 0
+            },
+            "renameByName": {
+              "bytes": "size",
+              "bytes (count)": "count",
+              "bytes (sum)": "size (sum)"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "light-green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 50
+              },
+              {
+                "color": "blue",
+                "value": 60
+              },
+              {
+                "color": "dark-blue",
+                "value": 70
+              },
+              {
+                "color": "dark-purple",
+                "value": 80
+              },
+              {
+                "color": "dark-red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "size (sum)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stacktrace"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              },
+              {
+                "id": "unit",
+                "value": "string"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 74
+      },
+      "id": 119,
+      "interval": "10s",
+      "options": {
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "size"
+          }
+        ]
+      },
+      "pluginVersion": "10.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "object-allocation-sample",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"stacktrace\", \"bytes\" FROM \"object-allocation-sample\" WHERE ${object_size:raw} AND (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "stacktrace"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "objectClass"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "thread"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "service::tag",
+              "operator": "=~",
+              "value": "/^$service$/"
+            },
+            {
+              "condition": "AND",
+              "key": "testEnvironment::tag",
+              "operator": "=~",
+              "value": "/^$test_environment$/"
+            },
+            {
+              "condition": "AND",
+              "key": "systemUnderTest::tag",
+              "operator": "=~",
+              "value": "/^$system_under_test$/"
+            }
+          ]
+        }
+      ],
+      "title": "Large allocation samples stacktraces",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "bytes": {
+                "aggregations": [
+                  "sum",
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "objectClass": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "size": {
+                "aggregations": [
+                  "sum",
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "stacktrace": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "thread": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "bytes (sum)"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "bytes (count)": 4,
+              "bytes (sum)": 3,
+              "objectClass": 1,
+              "stacktrace": 2,
+              "thread": 0
+            },
+            "renameByName": {
+              "bytes": "size",
+              "bytes (count)": "count",
+              "bytes (sum)": "size (sum)"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 223
+      },
+      "id": 55,
+      "panels": [],
+      "title": "Other",
+      "type": "row"
     },
     {
       "datasource": {
@@ -2533,7 +3318,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 63
+        "y": 224
       },
       "id": 19,
       "interval": "10s",
@@ -2663,7 +3448,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 63
+        "y": 224
       },
       "id": 21,
       "interval": "10s",
@@ -2685,7 +3470,7 @@
           }
         ]
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -2918,7 +3703,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 72
+        "y": 233
       },
       "id": 25,
       "interval": "10s",
@@ -3047,7 +3832,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 72
+        "y": 233
       },
       "id": 26,
       "interval": "10s",
@@ -3069,7 +3854,7 @@
           }
         ]
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "10.4.7",
       "targets": [
         {
           "datasource": {
@@ -3305,7 +4090,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 81
+        "y": 242
       },
       "id": 18,
       "interval": "10s",
@@ -3471,7 +4256,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 81
+        "y": 242
       },
       "id": 20,
       "interval": "10s",
@@ -3644,7 +4429,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 251
       },
       "id": 5,
       "interval": "10s",
@@ -3796,7 +4581,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 90
+        "y": 251
       },
       "id": 28,
       "interval": "10s",
@@ -3947,7 +4732,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 99
+        "y": 260
       },
       "id": 29,
       "interval": "10s",
@@ -4106,7 +4891,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 99
+        "y": 260
       },
       "id": 30,
       "interval": "10s",
@@ -4206,6 +4991,1040 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "#c5fe90"
+              },
+              {
+                "color": "#6ff2ad",
+                "value": 50
+              },
+              {
+                "color": "#61eee6",
+                "value": 75
+              },
+              {
+                "color": "#4ea1d4",
+                "value": 85
+              },
+              {
+                "color": "#487bd9",
+                "value": 90
+              },
+              {
+                "color": "#3f52cc",
+                "value": 95
+              },
+              {
+                "color": "#7335dc",
+                "value": 99
+              },
+              {
+                "color": "#FF7383",
+                "value": 99.1
+              },
+              {
+                "color": "#F2495C",
+                "value": 99.2
+              },
+              {
+                "color": "#E02F44",
+                "value": 99.3
+              },
+              {
+                "color": "#c73906",
+                "value": 99.4
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "usage%"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#6ff2ad",
+                      "value": 50
+                    },
+                    {
+                      "color": "#61eee6",
+                      "value": 75
+                    },
+                    {
+                      "color": "#4ea1d4",
+                      "value": 85
+                    },
+                    {
+                      "color": "#487bd9",
+                      "value": 90
+                    },
+                    {
+                      "color": "#3f52cc",
+                      "value": 95
+                    },
+                    {
+                      "color": "#7335dc",
+                      "value": 99
+                    },
+                    {
+                      "color": "#ff7383",
+                      "value": 99.1
+                    },
+                    {
+                      "color": "#f2495c",
+                      "value": 99.2
+                    },
+                    {
+                      "color": "#e02f44",
+                      "value": 99.3
+                    },
+                    {
+                      "color": "#c73906",
+                      "value": 99.4
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 269
+      },
+      "id": 71,
+      "interval": "10s",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.7",
+      "targets": [
+        {
+          "alias": "$tag_type",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "type::tag"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "memory-native",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"committed\"), mean(\"committed\"), max(\"committed\"), max(\"reserved\")/100.0 as \"reserved\" FROM \"memory-native\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY \"type\"::tag fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "committed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "service::tag",
+              "operator": "=~",
+              "value": "/^$service$/"
+            },
+            {
+              "condition": "AND",
+              "key": "testEnvironment::tag",
+              "operator": "=~",
+              "value": "/^$test_environment$/"
+            },
+            {
+              "condition": "AND",
+              "key": "systemUnderTest::tag",
+              "operator": "=~",
+              "value": "/^$system_under_test$/"
+            }
+          ]
+        }
+      ],
+      "title": "Memory Native Committed per Type",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "mean"
+              }
+            ]
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "usage%",
+            "binary": {
+              "left": "max",
+              "operator": "/",
+              "right": "reserved"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "usage%"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "reserved": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Time": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "#c5fe90"
+              },
+              {
+                "color": "#6ff2ad",
+                "value": 50
+              },
+              {
+                "color": "#61eee6",
+                "value": 75
+              },
+              {
+                "color": "#4ea1d4",
+                "value": 85
+              },
+              {
+                "color": "#487bd9",
+                "value": 90
+              },
+              {
+                "color": "#3f52cc",
+                "value": 95
+              },
+              {
+                "color": "#7335dc",
+                "value": 99
+              },
+              {
+                "color": "light-red",
+                "value": 99.1
+              },
+              {
+                "color": "red",
+                "value": 99.2
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 99.3
+              },
+              {
+                "color": "#c73906",
+                "value": 99.4
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 269
+      },
+      "id": 73,
+      "interval": "10s",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.7",
+      "targets": [
+        {
+          "alias": "$tag_type",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "type::tag"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "memory-native",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"reserved\"), mean(\"reserved\"), max(\"reserved\") FROM \"memory-native\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND $timeFilter GROUP BY \"type\"::tag fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "committed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "service::tag",
+              "operator": "=~",
+              "value": "/^$service$/"
+            },
+            {
+              "condition": "AND",
+              "key": "testEnvironment::tag",
+              "operator": "=~",
+              "value": "/^$test_environment$/"
+            },
+            {
+              "condition": "AND",
+              "key": "systemUnderTest::tag",
+              "operator": "=~",
+              "value": "/^$system_under_test$/"
+            }
+          ]
+        }
+      ],
+      "title": "Memory Native Reserved per Type",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Time": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "mean"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "#c5fe90"
+              },
+              {
+                "color": "#6ff2ad",
+                "value": 50
+              },
+              {
+                "color": "#61eee6",
+                "value": 75
+              },
+              {
+                "color": "#4ea1d4",
+                "value": 85
+              },
+              {
+                "color": "#487bd9",
+                "value": 90
+              },
+              {
+                "color": "#3f52cc",
+                "value": 95
+              },
+              {
+                "color": "#7335dc",
+                "value": 99
+              },
+              {
+                "color": "#FF7383",
+                "value": 99.1
+              },
+              {
+                "color": "#F2495C",
+                "value": 99.2
+              },
+              {
+                "color": "#E02F44",
+                "value": 99.3
+              },
+              {
+                "color": "#c73906",
+                "value": 99.4
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "usage%"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#6ff2ad",
+                      "value": 50
+                    },
+                    {
+                      "color": "#61eee6",
+                      "value": 75
+                    },
+                    {
+                      "color": "#4ea1d4",
+                      "value": 85
+                    },
+                    {
+                      "color": "#487bd9",
+                      "value": 90
+                    },
+                    {
+                      "color": "#3f52cc",
+                      "value": 95
+                    },
+                    {
+                      "color": "#7335dc",
+                      "value": 99
+                    },
+                    {
+                      "color": "#ff7383",
+                      "value": 99.1
+                    },
+                    {
+                      "color": "#f2495c",
+                      "value": 99.2
+                    },
+                    {
+                      "color": "#e02f44",
+                      "value": 99.3
+                    },
+                    {
+                      "color": "#c73906",
+                      "value": 99.4
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 28,
+        "w": 12,
+        "x": 0,
+        "y": 279
+      },
+      "id": 91,
+      "interval": "10s",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.7",
+      "targets": [
+        {
+          "alias": "$tag_type",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "type::tag"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "memory-native",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"committed\"), mean(\"committed\"), max(\"committed\"), max(\"reserved\")/100.0 as \"reserved\" FROM \"memory-native\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND \"type\"::tag != 'Java Heap' AND $timeFilter GROUP BY \"type\"::tag fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "committed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "service::tag",
+              "operator": "=~",
+              "value": "/^$service$/"
+            },
+            {
+              "condition": "AND",
+              "key": "testEnvironment::tag",
+              "operator": "=~",
+              "value": "/^$test_environment$/"
+            },
+            {
+              "condition": "AND",
+              "key": "systemUnderTest::tag",
+              "operator": "=~",
+              "value": "/^$system_under_test$/"
+            }
+          ]
+        }
+      ],
+      "title": "Memory Native Committed per Type (non Heap)",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "mean"
+              }
+            ]
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "usage%",
+            "binary": {
+              "left": "max",
+              "operator": "/",
+              "right": "reserved"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "usage%"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "reserved": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Time": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "#c5fe90"
+              },
+              {
+                "color": "#6ff2ad",
+                "value": 50
+              },
+              {
+                "color": "#61eee6",
+                "value": 75
+              },
+              {
+                "color": "#4ea1d4",
+                "value": 85
+              },
+              {
+                "color": "#487bd9",
+                "value": 90
+              },
+              {
+                "color": "#3f52cc",
+                "value": 95
+              },
+              {
+                "color": "#7335dc",
+                "value": 99
+              },
+              {
+                "color": "light-red",
+                "value": 99.1
+              },
+              {
+                "color": "red",
+                "value": 99.2
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 99.3
+              },
+              {
+                "color": "#c73906",
+                "value": 99.4
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 28,
+        "w": 12,
+        "x": 12,
+        "y": 279
+      },
+      "id": 75,
+      "interval": "10s",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.7",
+      "targets": [
+        {
+          "alias": "$tag_type",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "type::tag"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "memory-native",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"reserved\"), mean(\"reserved\"), max(\"reserved\") FROM \"memory-native\" WHERE (\"service\"::tag =~ /^${service:regex}$/ AND \"testEnvironment\"::tag =~ /^${test_environment:regex}$/ AND \"systemUnderTest\"::tag =~ /^${system_under_test:regex}$/) AND \"type\"::tag != 'Java Heap' AND $timeFilter GROUP BY \"type\"::tag fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "committed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "service::tag",
+              "operator": "=~",
+              "value": "/^$service$/"
+            },
+            {
+              "condition": "AND",
+              "key": "testEnvironment::tag",
+              "operator": "=~",
+              "value": "/^$test_environment$/"
+            },
+            {
+              "condition": "AND",
+              "key": "systemUnderTest::tag",
+              "operator": "=~",
+              "value": "/^$system_under_test$/"
+            }
+          ]
+        }
+      ],
+      "title": "Memory Native Reserved per Type (non Heap)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Time": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "mean"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "palette-classic"
           },
           "custom": {
@@ -4265,7 +6084,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 108
+        "y": 307
       },
       "id": 27,
       "interval": "10s",
@@ -4419,7 +6238,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 108
+        "y": 307
       },
       "id": 31,
       "interval": "10s",
@@ -4573,7 +6392,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 117
+        "y": 316
       },
       "id": 32,
       "interval": "10s",
@@ -4713,7 +6532,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 117
+        "y": 316
       },
       "id": 33,
       "interval": "10s",
@@ -4853,7 +6672,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 126
+        "y": 325
       },
       "id": 34,
       "interval": "10s",
@@ -4989,7 +6808,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 126
+        "y": 325
       },
       "id": 35,
       "interval": "10s",
@@ -5062,12 +6881,12 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
   "schemaVersion": 39,
   "tags": [
     "jfr",
     "perfana",
-    "perfana-template"
+    "perfana-template",
+    "Global"
   ],
   "templating": {
     "list": [
@@ -5156,6 +6975,58 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "object_size",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "1 GiByte +",
+            "value": "\"bytes\" >= 1024 * 1024 * 1024"
+          },
+          {
+            "selected": false,
+            "text": "500 MiByte - 1 GiByte +",
+            "value": "\"bytes\" >= 500 * 1024 * 1024 AND \"bytes\" < 1024 * 1024 * 1024"
+          },
+          {
+            "selected": false,
+            "text": "200-500 MiByte",
+            "value": "\"bytes\" >= 200 * 1024 * 1024 AND \"bytes\" < 500 * 1024 * 1024"
+          },
+          {
+            "selected": false,
+            "text": "50-200 MiByte",
+            "value": "\"bytes\" >= 50 * 1024 * 1024 AND \"bytes\" < 200 * 1024 * 1024"
+          },
+          {
+            "selected": false,
+            "text": "10-50 MiByte",
+            "value": "\"bytes\" >= 10 * 1024 * 1024 AND \"bytes\" < 50 * 1024 * 1024"
+          },
+          {
+            "selected": false,
+            "text": "up to 10 MiByte",
+            "value": "\"bytes\" < 10 * 1024 * 1024"
+          }
+        ],
+        "query": "1 GiByte + : \"bytes\" >= 1024 * 1024 * 1024, 500 MiByte - 1 GiByte + : \"bytes\" >= 500 * 1024 * 1024 AND \"bytes\" < 1024 * 1024 * 1024, 200-500 MiByte : \"bytes\" >= 200 * 1024 * 1024 AND \"bytes\" < 500 * 1024 * 1024, 50-200 MiByte : \"bytes\" >= 50 * 1024 * 1024 AND \"bytes\" < 200 * 1024 * 1024, 10-50 MiByte : \"bytes\" >= 10 * 1024 * 1024 AND \"bytes\" < 50 * 1024 * 1024, up to 10 MiByte : \"bytes\" < 10 * 1024 * 1024",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -5165,8 +7036,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Perfana JFR Metrics 0.5",
-  "uid": "perfana-jfr-metrics-0-5",
+  "title": "Perfana JFR Metrics 0.6-beta",
+  "uid": "perfana-jfr-metrics-0-6",
   "version": 1,
   "weekStart": ""
 }

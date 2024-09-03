@@ -19,7 +19,26 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 15,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "Global",
+        "docker",
+        "telegraf",
+        "nginx",
+        "jfr"
+      ],
+      "targetBlank": true,
+      "title": "All links",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "panels": [
     {
       "collapsed": false,
@@ -1484,8 +1503,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1628,8 +1646,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "#8e3bb833",
-                      "value": null
+                      "color": "#8e3bb833"
                     },
                     {
                       "color": "#8e3bb880",
@@ -1699,7 +1716,7 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 27
@@ -2182,8 +2199,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2259,8 +2275,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "#8e3bb833",
-                      "value": null
+                      "color": "#8e3bb833"
                     },
                     {
                       "color": "#8e3bb880",
@@ -2342,10 +2357,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 15,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 35
       },
       "id": 11,
       "options": {
@@ -2655,6 +2670,18 @@
             },
             "renameByName": {}
           }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "KO"
+              }
+            ]
+          }
         }
       ],
       "type": "table"
@@ -2665,7 +2692,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 50
       },
       "id": 13,
       "panels": [],
@@ -2719,8 +2746,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2735,7 +2761,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 51
       },
       "id": 12,
       "interval": "${min_interval}ms",
@@ -2816,7 +2842,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 59
       },
       "id": 14,
       "panels": [],
@@ -2848,8 +2874,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2892,10 +2917,10 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 60
       },
       "id": 15,
       "options": {
@@ -3011,8 +3036,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3055,10 +3079,10 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 12,
         "x": 0,
-        "y": 59
+        "y": 68
       },
       "id": 25,
       "maxPerRow": 2,
@@ -3171,7 +3195,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 92
       },
       "id": 16,
       "panels": [],
@@ -3225,8 +3249,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3468,7 +3491,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 93
       },
       "id": 17,
       "interval": "${min_interval}ms",
@@ -3808,8 +3831,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4049,9 +4071,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 12,
+        "w": 24,
         "x": 0,
-        "y": 74
+        "y": 100
       },
       "id": 20,
       "interval": "${min_interval}ms",
@@ -4069,7 +4091,7 @@
         }
       },
       "repeat": "name",
-      "repeatDirection": "h",
+      "repeatDirection": "v",
       "targets": [
         {
           "alias": "$col",
@@ -4305,7 +4327,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 81
+        "y": 142
       },
       "id": 19,
       "panels": [],
@@ -4359,8 +4381,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4422,7 +4443,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 82
+        "y": 143
       },
       "id": 18,
       "interval": "${min_interval}ms",
@@ -4461,7 +4482,7 @@
             },
             {
               "params": [
-                "none"
+                "0"
               ],
               "type": "fill"
             }
@@ -4530,7 +4551,7 @@
             },
             "insertNulls": false,
             "lineInterpolation": "smooth",
-            "lineWidth": 1,
+            "lineWidth": 4,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -4539,7 +4560,7 @@
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "normal"
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -4550,8 +4571,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4560,13 +4580,44 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "KO"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OK"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
-        "w": 12,
+        "w": 24,
         "x": 0,
-        "y": 89
+        "y": 150
       },
       "id": 22,
       "interval": "${min_interval}ms",
@@ -4584,7 +4635,7 @@
       },
       "pluginVersion": "11.1.4",
       "repeat": "name",
-      "repeatDirection": "h",
+      "repeatDirection": "v",
       "targets": [
         {
           "alias": "$tag_result",
@@ -4657,8 +4708,11 @@
       "type": "timeseries"
     }
   ],
+  "refresh": "",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "Global"
+  ],
   "templating": {
     "list": [
       {
@@ -5769,8 +5823,8 @@
       {
         "current": {
           "selected": false,
-          "text": "GITHUB_RUN_ID",
-          "value": "GITHUB_RUN_ID"
+          "text": "testEnvironment",
+          "value": "testEnvironment"
         },
         "datasource": {
           "type": "influxdb",
@@ -5793,10 +5847,10 @@
         "current": {
           "selected": true,
           "text": [
-            "10547513420"
+            "All"
           ],
           "value": [
-            "10547513420"
+            "$__all"
           ]
         },
         "datasource": {
@@ -5820,8 +5874,8 @@
       {
         "current": {
           "selected": false,
-          "text": "36000",
-          "value": "36000"
+          "text": "6048000",
+          "value": "6048000"
         },
         "datasource": {
           "type": "influxdb",
@@ -5871,12 +5925,12 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "browser",
-  "title": "Gatling",
+  "timezone": "utc",
+  "title": "Gatling 0.1",
   "uid": "gatling",
   "version": 83,
   "weekStart": ""

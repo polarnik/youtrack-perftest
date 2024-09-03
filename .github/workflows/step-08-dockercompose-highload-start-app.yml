@@ -1,0 +1,107 @@
+name: step-08-dockercompose-highload-start-app
+on:
+  workflow_dispatch:
+
+jobs:
+  step-08-dockercompose-highload-start-app:
+    runs-on: self-hosted
+    env:
+      YOUTRACK_VERSION: ${{ vars.YOUTRACK_VERSION }}
+
+    steps:
+      - name: docker-compose down
+        run: |
+          docker-compose --file ./git/docker-compose-youtrack.yml down || true
+      - name: docker-compose down
+        run: |
+          docker-compose --file ./git/docker-compose-monitoring.yml down || true
+      - name: docker-compose down
+        run: |
+          docker-compose --file ./git/docker-compose-highload.yml down || true
+      - name: delete the symbolic link "volumes"
+        run: |
+          unlink ./git/volumes || true
+          ls -la ./git || true
+      - name: delete git folder
+        run: |
+          sudo rm -rf ./git || true
+      - name: git checkout (with clean, into the directory git)
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v4
+        with:
+          # Relative path under $GITHUB_WORKSPACE to place the repository
+          path: './git'
+          # Whether to execute `git clean -ffdx && git reset --hard HEAD` before fetching
+          # Default: true
+          clean: 'true'
+
+      - name: create the symbolic link "volumes"
+        run: |
+          cd ./git
+          ln -s ../volumes volumes
+          ls -la .
+          cd ..
+
+      - name: chmod tools
+        run: |
+          cd ./git
+          chmod +x ./tools/perfana/gatling-to-influxdb/g2i-linux-amd64
+          chmod +x ./tools/perfana/x2i/x2i-linux-amd64
+          chmod +x ./configs/influxdb_v2/user_script/init.script.sh
+          cd ..
+
+      - name: create volume folders youtrack
+        run: |
+          mkdir -p -m 750 \
+          ./volumes/youtrack_data \
+          ./volumes/youtrack_logs \
+          ./volumes/youtrack_conf \
+          ./volumes/youtrack_diagnostics \
+          ./volumes/youtrack_backups \
+          ./volumes/youtrack_temp || true
+
+      - name: create volume folders nginx, grafana, influx
+        run: |
+          mkdir -p -m 750 \
+          ./volumes/nginx_client_temp \
+          ./volumes/nginx_cache_tmp \
+          ./volumes/nginx_cache_cdn \
+          ./volumes/nginx_log \
+          ./volumes/grafana_data \
+          ./volumes/grafana-apiserver \
+          ./volumes/influx-v2-data || true
+
+      - name: create volume folders gatling
+        run: |
+          mkdir -p -m 777 \
+            ./volumes/gatling/repository \
+            ./volumes/gatling/jansi.tmpdir \
+            ./volumes/gatling/io.netty.native.workdir \
+            ./volumes/gatling/monitoring \
+            ./volumes/gatling/main \
+            ./volumes/gatling/issue-generation \
+            ./volumes/gatling/user-generation \
+          || true
+
+      - name: set an influx folders owner
+        run: |
+          sudo chown -R 1000:1000 \
+            ./volumes/influx-v2-data || true
+
+      - name: set a grafana folders owner
+        run: |
+          sudo chown -R 472:0 \
+            ./volumes/grafana_data \
+            ./volumes/grafana-apiserver || true
+
+      - name: set a nginx folders owner
+        run: |
+          sudo chown -R 101:101 \
+            ./volumes/nginx_client_temp \
+            ./volumes/nginx_cache_tmp \
+            ./volumes/nginx_cache_cdn \
+            ./volumes/nginx_log || true
+
+      - name: docker-compose up --detach
+        run: |
+          docker-compose --file ./git/docker-compose-highload.yml up --detach --force-recreate
