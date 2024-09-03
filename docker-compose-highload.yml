@@ -229,7 +229,7 @@ services:
     mem_reservation: 2000m
     mem_limit: 3000m
     depends_on:
-      telegraf:
+      telegraf_highload:
         condition: service_healthy
       influxdb_v2:
         condition: service_healthy
