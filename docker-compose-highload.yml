@@ -19,6 +19,7 @@ services:
     pull_policy: "never"
     ports:
       - "9010:9010"
+      - "9011:9011"
     depends_on:
       influxdb_v2:
         condition: service_healthy
