@@ -57,7 +57,7 @@
 -Dcom.sun.management.jmxremote.local.only=false
 -Dcom.sun.management.jmxremote.authenticate=false
 -Dcom.sun.management.jmxremote.ssl=false
--Djava.rmi.server.hostname=localhost
+-Djava.rmi.server.hostname=youtrack
 #-Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000
 #-Dorg.eclipse.jetty.server.Request.maxFormKeys=10000
 #-Djetbrains.http.request.header.buffer.size=102400
