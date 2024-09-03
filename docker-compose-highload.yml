@@ -17,6 +17,11 @@ services:
     oom_kill_disable: true
     restart: "no"
     pull_policy: "never"
+    ports:
+      - "9010:9010"
+    depends_on:
+      influxdb_v2:
+        condition: service_healthy
     healthcheck:
       test: [
         "CMD-SHELL",
@@ -46,11 +51,6 @@ services:
     cpuset: "5-7"
     mem_reservation: 100m
     mem_limit: 300m
-    depends_on:
-      youtrack:
-        condition: service_healthy
-      telegraf_highload:
-        condition: service_healthy
     ports:
       - "8080:8080"
       - "443:443"
