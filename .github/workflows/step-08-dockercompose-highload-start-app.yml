@@ -59,7 +59,15 @@ jobs:
           ./volumes/youtrack_diagnostics \
           ./volumes/youtrack_backups \
           ./volumes/youtrack_temp || true
-
+      - name: change an owner
+        run: |
+          sudo chown -R 13001:13001 \
+            ./volumes/youtrack_data \
+            ./volumes/youtrack_logs \
+            ./volumes/youtrack_conf \
+            ./volumes/youtrack_diagnostics \
+            ./volumes/youtrack_backups \
+            ./volumes/youtrack_temp
       - name: create volume folders nginx, grafana, influx
         run: |
           mkdir -p -m 750 \
