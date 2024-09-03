@@ -46,6 +46,11 @@ services:
     cpuset: "5-7"
     mem_reservation: 100m
     mem_limit: 300m
+    depends_on:
+      youtrack:
+        condition: service_healthy
+      telegraf_highload:
+        condition: service_healthy
     ports:
       - "8080:8080"
       - "443:443"
