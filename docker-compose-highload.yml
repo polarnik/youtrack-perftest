@@ -112,8 +112,8 @@ services:
       INFLUX_TOKEN: ${INFLUX_TOKEN:-F1qh_md8H07Fvo9uxtb_3D7ggAXYXFqy-N1G-TpbARKc0IFYW5WZ0ipE4UUrLP4MR87kPcjkDWO6KQtvwtY8Nw==}
       INFLUX_ORG: "youtrack"
     volumes:
-      - "./configs/telegraf_highload/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
-      - "./configs/telegraf_highload/telegraf.d:/etc/telegraf/telegraf.d:ro"
+      - "./configs/telegraf_highload_input/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+      - "./configs/telegraf_highload_input/telegraf.d:/etc/telegraf/telegraf.d:ro"
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "8088:8088"
