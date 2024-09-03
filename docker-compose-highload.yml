@@ -198,7 +198,7 @@ services:
       youtrack:
         condition: service_healthy
     volumes:
-      - "./tools/aragozin/jvm-tools:/tmp/jvm-tools:ro"
+      - "./tools/aragozin/jvm-tools:/tmp/jvm-tools"
       - "./volumes/sjk/repository:/root/.m2/repository"
       - "./volumes/sjk/report:/tmp/report"
     tmpfs:
@@ -208,20 +208,23 @@ services:
     command: bash -c "
       mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.0:get
         -Dartifact=org.gridkit.jvmtool:sjk-plus:0.23 &
-      mvn dependency:copy &
-      chmod +x ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
-      ./sjk.sh &
+      mvn dependency:copy &&
+      chmod +x ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
+      ./sjk.sh &&
       echo Done
       "
+    networks:
+      - youtrack_net
+
   gatling-issue-generation:
     image: maven:3.9.9-amazoncorretto-21-debian
     cpu_count: 2
@@ -260,7 +263,7 @@ services:
       --log /tmp/g2i.log -d | awk '{print $$2}')
       &&
       echo 'Build and execute test' &&
-      mvn test -P issue-generation
+      mvn test -P issue-generation-40-rps
       &&
       echo 'Waiting for parser to safely finish all its work' &&
       sleep 30
@@ -276,5 +279,6 @@ services:
       "
     networks:
       - youtrack_net
+
 networks:
   youtrack_net:
