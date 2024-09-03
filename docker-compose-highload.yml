@@ -184,5 +184,97 @@ services:
       - youtrack_net
     restart: "no"
 
+  sjk:
+    image: maven:3.9.9-amazoncorretto-21-debian
+    cpu_count: 1
+    cpuset: "5-7"
+    mem_reservation: 200m
+    mem_limit: 300m
+    environment:
+      OUTPUT_FOLDER: "/tmp/report"
+    depends_on:
+      gatling-issue-generation:
+        condition: service_started
+      youtrack:
+        condition: service_healthy
+    volumes:
+      - "./tools/aragozin/jvm-tools:/tmp/jvm-tools:ro"
+      - "./volumes/sjk/repository:/root/.m2/repository"
+      - "./volumes/sjk/report:/tmp/report"
+    tmpfs:
+      - /tmp
+    working_dir: /tmp/jvm-tools
+    restart: "no"
+    command: bash -c "
+      mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.0:get
+        -Dartifact=org.gridkit.jvmtool:sjk-plus:0.23 &
+      mvn dependency:copy &
+      chmod +x ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      ./sjk.sh &
+      echo Done
+      "
+  gatling-issue-generation:
+    image: maven:3.9.9-amazoncorretto-21-debian
+    cpu_count: 2
+    cpuset: "5-7"
+    mem_reservation: 2000m
+    mem_limit: 3000m
+    depends_on:
+      telegraf:
+        condition: service_healthy
+      influxdb_v2:
+        condition: service_healthy
+      youtrack:
+        condition: service_healthy
+      nginx:
+        condition: service_healthy
+    volumes:
+      - "./src:/tmp/gatling/src:ro"
+      - "./pom.xml:/tmp/gatling/pom.xml:ro"
+      - "./volumes/gatling/repository:/root/.m2/repository"
+      - "./tools/perfana:/tools/perfana:ro"
+      - "./volumes/gatling/io.netty.native.workdir:/io.netty.native.workdir"
+      - "./volumes/gatling/jansi.tmpdir:/jansi.tmpdir"
+      - "./volumes/gatling/issue-generation:/tmp/gatling/target/load-test-results"
+      - "./volumes/gatling/big.dataset:/big.dataset:ro"
+      - "./datasources:/datasources:ro"
+    tmpfs:
+      - /tmp
+    working_dir: /tmp/gatling
+    restart: "no"
+    command: bash -x -c "
+      echo 'Starting g2i in detached mode, saving PID in variable' &&
+      export G2IPID=$$(/tools/perfana/gatling-to-influxdb/g2i-linux-amd64
+      ./target/load-test-results --address http://nginx:8089
+      --system-under-test issue_generation --test-environment local --stop-timeout 90
+      --database g2i_gatling --password password --username g2i_gatling
+      --log /tmp/g2i.log -d | awk '{print $$2}')
+      &&
+      echo 'Build and execute test' &&
+      mvn test -P issue-generation
+      &&
+      echo 'Waiting for parser to safely finish all its work' &&
+      sleep 30
+      &&
+      cat /tmp/g2i.log &&
+      echo 'Sending interrupt signal to g2i process' &&
+      kill -INT $$G2IPID
+      &&
+      echo 'Waiting for process to stop safely' &&
+      sleep 30
+      &&
+      echo 'Exiting'
+      "
+    networks:
+      - youtrack_net
 networks:
   youtrack_net:

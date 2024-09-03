@@ -90,7 +90,12 @@ jobs:
             ./volumes/gatling/issue-generation \
             ./volumes/gatling/user-generation \
           || true
-
+      - name: create volume folders sjk
+        run: |
+          mkdir -p -m 777 \
+            ./volumes/sjk/repository \
+            ./volumes/sjk/report \
+          || true
       - name: set an influx folders owner
         run: |
           sudo chown -R 1000:1000 \
