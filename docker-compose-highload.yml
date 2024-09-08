@@ -44,7 +44,6 @@ services:
       - ./volumes/youtrack_diagnostics:/diagnostics
       - "./configs/youtrack/youtrack.8g.monitoring.profiling.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
       - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
-      - "./tools/grafana/pyroscope/0.14/pyroscope.jar:/tools/grafana/pyroscope/pyroscope.jar:ro"
     environment:
       PYROSCOPE_APPLICATION_NAME: youtrack
       PYROSCOPE_SERVER_ADDRESS: http://pyroscope:4040
