@@ -20,11 +20,11 @@ services:
     ports:
       - "9010:9010"
       - "9011:9011"
-    depends_on:
-      influxdb_v2:
-        condition: service_healthy
-      pyroscope:
-        condition: service_started
+#    depends_on:
+#      influxdb_v2:
+#        condition: service_healthy
+#      pyroscope:
+#        condition: service_started
     healthcheck:
       test: [
         "CMD-SHELL",
@@ -56,6 +56,7 @@ services:
       PYROSCOPE_LOG_LEVEL: debug
       PYROSCOPE_PROFILING_INTERVAL: 5ms
       PYROSCOPE_UPLOAD_INTERVAL: 15s
+      OTEL_PYROSCOPE_START_PROFILING: "false"
 
     networks:
       - youtrack_net

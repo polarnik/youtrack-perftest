@@ -80,7 +80,6 @@
 ## You can also just run the "configure -J-yourkit" command of the YouTrack script
 #-yourkit
 
--opentelemetry
 -pyroscope
 -jfrexporter
 -jfr_options
