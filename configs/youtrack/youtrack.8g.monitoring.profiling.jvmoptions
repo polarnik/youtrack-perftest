@@ -32,6 +32,8 @@
 #@yourkit=-agentpath:%YOURKIT_AGENT_LIBRARY_PATH%=port=$/%YOURKIT_AGENT_PORT%/,sessionname=youtrack,dir=%APP_LOGS_DIR%,logdir=%APP_LOGS_DIR%
 @jfrexporter=-javaagent:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar=tag=service/youtrack,tag=systemUnderTest/youtrack_6g,tag=testEnvironment/local_docker_compose,influxUrl=http://nginx:8086,influxDatabase=jfr_youtrack,influxUser=jfr_youtrack,influxPassword=password,bigObjectThreshold=1000000,bigObjectSampleWeightThreshold=1000000
 @jolokia=
+@opentelemetry=-javaagent:/opt/app/opentelemetry-javaagent.jar
+@pyroscope=-javaagent:/opt/app/pyroscope.jar
 @jfr_profiling=-XX:StartFlightRecording=disk=true,filename=/diagnostics/recording.jfr
 @jfr_options=-XX:FlightRecorderOptions=repository=/diagnostics/,maxchunksize=100m,stackdepth=1024
 @jprofiler12=-agentpath:/tools/jprofiler/jprofiler12/bin/linux-x64/libjprofilerti.so=offline,id=104,config=/tools/jprofiler/jprofiler_12_config.xml
@@ -78,6 +80,8 @@
 ## You can also just run the "configure -J-yourkit" command of the YouTrack script
 #-yourkit
 
+-opentelemetry
+-pyroscope
 -jfrexporter
 -jfr_options
 -jfr_profiling

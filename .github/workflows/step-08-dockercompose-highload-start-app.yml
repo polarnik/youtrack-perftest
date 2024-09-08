@@ -68,13 +68,16 @@ jobs:
             ./volumes/youtrack_diagnostics \
             ./volumes/youtrack_backups \
             ./volumes/youtrack_temp
-      - name: create volume folders nginx, grafana, influx
+      - name: create volume folders nginx, grafana, influx, pyroscope
         run: |
           mkdir -p -m 750 \
           ./volumes/nginx_client_temp \
           ./volumes/nginx_cache_tmp \
           ./volumes/nginx_cache_cdn \
           ./volumes/nginx_log \
+          ./volumes/pyroscope_data \
+          ./volumes/pyroscope_data_shared \
+          ./volumes/pyroscope_data_compactor \
           ./volumes/grafana_data \
           ./volumes/grafana-apiserver \
           ./volumes/influx-v2-data || true
@@ -107,6 +110,13 @@ jobs:
             ./volumes/grafana_data \
             ./volumes/grafana-apiserver || true
 
+      - name: set a pyroscope folders owner
+        run: |
+          sudo chown -R 10001:10001 \
+            ./volumes/pyroscope_data \
+            ./volumes/pyroscope_data_shared \
+            ./volumes/pyroscope_data_compactor || true
+
       - name: set a nginx folders owner
         run: |
           sudo chown -R 101:101 \
@@ -118,3 +128,18 @@ jobs:
       - name: docker-compose up --detach
         run: |
           docker-compose --file ./git/docker-compose-highload.yml up --detach --force-recreate
+          docker-compose --file ./git/docker-compose-highload.yml up --detach pyroscope
+          docker-compose --file ./git/docker-compose-highload.yml up --detach --force-recreate influxdb_v2
+          docker-compose --file ./git/docker-compose-highload.yml up --detach nginx
+          docker-compose --file ./git/docker-compose-highload.yml up --detach telegraf_highload
+          docker-compose --file ./git/docker-compose-highload.yml up --detach --force-recreate --build youtrack
+          docker-compose --file ./git/docker-compose-highload.yml up --detach sjk
+          docker-compose --file ./git/docker-compose-highload.yml up --force-recreate gatling-issue-generation
+          docker-compose --file ./git/docker-compose-highload.yml stop nginx
+          docker-compose --file ./git/docker-compose-highload.yml stop telegraf_highload
+          docker-compose --file ./git/docker-compose-highload.yml stop sjk
+          docker-compose --file ./git/docker-compose-highload.yml stop youtrack
+          docker-compose --file ./git/docker-compose-highload.yml down influxdb_v2
+          docker-compose --file ./git/docker-compose-monitoring up --detach --force-recreate influxdb_v2
+          docker-compose --file ./git/docker-compose-monitoring up --detach --force-recreate grafana
+

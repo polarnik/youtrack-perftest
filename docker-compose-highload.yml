@@ -23,6 +23,8 @@ services:
     depends_on:
       influxdb_v2:
         condition: service_healthy
+      pyroscope:
+        condition: service_started
     healthcheck:
       test: [
         "CMD-SHELL",
@@ -42,6 +44,36 @@ services:
       - ./volumes/youtrack_diagnostics:/diagnostics
       - "./configs/youtrack/youtrack.8g.monitoring.profiling.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
       - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
+      - "./tools/grafana/pyroscope/0.14/pyroscope.jar:/tools/grafana/pyroscope/pyroscope.jar:ro"
+    environment:
+      PYROSCOPE_APPLICATION_NAME: youtrack
+      PYROSCOPE_SERVER_ADDRESS: http://pyroscope:4040
+      PYROSCOPE_AGENT_ENABLED: true
+      PYROSCOPE_FORMAT: jfr
+      PYROSCOPE_PROFILER_EVENT: wall
+      PYROSCOPE_PROFILER_ALLOC: 10m
+      PYROSCOPE_PROFILER_LOCK: 10ms
+      PYROSCOPE_LOG_LEVEL: debug
+      PYROSCOPE_PROFILING_INTERVAL: 5ms
+      PYROSCOPE_UPLOAD_INTERVAL: 15s
+
+    networks:
+      - youtrack_net
+
+  pyroscope:
+    image: grafana/pyroscope:weekly-f81-d657e8007
+    cpu_count: 2
+    cpuset: "5-7"
+    mem_reservation: 500m
+    mem_limit: 1500m
+    ports:
+      - "4040:4040"
+      - "9095:9095"
+    volumes:
+      - "./configs/pyroscope/config.yaml:/etc/pyroscope/config.yaml:ro"
+      - ./volumes/pyroscope_data:/data
+      - ./volumes/pyroscope_data_shared:/data-shared
+      - ./volumes/pyroscope_data_compactor:/data-compactor
     networks:
       - youtrack_net
 
@@ -210,9 +242,6 @@ services:
         -Dartifact=org.gridkit.jvmtool:sjk-plus:0.23 &
       mvn dependency:copy &&
       chmod +x ./sjk.sh &&
-      ./sjk.sh &&
-      ./sjk.sh &&
-      ./sjk.sh &&
       ./sjk.sh &&
       ./sjk.sh &&
       ./sjk.sh &&
