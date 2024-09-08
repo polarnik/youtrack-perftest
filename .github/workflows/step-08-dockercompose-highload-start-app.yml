@@ -58,6 +58,7 @@ jobs:
           ./volumes/youtrack_conf \
           ./volumes/youtrack_diagnostics \
           ./volumes/youtrack_backups \
+          ./volumes/youtrack_jetbrains_pyroscope \
           ./volumes/youtrack_temp || true
       - name: change an owner
         run: |
@@ -67,7 +68,8 @@ jobs:
             ./volumes/youtrack_conf \
             ./volumes/youtrack_diagnostics \
             ./volumes/youtrack_backups \
-            ./volumes/youtrack_temp
+            ./volumes/youtrack_temp \
+            ./volumes/youtrack_jetbrains_pyroscope
       - name: create volume folders nginx, grafana, influx, pyroscope
         run: |
           mkdir -p -m 750 \

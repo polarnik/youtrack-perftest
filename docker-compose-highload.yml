@@ -42,6 +42,7 @@ services:
       - ./volumes/youtrack_backups:/opt/youtrack/backups
       - ./volumes/youtrack_temp:/opt/youtrack/temp
       - ./volumes/youtrack_diagnostics:/diagnostics
+      - ./volumes/youtrack_jetbrains_pyroscope:/tmp/jetbrains-pyroscope/
       - "./configs/youtrack/youtrack.8g.monitoring.profiling.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
       - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
     environment:
