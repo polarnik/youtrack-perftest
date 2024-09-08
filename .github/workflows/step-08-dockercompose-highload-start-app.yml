@@ -127,7 +127,6 @@ jobs:
 
       - name: docker-compose up --detach
         run: |
-          docker-compose --file ./git/docker-compose-highload.yml up --detach --force-recreate
           docker-compose --file ./git/docker-compose-highload.yml up --detach pyroscope
           docker-compose --file ./git/docker-compose-highload.yml up --detach --force-recreate influxdb_v2
           docker-compose --file ./git/docker-compose-highload.yml up --detach nginx

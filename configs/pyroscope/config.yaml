@@ -39,7 +39,7 @@ limits:
   reject_newer_than: 0
 
 storage:
-  filesystem_storage_backend:
+  filesystem:
     dir: /data-shared
 
 self_profiling:
