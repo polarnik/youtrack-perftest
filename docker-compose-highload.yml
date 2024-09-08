@@ -56,6 +56,7 @@ services:
       PYROSCOPE_LOG_LEVEL: debug
       PYROSCOPE_PROFILING_INTERVAL: 5ms
       PYROSCOPE_UPLOAD_INTERVAL: 15s
+      PYROSCOPE_AP_EXTRA_ARGUMENTS: "threads"
       OTEL_PYROSCOPE_START_PROFILING: "false"
 
     networks:
@@ -63,10 +64,10 @@ services:
 
   pyroscope:
     image: grafana/pyroscope:weekly-f81-d657e8007
-    cpu_count: 2
-    cpuset: "5-7"
+    cpu_count: 4
+    cpuset: "4-7"
     mem_reservation: 500m
-    mem_limit: 1500m
+    mem_limit: 2500m
     ports:
       - "4040:4040"
       - "9095:9095"
@@ -225,11 +226,11 @@ services:
     mem_limit: 300m
     environment:
       OUTPUT_FOLDER: "/tmp/report"
-    depends_on:
-      gatling-issue-generation:
-        condition: service_started
-      youtrack:
-        condition: service_healthy
+#    depends_on:
+#      gatling-issue-generation:
+#        condition: service_started
+#      youtrack:
+#        condition: service_healthy
     volumes:
       - "./tools/aragozin/jvm-tools:/tmp/jvm-tools"
       - "./volumes/sjk/repository:/root/.m2/repository"
