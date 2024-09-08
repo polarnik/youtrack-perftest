@@ -8,4 +8,5 @@ ENV OTEL_JAVAAGENT_EXTENSIONS=/opt/app/pyroscope-otel.jar
 ENV OTEL_PYROSCOPE_ADD_PROFILE_URL=false
 ENV OTEL_PYROSCOPE_ADD_PROFILE_BASELINE_URL=false
 ENV OTEL_PYROSCOPE_START_PROFILING=true
+RUN chown -R jetbrains:jetbrains /opt/app/
 USER jetbrains
