@@ -1,0 +1,7 @@
+global:
+  scrape_interval:     15s
+
+scrape_configs:
+  - job_name: 'youtrack-jmx'
+    static_configs:
+      - targets: ['youtrack:9404']

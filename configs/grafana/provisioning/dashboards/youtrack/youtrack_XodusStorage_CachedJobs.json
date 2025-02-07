@@ -1,0 +1,2215 @@
+{
+    "description": "YouTrack Xodus entity store metrics (DB):\n⚙️ Cached Jobs →\n✅ Queued | ❌ Non Queued\n",
+    "graphTooltip": 1,
+    "links": [
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "YouTrack Server"
+            ],
+            "targetBlank": true,
+            "title": "YouTrack Server",
+            "tooltip": "",
+            "type": "dashboards",
+            "url": ""
+        },
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Xodus"
+            ],
+            "targetBlank": true,
+            "title": "Xodus",
+            "tooltip": "",
+            "type": "dashboards",
+            "url": ""
+        },
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Xodus Entity"
+            ],
+            "targetBlank": true,
+            "title": "Xodus Entity",
+            "tooltip": "",
+            "type": "dashboards",
+            "url": ""
+        }
+    ],
+    "panels": [
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 0,
+                "x": 0,
+                "y": 0
+            },
+            "id": 1,
+            "title": "Version",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 4,
+                "x": 0,
+                "y": 1
+            },
+            "id": 2,
+            "options": {
+                "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                },
+                "content": "### Version\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
+                "mode": "markdown"
+            },
+            "pluginVersion": "v10.4.0",
+            "title": "",
+            "type": "text"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "axisWidth": 65,
+                        "drawStyle": "line",
+                        "fillOpacity": 100,
+                        "gradientMode": "opacity",
+                        "lineWidth": 10,
+                        "showPoints": "never"
+                    },
+                    "decimals": 0,
+                    "max": 1,
+                    "min": 0,
+                    "unit": "none"
+                }
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 20,
+                "x": 4,
+                "y": 1
+            },
+            "id": 3,
+            "maxDataPoints": 100,
+            "options": {
+                "legend": {
+                    "isVisible": false,
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "hoverProximity": 30,
+                    "mode": "single",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "avg by (Version) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "format": "table",
+                    "instant": false,
+                    "range": true,
+                    "refId": "Version"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "avg by (instance, Build) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "format": "table",
+                    "instant": false,
+                    "range": true,
+                    "refId": "Build"
+                }
+            ],
+            "title": "Version",
+            "transformations": [
+                {
+                    "id": "merge",
+                    "options": { }
+                },
+                {
+                    "id": "filterByValue",
+                    "options": {
+                        "filters": [
+                            {
+                                "config": {
+                                    "id": "regex",
+                                    "options": {
+                                        "value": ".+"
+                                    }
+                                },
+                                "fieldName": "Version"
+                            },
+                            {
+                                "config": {
+                                    "id": "regex",
+                                    "options": {
+                                        "value": ".+"
+                                    }
+                                },
+                                "fieldName": "Build"
+                            }
+                        ],
+                        "match": "all",
+                        "type": "include"
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Value #Build": true,
+                            "instance": true
+                        },
+                        "includeByName": { },
+                        "indexByName": {
+                            "Build": 3,
+                            "Time": 0,
+                            "Value #Build": 5,
+                            "Value #Version": 4,
+                            "Version": 2,
+                            "instance": 1
+                        },
+                        "renameByName": {
+                            "Value #Version": "Version info"
+                        }
+                    }
+                },
+                {
+                    "id": "prepareTimeSeries",
+                    "options": {
+                        "format": "multi"
+                    }
+                }
+            ],
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 0,
+                "x": 24,
+                "y": 8
+            },
+            "id": 4,
+            "title": "ℹ️ Info: ⚙️ Cached Jobs → ✅ Queued | ❌ Non Queued",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 9
+            },
+            "id": 5,
+            "options": {
+                "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                },
+                "content": "<img src='https://polarnik.github.io/youtrack-monitoring/Cached.png' style='height: 100%' />",
+                "mode": "markdown"
+            },
+            "pluginVersion": "v10.4.0",
+            "title": "",
+            "type": "text"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 0,
+                "x": 24,
+                "y": 16
+            },
+            "id": 6,
+            "title": "⚙️ Cached Jobs → ✅ Queued | ❌ Non Queued",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": -60
+                            },
+                            {
+                                "color": "red",
+                                "value": -50
+                            },
+                            {
+                                "color": "#EAB839",
+                                "value": -50
+                            },
+                            {
+                                "color": "orange",
+                                "value": -40
+                            },
+                            {
+                                "color": "yellow",
+                                "value": -30
+                            },
+                            {
+                                "color": "blue",
+                                "value": -20
+                            },
+                            {
+                                "color": "#8e3bb84d",
+                                "value": -10
+                            },
+                            {
+                                "color": "#ffffff",
+                                "value": 0
+                            },
+                            {
+                                "color": "super-light-green",
+                                "value": 10
+                            },
+                            {
+                                "color": "light-green",
+                                "value": 20
+                            },
+                            {
+                                "color": "green",
+                                "value": 30
+                            },
+                            {
+                                "color": "semi-dark-green",
+                                "value": 40
+                            },
+                            {
+                                "color": "dark-green",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [ ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 4,
+                "x": 0,
+                "y": 17
+            },
+            "hideTimeOverride": true,
+            "id": 7,
+            "maxDataPoints": 300,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "values": false
+                },
+                "wideLayout": true
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n )\n  -\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "timeFrom": "$diff_interval",
+            "title": "⚙️ Cached Jobs (last $diff_interval vs $offset ago)",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisWidth": 65,
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 30,
+                        "gradientMode": "opacity",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "fieldMinMax": false,
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "cps"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "current"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 5
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "prev"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "dark-blue",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "diff"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineStyle",
+                                "value": {
+                                    "fill": "solid"
+                                }
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "hidden"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "yellow",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "custom.fillOpacity",
+                                "value": 0
+                            },
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "start"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.drawStyle",
+                                "value": "bars"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 2
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "right"
+                            },
+                            {
+                                "id": "custom.axisSoftMin",
+                                "value": 0
+                            },
+                            {
+                                "id": "custom.axisSoftMax",
+                                "value": 1
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "unit",
+                                "value": "bool_yes_no"
+                            },
+                            {
+                                "id": "custom.axisWidth",
+                                "value": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 20,
+                "x": 4,
+                "y": 17
+            },
+            "id": 8,
+            "maxDataPoints": 300,
+            "options": {
+                "legend": {
+                    "calcs": [ ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "app start",
+                    "range": true,
+                    "refId": "start"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n",
+                    "legendFormat": "prev ($offset)",
+                    "range": true,
+                    "refId": "prev"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n",
+                    "legendFormat": "current",
+                    "range": true,
+                    "refId": "current"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n )\n  -\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "title": "⚙️ Cached Jobs (per 1 second) (🟥 current vs 🟦 prev)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "✅ Queued",
+                            "url": "/d/xodus_storage_queued?${__all_variables}&${__url_time_range}"
+                        }
+                    ],
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": -60
+                            },
+                            {
+                                "color": "red",
+                                "value": -50
+                            },
+                            {
+                                "color": "#EAB839",
+                                "value": -50
+                            },
+                            {
+                                "color": "orange",
+                                "value": -40
+                            },
+                            {
+                                "color": "yellow",
+                                "value": -30
+                            },
+                            {
+                                "color": "blue",
+                                "value": -20
+                            },
+                            {
+                                "color": "#8e3bb84d",
+                                "value": -10
+                            },
+                            {
+                                "color": "#ffffff",
+                                "value": 0
+                            },
+                            {
+                                "color": "super-light-green",
+                                "value": 10
+                            },
+                            {
+                                "color": "light-green",
+                                "value": 20
+                            },
+                            {
+                                "color": "green",
+                                "value": 30
+                            },
+                            {
+                                "color": "semi-dark-green",
+                                "value": 40
+                            },
+                            {
+                                "color": "dark-green",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [ ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 4,
+                "x": 0,
+                "y": 24
+            },
+            "hideTimeOverride": true,
+            "id": 9,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "✅ Queued",
+                    "url": "/d/xodus_storage_queued?${__all_variables}&${__url_time_range}"
+                }
+            ],
+            "maxDataPoints": 300,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "values": false
+                },
+                "wideLayout": true
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n )\n  -\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "timeFrom": "$diff_interval",
+            "title": "✅ Queued (last $diff_interval vs $offset ago)",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisWidth": 65,
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 30,
+                        "gradientMode": "opacity",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "fieldMinMax": false,
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "cps"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "current"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 5
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "prev"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "dark-blue",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "diff"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineStyle",
+                                "value": {
+                                    "fill": "solid"
+                                }
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "hidden"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "yellow",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "custom.fillOpacity",
+                                "value": 0
+                            },
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "start"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.drawStyle",
+                                "value": "bars"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 2
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "right"
+                            },
+                            {
+                                "id": "custom.axisSoftMin",
+                                "value": 0
+                            },
+                            {
+                                "id": "custom.axisSoftMax",
+                                "value": 1
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "unit",
+                                "value": "bool_yes_no"
+                            },
+                            {
+                                "id": "custom.axisWidth",
+                                "value": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 20,
+                "x": 4,
+                "y": 24
+            },
+            "id": 10,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "✅ Queued",
+                    "url": "/d/xodus_storage_queued?${__all_variables}&${__url_time_range}"
+                }
+            ],
+            "maxDataPoints": 300,
+            "options": {
+                "legend": {
+                    "calcs": [ ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "app start",
+                    "range": true,
+                    "refId": "start"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n",
+                    "legendFormat": "prev ($offset)",
+                    "range": true,
+                    "refId": "prev"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n",
+                    "legendFormat": "current",
+                    "range": true,
+                    "refId": "current"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n )\n  -\n  ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "title": "✅ Queued (per 1 second) (🟥 current vs 🟦 prev)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#8e3bb84d",
+                                "value": null
+                            },
+                            {
+                                "color": "blue",
+                                "value": 10
+                            },
+                            {
+                                "color": "green",
+                                "value": 20
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 30
+                            },
+                            {
+                                "color": "orange",
+                                "value": 40
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 60
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [ ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 4,
+                "x": 0,
+                "y": 31
+            },
+            "hideTimeOverride": true,
+            "id": 11,
+            "maxDataPoints": 300,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "values": false
+                },
+                "wideLayout": true
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n )\n  -\n  ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "timeFrom": "$diff_interval",
+            "title": "❌ Not Queued (last $diff_interval vs $offset ago)",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisWidth": 65,
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 30,
+                        "gradientMode": "opacity",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "fieldMinMax": false,
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "cps"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "current"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 5
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "prev"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "dark-blue",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "diff"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineStyle",
+                                "value": {
+                                    "fill": "solid"
+                                }
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "hidden"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "yellow",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "custom.fillOpacity",
+                                "value": 0
+                            },
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "start"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.drawStyle",
+                                "value": "bars"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 2
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "right"
+                            },
+                            {
+                                "id": "custom.axisSoftMin",
+                                "value": 0
+                            },
+                            {
+                                "id": "custom.axisSoftMax",
+                                "value": 1
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "unit",
+                                "value": "bool_yes_no"
+                            },
+                            {
+                                "id": "custom.axisWidth",
+                                "value": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 20,
+                "x": 4,
+                "y": 31
+            },
+            "id": 12,
+            "maxDataPoints": 300,
+            "options": {
+                "legend": {
+                    "calcs": [ ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "app start",
+                    "range": true,
+                    "refId": "start"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n",
+                    "legendFormat": "prev ($offset)",
+                    "range": true,
+                    "refId": "prev"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n",
+                    "legendFormat": "current",
+                    "range": true,
+                    "refId": "current"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n )\n  -\n  ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "title": "❌ Not Queued (per 1 second) (🟥 current vs 🟦 prev)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "✅ Queued",
+                            "url": "/d/xodus_storage_queued?${__all_variables}&${__url_time_range}"
+                        }
+                    ],
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": -60
+                            },
+                            {
+                                "color": "red",
+                                "value": -50
+                            },
+                            {
+                                "color": "#EAB839",
+                                "value": -50
+                            },
+                            {
+                                "color": "orange",
+                                "value": -40
+                            },
+                            {
+                                "color": "yellow",
+                                "value": -30
+                            },
+                            {
+                                "color": "blue",
+                                "value": -20
+                            },
+                            {
+                                "color": "#8e3bb84d",
+                                "value": -10
+                            },
+                            {
+                                "color": "#ffffff",
+                                "value": 0
+                            },
+                            {
+                                "color": "super-light-green",
+                                "value": 10
+                            },
+                            {
+                                "color": "light-green",
+                                "value": 20
+                            },
+                            {
+                                "color": "green",
+                                "value": 30
+                            },
+                            {
+                                "color": "semi-dark-green",
+                                "value": 40
+                            },
+                            {
+                                "color": "dark-green",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [ ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 4,
+                "x": 0,
+                "y": 38
+            },
+            "hideTimeOverride": true,
+            "id": 13,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "✅ Queued",
+                    "url": "/d/xodus_storage_queued?${__all_variables}&${__url_time_range}"
+                }
+            ],
+            "maxDataPoints": 300,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "values": false
+                },
+                "wideLayout": true
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n  -\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n)\n/\n( round( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "timeFrom": "$diff_interval",
+            "title": "✅ % Queued (last $diff_interval vs $offset ago)",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisWidth": 65,
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 30,
+                        "gradientMode": "opacity",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "fieldMinMax": false,
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "current"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 5
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "prev"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "dark-blue",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "diff"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineStyle",
+                                "value": {
+                                    "fill": "solid"
+                                }
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "hidden"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "yellow",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "custom.fillOpacity",
+                                "value": 0
+                            },
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "start"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.drawStyle",
+                                "value": "bars"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 2
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "right"
+                            },
+                            {
+                                "id": "custom.axisSoftMin",
+                                "value": 0
+                            },
+                            {
+                                "id": "custom.axisSoftMax",
+                                "value": 1
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "unit",
+                                "value": "bool_yes_no"
+                            },
+                            {
+                                "id": "custom.axisWidth",
+                                "value": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 20,
+                "x": 4,
+                "y": 38
+            },
+            "id": 14,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "✅ Queued",
+                    "url": "/d/xodus_storage_queued?${__all_variables}&${__url_time_range}"
+                }
+            ],
+            "maxDataPoints": 300,
+            "options": {
+                "legend": {
+                    "calcs": [ ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "app start",
+                    "range": true,
+                    "refId": "start"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n",
+                    "legendFormat": "prev ($offset)",
+                    "range": true,
+                    "refId": "prev"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) != 0 )\n",
+                    "legendFormat": "current",
+                    "range": true,
+                    "refId": "current"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n  -\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n)\n/\n( round( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "title": "✅ % Queued (🟥 current vs 🟦 prev)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#8e3bb84d",
+                                "value": null
+                            },
+                            {
+                                "color": "blue",
+                                "value": 10
+                            },
+                            {
+                                "color": "green",
+                                "value": 20
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 30
+                            },
+                            {
+                                "color": "orange",
+                                "value": 40
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 60
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [ ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 4,
+                "x": 0,
+                "y": 45
+            },
+            "hideTimeOverride": true,
+            "id": 15,
+            "maxDataPoints": 300,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "values": false
+                },
+                "wideLayout": true
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n  -\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n)\n/\n( round( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "timeFrom": "$diff_interval",
+            "title": "❌ % Not Queued (last $diff_interval vs $offset ago)",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisWidth": 65,
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 30,
+                        "gradientMode": "opacity",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "fieldMinMax": false,
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "current"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 5
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "prev"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "dark-blue",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "diff"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.lineStyle",
+                                "value": {
+                                    "fill": "solid"
+                                }
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "hidden"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "yellow",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "custom.fillOpacity",
+                                "value": 0
+                            },
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "start"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.drawStyle",
+                                "value": "bars"
+                            },
+                            {
+                                "id": "custom.lineWidth",
+                                "value": 2
+                            },
+                            {
+                                "id": "custom.axisPlacement",
+                                "value": "right"
+                            },
+                            {
+                                "id": "custom.axisSoftMin",
+                                "value": 0
+                            },
+                            {
+                                "id": "custom.axisSoftMax",
+                                "value": 1
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            },
+                            {
+                                "id": "unit",
+                                "value": "bool_yes_no"
+                            },
+                            {
+                                "id": "custom.axisWidth",
+                                "value": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 20,
+                "x": 4,
+                "y": 45
+            },
+            "id": 16,
+            "maxDataPoints": 300,
+            "options": {
+                "legend": {
+                    "calcs": [ ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "app start",
+                    "range": true,
+                    "refId": "start"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n",
+                    "legendFormat": "prev ($offset)",
+                    "range": true,
+                    "refId": "prev"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "editorMode": "code",
+                    "expr": "100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) != 0 )\n",
+                    "legendFormat": "current",
+                    "range": true,
+                    "refId": "current"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "100 * (\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval]))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval]))\n) * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n  -\n  ( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n )\n)\n/\n( round( 100 * ( (\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) /\n( ( (\nsum(increase(youtrack_TotalCachingJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingCountJobsEnqueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n+\nsum(increase(youtrack_TotalCachingJobsNotQueued{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n)  * 1000 / $__rate_interval_ms\n ) != 0 )\n , 0.0001) != 0 )\n",
+                    "legendFormat": "diff",
+                    "range": true,
+                    "refId": "diff"
+                }
+            ],
+            "title": "❌ % Not Queued (🟥 current vs 🟦 prev)",
+            "type": "timeseries"
+        }
+    ],
+    "schemaVersion": 36,
+    "tags": [
+        "YouTrack Server",
+        "Xodus",
+        "Xodus Entity",
+        "⚙️ Cached Jobs",
+        "✅ Queued",
+        "❌ Non Queued"
+    ],
+    "templating": {
+        "list": [
+            {
+                "name": "source",
+                "query": "prometheus",
+                "type": "datasource"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "7d",
+                    "value": "7d"
+                },
+                "name": "offset",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "7d",
+                        "value": "7d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "14d",
+                        "value": "14d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "21d",
+                        "value": "21d"
+                    }
+                ],
+                "query": "7d : 7d,14d : 14d,21d : 21d",
+                "type": "custom"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "3h",
+                    "value": "3h"
+                },
+                "name": "diff_interval",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "1h",
+                        "value": "1h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "2h",
+                        "value": "2h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "3h",
+                        "value": "3h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "4h",
+                        "value": "4h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5h",
+                        "value": "5h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "6h",
+                        "value": "6h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "12h",
+                        "value": "12h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1d",
+                        "value": "1d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "2d",
+                        "value": "2d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "3d",
+                        "value": "3d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "4d",
+                        "value": "4d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "7d",
+                        "value": "7d"
+                    }
+                ],
+                "query": "1h : 1h,2h : 2h,3h : 3h,4h : 4h,5h : 5h,6h : 6h,12h : 12h,1d : 1d,2d : 2d,3d : 3d,4d : 4d,7d : 7d",
+                "type": "custom"
+            },
+            {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${source}"
+                },
+                "multi": false,
+                "name": "instance",
+                "query": "query_result(sort_desc(    sum by (instance) (    youtrack_UtilizationPercent{}    ) > 0))",
+                "refresh": 2,
+                "regex": "/{instance=\"(.*)\"}.*/",
+                "type": "query"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "✅ Yes",
+                    "value": "1"
+                },
+                "label": "Show app start",
+                "multi": false,
+                "name": "app_start",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "✅ Yes",
+                        "value": "1"
+                    },
+                    {
+                        "selected": false,
+                        "text": "🔳 No",
+                        "value": "0"
+                    }
+                ],
+                "query": "✅ Yes : 1,🔳 No : 0",
+                "type": "custom"
+            }
+        ]
+    },
+    "time": {
+        "from": "now-6h",
+        "to": "now"
+    },
+    "timezone": "utc",
+    "title": "Xodus storage: ⚙️ Cached Jobs → ✅ Queued | ❌ Non Queued",
+    "uid": "xodus_storage_jobs"
+}
