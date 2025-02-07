@@ -83,6 +83,8 @@ Metrics include:
 2. Set a password and tokens
 3. Execute `docker stop youtrack` (locally, manually)
 
+42bd2ce4dbaf8554bf082946a1c039d4384e81a99ed53fb75215c1b6ace8d34cf66889fdeee418cbe93d54f38f6e94a8a05a0108234b1955582d566283e3d084b23a0b8b52b016b0e610abcbbe7573fa3ff8fb3cdc9346dc94ef5f596f5b12719abcb02e6fae23d98f53f22a01788066aac7298b7fe79cc3dcd6f8df2fb41ab4
+
 
 ## Admin tokens
 
