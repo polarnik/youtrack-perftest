@@ -3,10 +3,7 @@
 
 services:
   youtrack:
-    #image: jetbrains/youtrack:${YOUTRACK_VERSION:?}
-    build:
-      context: docker/jetbrains-youtrack
-      dockerfile: youtrack-with-tools.Dockerfile
+    image: performance/youtrack:2024.3.57595
     hostname: youtrack
     cpu_count: 4
     cpuset: "0-4"
@@ -14,17 +11,19 @@ services:
     mem_limit: 10G
     memswap_limit: 0m
     mem_swappiness: 0
-    oom_kill_disable: true
+    #oom_kill_disable: true
     restart: "no"
-    pull_policy: "never"
-    healthcheck:
-      test: [
-        "CMD-SHELL",
-        "curl -S -s -k -XGET 'http://127.0.0.1:8080/api/admin/telemetry?fields=uptime,startedTime' -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry'" ]
-      interval: 60s
-      timeout: 1s
-      retries: 1
-      start_period: 10s
+    #pull_policy: "never"
+    #healthcheck:
+    #  test: [
+    #    "CMD-SHELL",
+    #    "curl -S -s -k -XGET 'http://127.0.0.1:8080/api/admin/telemetry?fields=uptime,startedTime' -H 'Authorization: Bearer perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry'" ]
+    #  interval: 60s
+    #  timeout: 1s
+    #  retries: 1
+    #  start_period: 10s
+    ports:
+      - '9404:9404'
     tmpfs:
       /tmp
     volumes:
@@ -34,6 +33,7 @@ services:
       - ./volumes/youtrack_backups:/opt/youtrack/backups
       - ./volumes/youtrack_temp:/opt/youtrack/temp
       - "./configs/youtrack/youtrack.6g.monitoring.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
+      - "./configs/prometheus_jmx_exporter/jmx_exporter.yml:/opt/app/jmx_exporter.yml:ro"
       - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
     networks:
       - youtrack_net
@@ -45,6 +45,9 @@ services:
     cpuset: "5-7"
     mem_reservation: 100m
     mem_limit: 300m
+    depends_on:
+      - telegraf
+      - youtrack
     ports:
       - "8080:8080"
       - "443:443"
@@ -307,6 +310,45 @@ services:
     networks:
       - youtrack_net
 
+# based on https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/deployment/docker/docker-compose.yml
+  #  Metrics collector.
+  #  It scrapes targets defined in --promscrape.config
+  #  And forward them to --remoteWrite.url
+  vmagent:
+    container_name: vmagent
+    image: victoriametrics/vmagent:v1.110.0
+    depends_on:
+      - "victoriametrics"
+    ports:
+      - 8429:8429
+    volumes:
+      - ./volumes/vmagentdata:/vmagentdata
+      - ./configs/vmagent/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://victoriametrics:8428/api/v1/write"
+    restart: always
+    networks:
+      - youtrack_net
+
+  # VictoriaMetrics instance, a single process responsible for
+  # storing metrics and serve read requests.
+  victoriametrics:
+    container_name: victoriametrics
+    image: victoriametrics/victoria-metrics:v1.110.0
+    ports:
+      - 8428:8428
+      - 4242:4242
+    volumes:
+      - ./volumes/vmdata:/storage
+    command:
+      - "--storageDataPath=/storage"
+      - "--opentsdbListenAddr=:4242"
+      - "--httpListenAddr=:8428"
+      - "--vmalert.proxyURL=http://vmalert:8880"
+    restart: always
+    networks:
+      - youtrack_net
 
 networks:
   youtrack_net:
