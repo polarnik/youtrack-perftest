@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="jetbrains.youtrack.logging,jetbrains.youtrack.scripts.log">
+    <Appenders>
+
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%d{ABSOLUTE} %-5p [%X{requestId}@%-15.15t] [%-30.30c{1}] [%X{username}@%X{ip}] %m%n %ex"/>
+        </Console>
+
+        <MultiplexingFileAppender name="ACCESS" file="access.log" fileCountLimit="5"
+                                  layout="%d{dd/MM/yy HH:mm:ss,SSS} [%X{username}@%X{ip}] %m%n %ex"/>
+        <MultiplexingFileAppender name="ACCESS_JSON" file="access.json">
+            <JsonLayout complete="true" compact="true" eventEol="true"
+                        additionalFields="username=${ctx:username};ip=${ctx:ip}"
+            />
+        </MultiplexingFileAppender>
+
+        <MultiplexingFileAppender name="FILE" file="youtrack.log"/>
+        <MultiplexingFileAppender name="FILE_JSON" file="youtrack.json">
+            <JsonLayout complete="true" compact="true" eventEol="true" />
+        </MultiplexingFileAppender>
+
+        <MultiplexingFileAppender name="SECURITYF" file="security.log"/>
+        <MultiplexingFileAppender name="SECURITYF_JSON" file="security.json">
+            <JsonLayout complete="true" compact="true" eventEol="true" />
+        </MultiplexingFileAppender>
+
+        <MultiplexingFileAppender name="REQUSTMONITORF" file="request-monitor.log"/>
+        <MultiplexingFileAppender name="MAILBOXF" file="mailbox.log"/>
+        <MultiplexingFileAppender name="VCSF" file="vcs.log"/>
+        <MultiplexingFileAppender name="RINGF" file="ring.log"/>
+        <MultiplexingFileAppender name="RINGAUDITF" file="ring-audit.log"/>
+        <MultiplexingFileAppender name="NOTIFICATIONF" file="notification.log"/>
+        <MultiplexingFileAppender name="WORKFLOW" file="workflow.log"
+                                  layout="%d{dd/MM/yy HH:mm:ss,SSS} %-5p [%X{requestId}@%-15.15t] [%-30.30c{1}] [%X{script_name}] [%X{username}@%X{ip}] %m%n %ex"/>
+        <MultiplexingFileAppender name="WORKFLOW_JSON" file="workflow.json">
+            <JsonLayout complete="true" compact="true" eventEol="true"
+                        additionalFields="requestId=${ctx:requestId};script_name=${ctx:script_name};username=${ctx:username};ip=${ctx:ip}"
+            />
+        </MultiplexingFileAppender>
+        <MultiplexingFileAppender name="HUBREMOTEF" file="ring-remote-api.log"/>
+        <MultiplexingFileAppender name="PERFORMANCEF" file="performance.log"/>
+        <MultiplexingFileAppender name="PERFORMANCEF_JSON" file="performance.json">
+            <JsonLayout complete="true" compact="true" eventEol="true" />
+        </MultiplexingFileAppender>
+
+        <MultiplexingFileAppender name="JOBS" file="background-jobs.log"/>
+
+        <MultiplexingScriptLogCachingAppender name="WORKFLOWC"/>
+
+        <MultiplexingFileAppender name="ERRORS" file="errors.log">
+            <ThresholdFilter level="error"/>
+        </MultiplexingFileAppender>
+        <MultiplexingFileAppender name="ERRORS_JSON" file="errors.json">
+            <ThresholdFilter level="error"/>
+            <JsonLayout complete="true" compact="true" eventEol="true" />
+        </MultiplexingFileAppender>
+
+        <MultiplexingFileAppender name="IMPORTF"
+                                  file="import.log"
+                                  layout="%d{dd/MM/yy HH:mm:ss,SSS} %-5p [%X{import_cycle}] %m%n %ex">
+            <ThresholdFilter level="trace"/>
+        </MultiplexingFileAppender>
+
+
+        <Routing name="IMPORT_ROUTING_F">
+            <Routes pattern="$${ctx:import_config}">
+                <Route>
+                    <MultiplexingRoutingFileAppender
+                            name="IMPORT_ROUTE_F"
+                            file="import_${ctx:import_config}.log"
+                            filePattern="import_${ctx:import_config}_%d{MM-dd-yyyy_HH-mm-ss}.log"
+                            layout="%d{dd/MM/yy HH:mm:ss,SSS} %-5p [%X{import_cycle}] [%6.12c{1}] %m%n %ex">
+                        <ThresholdFilter level="trace"/>
+                    </MultiplexingRoutingFileAppender>
+                </Route>
+            </Routes>
+        </Routing>
+
+        <Routing name="IMPORT_EXT_ROUTING_F">
+            <Routes pattern="$${ctx:import_config}">
+                <Route>
+                    <MultiplexingRoutingFileAppender
+                            name="IMPORT_EXT_ROUTE_F"
+                            file="import_ext_${ctx:import_config}.log"
+                            filePattern="import_ext_${ctx:import_config}_%d{MM-dd-yyyy_HH-mm-ss}.log"
+                            layout="%d{dd/MM/yy HH:mm:ss,SSS} %-5p [%X{import_cycle}] [%6.12c{1}] %m%n %ex">
+                        <ThresholdFilter level="trace"/>
+                    </MultiplexingRoutingFileAppender>
+                </Route>
+            </Routes>
+        </Routing>
+
+        <MultiplexingFileAppender name="SCRIPTF" file="script.log">
+            <ThresholdFilter level="trace"/>
+        </MultiplexingFileAppender>
+
+        <MultiplexingFileAppender name="LEGACYAUTH" file="legacy-auth.log"
+                                  layout="%d{dd/MM/yy HH:mm:ss,SSS} %-5p [%X{requestId}@%-15.15t] %m%n %ex"/>
+
+        <Routing name="JOURNAL_ROUTING_F">
+            <Routes pattern="$${ctx:import_config}">
+                <!-- This route is chosen if ThreadContext has no value for key import_config -->
+                <Route key="$${ctx:import_config}">
+                    <Null/>
+                </Route>
+                <Route>
+                    <MultiplexingRoutingFileAppender
+                            name="JOURNAL_ROUTE_F"
+                            file="script-journal_${ctx:import_config}.log"
+                            filePattern="script-journal_${ctx:import_config}_%d{MM-dd-yyyy_HH-mm-ss}.log"
+                            fileRetention="14d"
+                            fileSizeLimit="10Mb"
+                            fileCountLimit="50"
+                            layout="+-+!+-+ %d{dd/MM/yy HH:mm:ss,SSS} [%c{1}] %m%n">
+                        <ThresholdFilter level="trace"/>
+                    </MultiplexingRoutingFileAppender>
+                </Route>
+            </Routes>
+        </Routing>
+
+        <HostedAwareRollingFileAppender name="LIVEUPDATEF" file="liveupdate.log"/>
+        <HostedAwareRollingFileAppender name="LIVEUPDATEF_JSON" file="liveupdate.json">
+            <JsonLayout complete="true" compact="true" eventEol="true" />
+        </HostedAwareRollingFileAppender>
+
+        <Async name="ASYNC">
+            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="FILE_JSON"/>
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ERRORS"/>
+            <AppenderRef ref="ERRORS_JSON"/>
+            <Blocking>false</Blocking>
+        </Async>
+
+        <Async name="ASYNCACCESS">
+            <AppenderRef ref="ACCESS"/>
+            <AppenderRef ref="ACCESS_JSON"/>
+            <Blocking>false</Blocking>
+        </Async>
+
+        <Async name="ASYNCWORKFLOW">
+            <AppenderRef ref="WORKFLOW"/>
+            <AppenderRef ref="WORKFLOW_JSON"/>
+            <Blocking>false</Blocking>
+        </Async>
+
+        <Async name="ASYNCIMPORT">
+            <AppenderRef ref="IMPORT_ROUTING_F"/>
+            <Blocking>false</Blocking>
+        </Async>
+
+        <Async name="ASYNCIMPORTEXT">
+            <AppenderRef ref="IMPORT_EXT_ROUTING_F"/>
+            <Blocking>false</Blocking>
+        </Async>
+
+        <Async name="ASYNCSCRIPT">
+            <AppenderRef ref="SCRIPTF"/>
+            <Blocking>false</Blocking>
+        </Async>
+
+        <Async name="ASYNCJOURNAL">
+            <AppenderRef ref="JOURNAL_ROUTING_F"/>
+            <Blocking>false</Blocking>
+        </Async>
+
+        <Async name="ASYNCJOBS">
+            <AppenderRef ref="JOBS"/>
+            <Blocking>false</Blocking>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="access" level="INFO" additivity="false">
+            <AppenderRef ref="ASYNCACCESS"/>
+        </Logger>
+
+        <Logger name="org.apache" level="INFO"/>
+
+        <Logger name="org.quartz" level="WARN"/>
+
+        <Logger name="org.springframework" level="WARN"/>
+
+        <Logger name="jetbrains.youtrack.spring" level="INFO"/>
+
+        <Logger name="jetbrains.youtrack.ocr" level="INFO"/>
+
+        <Logger name="jetbrains.youtrack.core.job" level="INFO" additivity="false">
+            <AppenderRef ref="ASYNCJOBS"/>
+        </Logger>
+
+        <Logger name="org.springframework.beans.TypeConverterDelegate" level="ERROR"/>
+
+        <Logger name="org.springframework.beans.factory.support.DisposableBeanAdapter" level="WARN"/>
+
+        <Logger name="jetbrains.mps.webr.rpc.rest.provider.misc.DefaultRestRequestHandler" level="WARN"/>
+
+        <Logger name="jetbrains.mps.webr.runtime.templateComponent.Widget" level="ERROR"/>
+
+        <Logger name="jetbrains.mps.baseLanguage.stateMachine" level="INFO"/>
+
+        <Logger name="jetbrains" level="INFO"/>
+
+        <Logger name="com.jetbrains" level="INFO"/>
+
+        <Logger name="jetbrains.exodus.core.execution.locks" level="INFO"/>
+
+        <Logger name="jetbrains.exodus.query.BinaryOperator" level="ERROR"/>
+
+        <Logger name="com.jetbrains.teamsys.dnq.database" level="INFO"/>
+
+        <Logger name="jetbrains.teamsys.dnq.runtime" level="INFO"/>
+
+        <Logger name="jetbrains.exodus.database.impl.iterate.binop" level="info"/>
+
+        <Logger name="org.apache.http.client.protocol" level="error"/>
+
+        <Logger name="org.eclipse.jetty.io" level="error"/>
+
+        <Logger name="org.eclipse.jetty.http" level="error"/>
+
+        <Logger name="org.eclipse.jetty" level="info" additivity="false"/>
+
+        <Logger name="freemarker" level="info"/>
+
+        <Logger name="eu.medsea" level="info"/>
+
+        <Logger name="jetbrains.youtrack.mailbox" level="info" additivity="false">
+            <AppenderRef ref="MAILBOXF"/>
+        </Logger>
+
+        <Logger name="liveupdate" level="info" additivity="false">
+            <AppenderRef ref="LIVEUPDATEF"/>
+        </Logger>
+
+        <Logger name="jetbrains.buildServer" level="error" additivity="false">
+            <AppenderRef ref="VCSF"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.integration" level="info" additivity="false">
+            <AppenderRef ref="VCSF"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.upsource" level="info" additivity="false">
+            <AppenderRef ref="VCSF"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.ring" level="info" additivity="false">
+            <AppenderRef ref="RINGF"/>
+            <AppenderRef ref="ASYNC" level="warn"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.ring.audit" level="info" additivity="false">
+            <AppenderRef ref="RINGAUDITF"/>
+        </Logger>
+
+        <Logger name="jetbrains.jetpass" level="warn">
+            <AppenderRef ref="RINGF"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.workflow" level="info" additivity="false">
+            <AppenderRef ref="ASYNCWORKFLOW"/>
+            <AppenderRef ref="WORKFLOWC"/>
+        </Logger>
+
+        <Logger name="jetbrains.charisma.main" level="info"/>
+
+        <Logger name="jetbrains.youtrack.notifications" level="info" additivity="false">
+            <AppenderRef ref="NOTIFICATIONF"/>
+        </Logger>
+
+        <Logger name="freemarker.runtime" level="info" additivity="false">
+            <AppenderRef ref="NOTIFICATIONF"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.hosted" level="info"/>
+
+        <Logger name="jetbrains.youtrack.localization.runtime.Messages" level="error"/>
+
+        <Logger name="org.glassfish.jersey.internal.inject.Providers" level="error"/>
+
+        <Logger name="org.glassfish.jersey.servlet.WebComponent" level="off"/>
+
+        <Logger name="org.glassfish.jersey.internal.Errors" level="off"/>
+
+        <Logger name="jetbrains.jetpass.dao.remote.api" level="info" additivity="false">
+            <AppenderRef ref="HUBREMOTEF"/>
+        </Logger>
+
+        <Logger name="jetbrains.exodus.entitystore.EntityIterableCache" level="info" additivity="false">
+            <AppenderRef ref="PERFORMANCEF"/>
+            <AppenderRef ref="PERFORMANCEF_JSON"/>
+        </Logger>
+
+        <Logger name="jetbrains.jetpass.client.oauth2.OAuth2Flow" level="info" additivity="false">
+            <AppenderRef ref="RINGF"/>
+        </Logger>
+
+        <Logger name="security" level="info">
+            <AppenderRef ref="SECURITYF"/>
+            <AppenderRef ref="SECURITYF_JSON"/>
+        </Logger>
+
+        <Logger name="jetbrains.gap.SubCollectionsMonitor" level="info" additivity="false">
+            <AppenderRef ref="REQUSTMONITORF"/>
+        </Logger>
+        <Logger name="jetbrains.gap.BigDuplicatedObject" level="info" additivity="false">
+            <AppenderRef ref="REQUSTMONITORF"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.imports.runtime.ImportLogging" level="debug" additivity="false">
+            <AppenderRef ref="ASYNCIMPORT"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.imports.runtime.client" level="debug" additivity="false">
+            <AppenderRef ref="ASYNCIMPORT"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.imports" level="trace" additivity="false">
+            <AppenderRef ref="ASYNCIMPORTEXT"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.scripts" level="debug" additivity="false">
+            <AppenderRef ref="ASYNCSCRIPT"/>
+        </Logger>
+
+        <Logger name="jetbrains.youtrack.http" level="trace" additivity="false">
+            <AppenderRef ref="ASYNCJOURNAL"/>
+        </Logger>
+
+        <Logger name="fallback" level="trace" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+
+        <Logger name="serverScoped" level="trace" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+
+        <Logger name="io.ktor" level="INFO" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+
+        <Logger name="com.amazonaws" level="INFO" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+
+        <Logger name="jetbrains.hosted.entityBro" level="INFO" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="ASYNC"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -24,6 +24,8 @@ services:
     #  start_period: 10s
     ports:
       - '9404:9404'
+      - '9010:9010'
+      - '9011:9011'
     tmpfs:
       /tmp
     volumes:
@@ -33,13 +35,14 @@ services:
       - ./volumes/youtrack_backups:/opt/youtrack/backups
       - ./volumes/youtrack_temp:/opt/youtrack/temp
       - "./configs/youtrack/youtrack.6g.monitoring.jvmoptions:/opt/youtrack/conf/youtrack.jvmoptions:ro"
+      #- "./configs/youtrack/web/WEB-INF/lib/youtrack-webapp/log4j2.xml:/opt/youtrack/conf/log4j2.xml:ro"
       - "./configs/prometheus_jmx_exporter/jmx_exporter.yml:/opt/app/jmx_exporter.yml:ro"
       - "./tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar:ro"
     networks:
       - youtrack_net
 
   nginx:
-    image: nginx:1.26.1
+    image: nginx:1.27.4-otel
     hostname: nginx
     cpu_count: 1
     cpuset: "5-7"

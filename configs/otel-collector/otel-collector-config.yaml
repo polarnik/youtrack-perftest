@@ -1,0 +1,35 @@
+receivers:
+  filelog:
+    include: [ "/var/log/nginx/access.log" ]
+    start_at: beginning
+    include_file_path: true
+    include_file_name: false
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.time_local
+          layout: "%d/%b/%Y:%H:%M:%S %z"
+        severity:
+          parse_from: attributes.status
+      - type: add
+        field: log_type
+        value: "nginx_access"
+
+processors:
+  batch:
+    timeout: 5s
+
+exporters:
+  otlp:
+    endpoint: "http://<backend>:4317"  # Change this to your OTLP-compatible backend
+    tls:
+      insecure: true
+  logging:
+    verbosity: detailed
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [otlp, logging]
