@@ -48,7 +48,7 @@
                     "showLineNumbers": false,
                     "showMiniMap": false
                 },
-                "content": "### Version\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
+                "content": "### Version of <a href=\"https://www.jetbrains.com/youtrack/\" target=\"_blank\" rel=\"author\" title=\"YouTrack. Project management for all your teams\"><img src=\"https://youtrack.jetbrains.com/youtrack-wide-dark.svg\" height=\"30\" /></a>\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
                 "mode": "markdown"
             },
             "pluginVersion": "v10.4.0",
@@ -83,7 +83,8 @@
                 "y": 1
             },
             "id": 3,
-            "maxDataPoints": 100,
+            "interval": "3m",
+            "maxDataPoints": 300,
             "options": {
                 "legend": {
                     "isVisible": false,
@@ -102,7 +103,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "avg by (Version) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "expr": "avg by (Version) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
                     "format": "table",
                     "instant": false,
                     "range": true,
@@ -113,7 +114,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "avg by (instance, Build) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "expr": "avg by (instance, Build) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
                     "format": "table",
                     "instant": false,
                     "range": true,
@@ -291,6 +292,7 @@
             },
             "hideTimeOverride": true,
             "id": 6,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -310,7 +312,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -526,7 +528,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -539,7 +541,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -550,7 +552,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:]))\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -560,7 +562,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsReceived{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -625,6 +627,7 @@
             },
             "hideTimeOverride": true,
             "id": 8,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -644,7 +647,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  })\n )\n  -\n  ( avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  } offset ${offset})\n )\n)\n/\n( round( avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  } offset ${offset})\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" })\n )\n  -\n  (  avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -860,7 +863,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -873,7 +876,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  } offset ${offset})\n",
+                    "expr": "avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" } offset ${offset})\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -884,7 +887,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  })\n",
+                    "expr": "avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" })\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -894,7 +897,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  })\n )\n  -\n  ( avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  } offset ${offset})\n )\n)\n/\n( round( avg(youtrack_HubIntegration_HubEventsPending{ type=\"Hub\", instance=~\"$instance\"  } offset ${offset})\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" })\n )\n  -\n  (  avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(youtrack_HubIntegration_HubEventsReceived{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -971,6 +974,7 @@
             },
             "hideTimeOverride": true,
             "id": 11,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -990,7 +994,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n  -\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n)\n/\n( round( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n )\n  -\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n)\n/\n( 100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1206,7 +1210,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1219,7 +1223,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n",
+                    "expr": "100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1230,7 +1234,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n",
+                    "expr": "100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1240,7 +1244,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n  -\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n)\n/\n( round( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n )\n  -\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n)\n/\n( 100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1333,6 +1337,7 @@
             },
             "hideTimeOverride": true,
             "id": 13,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -1352,7 +1357,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n  -\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n)\n/\n( round( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n )\n  -\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n)\n/\n( 100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1568,7 +1573,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1581,7 +1586,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n",
+                    "expr": "100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1592,7 +1597,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n",
+                    "expr": "100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1602,7 +1607,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n  -\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n)\n/\n( round( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n )\n  -\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n)\n/\n( 100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1667,6 +1672,7 @@
             },
             "hideTimeOverride": true,
             "id": 15,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -1686,7 +1692,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n  -\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n)\n/\n( round( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n )\n  -\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n)\n/\n( 100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1902,7 +1908,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1915,7 +1921,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n",
+                    "expr": "100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1926,7 +1932,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n",
+                    "expr": "100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1936,7 +1942,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n  -\n  ( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n )\n)\n/\n( round( 100 * (\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n) / (\n( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n ) != 0\n)\n )\n  -\n  (  100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n)\n/\n( 100 * (\n60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n) / (\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n+\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2013,6 +2019,7 @@
             },
             "hideTimeOverride": true,
             "id": 18,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -2032,7 +2039,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2248,7 +2255,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -2261,7 +2268,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -2272,7 +2279,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -2282,7 +2289,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsIgnored{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsIgnored{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2375,6 +2382,7 @@
             },
             "hideTimeOverride": true,
             "id": 20,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -2394,7 +2402,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2610,7 +2618,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -2623,7 +2631,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -2634,7 +2642,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -2644,7 +2652,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsProcessed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsProcessed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2709,6 +2717,7 @@
             },
             "hideTimeOverride": true,
             "id": 22,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -2728,7 +2737,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2944,7 +2953,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -2957,7 +2966,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -2968,7 +2977,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n",
+                    "expr": "60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -2978,7 +2987,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval]))\n* 60 * 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_HubIntegration_HubEventsFailed{ type=\"Hub\", instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 60 * 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( 60 * sum(rate(youtrack_HubIntegration_HubEventsFailed{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -3106,7 +3115,7 @@
                 },
                 "multi": false,
                 "name": "instance",
-                "query": "query_result(sort_desc(    sum by (instance) (    youtrack_UtilizationPercent{}    ) > 0))",
+                "query": "query_result(sort_desc(    sum by (instance) (increase(    youtrack_UserSessions_ActiveUsers{}[$__range:$__interval]    ))))",
                 "refresh": 2,
                 "regex": "/{instance=\"(.*)\"}.*/",
                 "type": "query"

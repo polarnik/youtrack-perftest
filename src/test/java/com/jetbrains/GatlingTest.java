@@ -41,7 +41,7 @@ public class GatlingTest {
     @Test(groups = {"monitoring"})
     public void get_hub_metrics_and_send_to_telegraf() {
         System.setProperty("youtrack", "https://nginx:443");
-        System.setProperty("youtrack_token", "perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry");
+        System.setProperty("youtrack_token", "perm-YWRtaW4=.NDItMA==.5wEPtZAsRg9aXW5IxUBpVPiXY6NfXC");
         System.setProperty("telegraf", "http://telegraf:8090");
         System.setProperty("gatling.http.requestTimeout", "10000");
         System.setProperty("gatling.charting.indicators.lowerBound", "200");
@@ -56,7 +56,7 @@ public class GatlingTest {
     @Test(groups = {"monitoring-debug-local"})
     public void get_hub_metrics_and_send_to_telegraf_DEBUG() {
         System.setProperty("youtrack", "https://127.0.0.1:443");
-        System.setProperty("youtrack_token", "perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry");
+        System.setProperty("youtrack_token", "perm-YWRtaW4=.NDItMA==.5wEPtZAsRg9aXW5IxUBpVPiXY6NfXC");
         System.setProperty("telegraf", "http://127.0.0.1:8090");
         System.setProperty("gatling.ssl.useOpenSsl", "false");
         System.setProperty("gatling.data.console.writePeriod", "5");
@@ -75,8 +75,8 @@ public class GatlingTest {
 
     @Test(groups = {"createUser-debug-local"})
     public void createUsers() {
-        System.setProperty("youtrack", "https://127.0.0.1:443");
-        System.setProperty("youtrack_token", "perm:YWRtaW4=.NDctMA==.H0e3bvoqo4HCePTiavxftedsE0M7ry");
+        System.setProperty("youtrack", "http://127.0.0.1:8080/");
+        System.setProperty("youtrack_token", "perm-YWRtaW4=.NDItMA==.5wEPtZAsRg9aXW5IxUBpVPiXY6NfXC");
 
         System.setProperty("gatling.ssl.useOpenSsl", "false");
         System.setProperty("gatling.data.console.writePeriod", "500");
@@ -84,9 +84,13 @@ public class GatlingTest {
         System.setProperty("gatling.charting.indicators.lowerBound", "500");
         System.setProperty("gatling.charting.indicators.higherBound", "1000");
 
-        System.setProperty("users", String.valueOf(100 ));
-        System.setProperty("users_path", "target/load-test-results/100-users.json");
+        System.setProperty("users", String.valueOf(9 ));
+        System.setProperty("users_path", "target/load-test-results/9-users.json");
         System.setProperty("users_password", "Password123456!@#");
+
+        // ProxyMan.io, port number: 9090, start recording
+        System.setProperty("proxy_host", "127.0.0.1");
+        System.setProperty("proxy_port", "9090");
 
         Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.INFO);
@@ -96,15 +100,16 @@ public class GatlingTest {
 
     @Test(groups = {"createTasks-debug-local"})
     public void createIssue_local() {
-        System.setProperty("youtrack", "https://127.0.0.1:443");
+        System.setProperty("youtrack", "http://127.0.0.1:8080");
         System.setProperty("gatling.ssl.useOpenSsl", "false");
         System.setProperty("gatling.data.console.writePeriod", "5");
         System.setProperty("gatling.http.requestTimeout", "5000");
         System.setProperty("gatling.charting.indicators.lowerBound", "1000");
         System.setProperty("gatling.charting.indicators.higherBound", "2000");
         System.setProperty("userTokensPath", "datasources/token.users.csv");
-        System.setProperty("postsPath", "datasources/Posts.big.csv");
-
+        System.setProperty("postsPath", "datasources/ru.stackoverflow/Posts.csv");
+//        System.setProperty("proxy_host", "127.0.0.1");
+//        System.setProperty("proxy_port", "9090");
         Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.INFO);
 

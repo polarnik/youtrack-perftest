@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="yp"
+                 name="YouTrack performance"
+                 start-page="youtrack-performance-metrics.md">
+
+    <toc-element topic="Getting-Started.topic"/>
+    <toc-element topic="youtrack-performance-metrics.md"/>
+    <toc-element topic="Observability-stacks.md">
+        <toc-element topic="Prometheus.md"/>
+        <toc-element topic="Open-Telemetry.md"/>
+        <toc-element topic="InfluxDB.md"/>
+    </toc-element>
+    <toc-element topic="Metrics.md">
+        <toc-element topic="YouTrack-Metrics.md">
+            <toc-element topic="YouTrack-Job-Thread-Pool-metrics.md"/>
+            <toc-element topic="YouTrack-HubIntegration.md"/>
+        </toc-element>
+        <toc-element topic="JVM-Metrics.md">
+            <toc-element topic="Process.md"/>
+        </toc-element>
+        <toc-element topic="NGinx.md">
+            <toc-element topic="NGinx-Performance-metrics.md"/>
+            <toc-element topic="NGinx-AccessLog-Metrics.md"/>
+        </toc-element>
+        <toc-element topic="Docker.md"/>
+        <toc-element topic="Linux-System-Metrics.md"/>
+    </toc-element>
+    <toc-element topic="Logs.md">
+        <toc-element topic="YouTrack-Logs.md"/>
+        <toc-element topic="NGinx-Logs.md"/>
+    </toc-element>
+    <toc-element topic="Alerts.md"/>
+    <toc-element topic="Runbooks.md">
+        <toc-element topic="runbook-general.md"/>
+        <toc-element topic="runbook-youtrack.md"/>
+        <toc-element topic="runbook-youtrack-workflow.md"/>
+        <toc-element topic="runbook-youtrack-xodus.md"/>
+        <toc-element topic="runbook-youtrack-linux.md"/>
+        <toc-element topic="runbook-youtrack-docker.md"/>
+        <toc-element topic="runbook-youtrack-jvm.md"/>
+    </toc-element>
+</instance-profile>

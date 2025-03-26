@@ -163,7 +163,6 @@ public class UserCreator {
                           "role": {
                             "id": "#{Contributor}",
                             "name": "Contributor",
-                            "immutable": false
                           }
                         }
                     """.trim())).asJson()
@@ -190,10 +189,10 @@ public class UserCreator {
                 .protocols(protocolBuilders.build());
     }
 
-    public PopulationBuilder users100() {
+    public PopulationBuilder users(Integer count) {
 
         return userCreator()
-                .injectOpen(CoreDsl.atOnceUsers(100))
+                .injectOpen(CoreDsl.atOnceUsers(count))
                 .protocols(protocolBuilders.build())
                 ;
     }

@@ -5,5 +5,23 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="youtrack-launcher" level="project" />
+    <orderEntry type="library" name="youtrack-wrapper" level="project" />
+    <orderEntry type="library" name="app-wrapper-api" level="project" />
+    <orderEntry type="library" name="youtrack-core-2024.3.57595" level="project" />
+    <orderEntry type="library" name="youtrack-webapp-2024.3.57595" level="project" />
+    <orderEntry type="library" name="jetty-server-9.4.54.v20240208" level="project" />
+    <orderEntry type="library" name="youtrack-workflow-2024.3.57595" level="project" />
+    <orderEntry type="library" name="youtrack-wiki-2021.2.18" level="project" />
+    <orderEntry type="library" name="youtrack-webr-2024.3.57595" level="project" />
+    <orderEntry type="library" name="youtrack-spring-5.3.15.18" level="project" />
+    <orderEntry type="library" name="youtrack-zendesk-integration-2024.3.57595" level="project" />
+    <orderEntry type="library" name="youtrack-application-2024.3.57595" level="project" />
+    <orderEntry type="library" name="xodus-environment-3.1.81" level="project" />
+    <orderEntry type="library" name="youtrack-text-search-2024.3.57595" level="project" />
+    <orderEntry type="library" name="youtrack-vcs-ci-integration-2024.3.57595" level="project" />
+    <orderEntry type="library" name="youtrack-vcs-hosting-integration-2024.3.57595" level="project" />
+    <orderEntry type="library" name="youtrack-teamcity-integration-2024.3.57595" level="project" />
+    <orderEntry type="library" name="client-61" level="project" />
   </component>
 </module>

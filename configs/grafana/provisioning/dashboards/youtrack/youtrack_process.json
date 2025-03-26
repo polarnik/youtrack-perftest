@@ -48,7 +48,7 @@
                     "showLineNumbers": false,
                     "showMiniMap": false
                 },
-                "content": "### Version\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
+                "content": "### Version of <a href=\"https://www.jetbrains.com/youtrack/\" target=\"_blank\" rel=\"author\" title=\"YouTrack. Project management for all your teams\"><img src=\"https://youtrack.jetbrains.com/youtrack-wide-dark.svg\" height=\"30\" /></a>\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
                 "mode": "markdown"
             },
             "pluginVersion": "v10.4.0",
@@ -83,7 +83,8 @@
                 "y": 1
             },
             "id": 3,
-            "maxDataPoints": 100,
+            "interval": "3m",
+            "maxDataPoints": 300,
             "options": {
                 "legend": {
                     "isVisible": false,
@@ -102,7 +103,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "avg by (Version) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "expr": "avg by (Version) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
                     "format": "table",
                     "instant": false,
                     "range": true,
@@ -113,7 +114,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "avg by (instance, Build) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "expr": "avg by (instance, Build) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
                     "format": "table",
                     "instant": false,
                     "range": true,
@@ -251,6 +252,7 @@
             },
             "hideTimeOverride": true,
             "id": 5,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -270,7 +272,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * process_cpu_load{  instance=~\"$instance\" } )\n  -\n  ( 100 * process_cpu_load{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( 100 * process_cpu_load{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_cpu_load{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_cpu_load{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_cpu_load{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -338,7 +340,7 @@
                             }
                         ]
                     },
-                    "unit": "percent"
+                    "unit": "percentunit"
                 },
                 "overrides": [
                     {
@@ -464,6 +466,7 @@
                 "y": 9
             },
             "id": 6,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -485,7 +488,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -498,7 +501,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * process_cpu_load{  instance=~\"$instance\" } offset ${offset}",
+                    "expr": "avg(process_cpu_load{  instance=~\"$instance\" } offset ${offset})\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -509,7 +512,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * process_cpu_load{  instance=~\"$instance\" }",
+                    "expr": "avg(process_cpu_load{  instance=~\"$instance\" })\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -519,7 +522,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * process_cpu_load{  instance=~\"$instance\" } )\n  -\n  ( 100 * process_cpu_load{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( 100 * process_cpu_load{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_cpu_load{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_cpu_load{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_cpu_load{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -584,6 +587,7 @@
             },
             "hideTimeOverride": true,
             "id": 7,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -603,7 +607,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval])) )\n  -\n  ( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval] offset ${offset})) )\n)\n/\n( round( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval] offset ${offset})) , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:])) )\n  -\n  (  sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:] offset ${offset})) )\n)\n/\n( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:] offset ${offset})) )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -797,6 +801,7 @@
                 "y": 16
             },
             "id": 8,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -818,7 +823,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -831,7 +836,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval] offset ${offset}))",
+                    "expr": "sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:] offset ${offset}))",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -842,7 +847,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval]))",
+                    "expr": "sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:]))",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -852,7 +857,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval])) )\n  -\n  ( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval] offset ${offset})) )\n)\n/\n( round( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__rate_interval] offset ${offset})) , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:])) )\n  -\n  (  sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:] offset ${offset})) )\n)\n/\n( sum(rate(process_cpu_seconds_total{  instance=~\"$instance\" }[$__interval:] offset ${offset})) )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -929,6 +934,7 @@
             },
             "hideTimeOverride": true,
             "id": 10,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -948,7 +954,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( process_resident_memory_bytes{  instance=~\"$instance\" } )\n  -\n  ( process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_resident_memory_bytes{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1142,6 +1148,7 @@
                 "y": 24
             },
             "id": 11,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -1163,7 +1170,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1176,7 +1183,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset}",
+                    "expr": "avg(process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1187,7 +1194,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "process_resident_memory_bytes{  instance=~\"$instance\" }",
+                    "expr": "avg(process_resident_memory_bytes{  instance=~\"$instance\" })\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1197,7 +1204,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( process_resident_memory_bytes{  instance=~\"$instance\" } )\n  -\n  ( process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_resident_memory_bytes{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_resident_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1262,6 +1269,7 @@
             },
             "hideTimeOverride": true,
             "id": 12,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -1281,7 +1289,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( process_virtual_memory_bytes{  instance=~\"$instance\" } )\n  -\n  ( process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_virtual_memory_bytes{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1475,6 +1483,7 @@
                 "y": 31
             },
             "id": 13,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -1496,7 +1505,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1509,7 +1518,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset}",
+                    "expr": "avg(process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1520,7 +1529,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "process_virtual_memory_bytes{  instance=~\"$instance\" }",
+                    "expr": "avg(process_virtual_memory_bytes{  instance=~\"$instance\" })\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1530,7 +1539,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( process_virtual_memory_bytes{  instance=~\"$instance\" } )\n  -\n  ( process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_virtual_memory_bytes{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_virtual_memory_bytes{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1607,6 +1616,7 @@
             },
             "hideTimeOverride": true,
             "id": 15,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -1626,7 +1636,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( process_open_fds{  instance=~\"$instance\" } )\n  -\n  ( process_open_fds{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( process_open_fds{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_open_fds{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_open_fds{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_open_fds{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1820,6 +1830,7 @@
                 "y": 39
             },
             "id": 16,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -1841,7 +1852,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1854,7 +1865,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "process_open_fds{  instance=~\"$instance\" } offset ${offset}",
+                    "expr": "avg(process_open_fds{  instance=~\"$instance\" } offset ${offset})\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1865,7 +1876,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "process_open_fds{  instance=~\"$instance\" }",
+                    "expr": "avg(process_open_fds{  instance=~\"$instance\" })\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1875,7 +1886,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( process_open_fds{  instance=~\"$instance\" } )\n  -\n  ( process_open_fds{  instance=~\"$instance\" } offset ${offset} )\n)\n/\n( round( process_open_fds{  instance=~\"$instance\" } offset ${offset} , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  avg(process_open_fds{  instance=~\"$instance\" })\n )\n  -\n  (  avg(process_open_fds{  instance=~\"$instance\" } offset ${offset})\n )\n)\n/\n( avg(process_open_fds{  instance=~\"$instance\" } offset ${offset})\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2002,7 +2013,7 @@
                 },
                 "multi": false,
                 "name": "instance",
-                "query": "query_result(sort_desc(    sum by (instance) (    youtrack_UtilizationPercent{}    ) > 0))",
+                "query": "query_result(sort_desc(    sum by (instance) (increase(    youtrack_UserSessions_ActiveUsers{}[$__range:$__interval]    ))))",
                 "refresh": 2,
                 "regex": "/{instance=\"(.*)\"}.*/",
                 "type": "query"

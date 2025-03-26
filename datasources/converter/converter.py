@@ -109,7 +109,8 @@ output_buffer = []  #in-memory buffer to store converted items
 buffer_size = 1000  #write to file after buffer_size items are collected in the output_buffer
 delimiter=","       #delimiter in output file
 tag = "row"         #XML tag to be processed
-#n = 0
+n = 0
+all = 0
 
 # initialize column list, limit to includes, if existst in config, otherwise use all columns list in config headers
 columns = config["headers"]
@@ -139,18 +140,24 @@ with tqdm(total=line_count, unit="lines") as pbar:
                     data = elem.get(header, "")
                     if apply_filters and "filters" in config and header in config["filters"]:
                         op_function = ops[config["filters"][header][0]]
-                        if not op_function(data, config["filters"][header][1]):
-                            skip_record = True
-                    if header in markdown:
-                        data = md(data)
-                    if "fixes" in config and header in config["fixes"]:
-                       data = re.sub(config["fixes"][header][0], config["fixes"][header][1], data)
+                        if(config["filters"][header][2] == "Integer"):
+                            if (data == "") or not op_function(int(data), int(config["filters"][header][1])):
+                                skip_record = True
+                        else:
+                            if not op_function(data, config["filters"][header][1]):
+                                skip_record = True
+                    if not skip_record:
+                        if header in markdown:
+                            data = md(data)
+                        if "fixes" in config and header in config["fixes"]:
+                           data = re.sub(config["fixes"][header][0], config["fixes"][header][1], data)
                     items.append(data)
 
                 if not skip_record:
                     #append record to output buffer
                     output_buffer.append(r'"' + (r'"' + delimiter + r'"').join(items) + r'"')
-
+                    n += 1
+                all += 1
                 #manage limit
                 #n += 1
                 #if n == limit:
@@ -169,5 +176,7 @@ output.write('\n'.join(output_buffer) + '\n')
 output.close()
 
 print("Info: All done.")
+print(n)
+print(100 * n / all)
 sys.exit(0)
 

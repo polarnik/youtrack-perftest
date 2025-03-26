@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE buildprofiles SYSTEM "https://resources.jetbrains.com/writerside/1.0/build-profiles.dtd">
+<buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <variables></variables>
+
+    <footer>
+        <social type="blog" href="https://www.linkedin.com/newsletters/7299808606890127360/">YouTrack Performance Tests Blog</social>
+        <social type="rss" href="https://linkedinrss.cns.me/7299808606890127360">YouTrack Performance Tests RSS</social>
+        <social type="youtube" href="https://www.youtube.com/@YouTrackPerformanceTests">YouTrack Performance Tests Videos</social>
+
+        <link href="https://youtrack.jetbrains.com/issues/JT">Issue tracker (YouTrack)</link>
+        <link href="https://github.com/polarnik/youtrack-perftest/issues">Issue tracker (Github)</link>
+    </footer>
+
+    <build-profile instance="ypt">
+        <variables>
+            <noindex-content>false</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="yptv1">
+        <variables>
+            <noindex-content>false</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="apt">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="wpt">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="yp">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="jp">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="lp">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="np">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="npt">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+
+</buildprofiles>

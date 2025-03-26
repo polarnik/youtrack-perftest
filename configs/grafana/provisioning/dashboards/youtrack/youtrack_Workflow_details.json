@@ -1,0 +1,399 @@
+{
+    "description": "Dashboard with details about some YouTrack Workflow\n",
+    "graphTooltip": 1,
+    "links": [
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "YouTrack Server"
+            ],
+            "targetBlank": true,
+            "title": "YouTrack Server",
+            "tooltip": "",
+            "type": "dashboards",
+            "url": ""
+        },
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "YouTrack Workflows"
+            ],
+            "targetBlank": true,
+            "title": "YouTrack Workflows",
+            "tooltip": "",
+            "type": "dashboards",
+            "url": ""
+        }
+    ],
+    "panels": [
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 0,
+                "x": 0,
+                "y": 0
+            },
+            "id": 1,
+            "title": "Version",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 4,
+                "x": 0,
+                "y": 1
+            },
+            "id": 2,
+            "options": {
+                "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                },
+                "content": "### Version of <a href=\"https://www.jetbrains.com/youtrack/\" target=\"_blank\" rel=\"author\" title=\"YouTrack. Project management for all your teams\"><img src=\"https://youtrack.jetbrains.com/youtrack-wide-dark.svg\" height=\"30\" /></a>\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
+                "mode": "markdown"
+            },
+            "pluginVersion": "v10.4.0",
+            "title": "",
+            "type": "text"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "axisWidth": 65,
+                        "drawStyle": "line",
+                        "fillOpacity": 100,
+                        "gradientMode": "opacity",
+                        "lineWidth": 10,
+                        "showPoints": "never"
+                    },
+                    "decimals": 0,
+                    "max": 1,
+                    "min": 0,
+                    "unit": "none"
+                }
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 20,
+                "x": 4,
+                "y": 1
+            },
+            "id": 3,
+            "interval": "3m",
+            "maxDataPoints": 300,
+            "options": {
+                "legend": {
+                    "isVisible": false,
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "hoverProximity": 30,
+                    "mode": "single",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "v10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "avg by (Version) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
+                    "format": "table",
+                    "instant": false,
+                    "range": true,
+                    "refId": "Version"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${source}"
+                    },
+                    "expr": "avg by (instance, Build) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
+                    "format": "table",
+                    "instant": false,
+                    "range": true,
+                    "refId": "Build"
+                }
+            ],
+            "title": "Version",
+            "transformations": [
+                {
+                    "id": "merge",
+                    "options": { }
+                },
+                {
+                    "id": "filterByValue",
+                    "options": {
+                        "filters": [
+                            {
+                                "config": {
+                                    "id": "regex",
+                                    "options": {
+                                        "value": ".+"
+                                    }
+                                },
+                                "fieldName": "Version"
+                            },
+                            {
+                                "config": {
+                                    "id": "regex",
+                                    "options": {
+                                        "value": ".+"
+                                    }
+                                },
+                                "fieldName": "Build"
+                            }
+                        ],
+                        "match": "all",
+                        "type": "include"
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Value #Build": true,
+                            "instance": true
+                        },
+                        "includeByName": { },
+                        "indexByName": {
+                            "Build": 3,
+                            "Time": 0,
+                            "Value #Build": 5,
+                            "Value #Version": 4,
+                            "Version": 2,
+                            "instance": 1
+                        },
+                        "renameByName": {
+                            "Value #Version": "Version info"
+                        }
+                    }
+                },
+                {
+                    "id": "prepareTimeSeries",
+                    "options": {
+                        "format": "multi"
+                    }
+                }
+            ],
+            "type": "timeseries"
+        }
+    ],
+    "schemaVersion": 36,
+    "tags": [
+        "YouTrack Server",
+        "YouTrack Workflows"
+    ],
+    "templating": {
+        "list": [
+            {
+                "name": "source",
+                "query": "prometheus",
+                "type": "datasource"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "7d",
+                    "value": "7d"
+                },
+                "name": "offset",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "7d",
+                        "value": "7d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "14d",
+                        "value": "14d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "21d",
+                        "value": "21d"
+                    }
+                ],
+                "query": "7d : 7d,14d : 14d,21d : 21d",
+                "type": "custom"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "3h",
+                    "value": "3h"
+                },
+                "name": "diff_interval",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "1h",
+                        "value": "1h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "2h",
+                        "value": "2h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "3h",
+                        "value": "3h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "4h",
+                        "value": "4h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5h",
+                        "value": "5h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "6h",
+                        "value": "6h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "12h",
+                        "value": "12h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1d",
+                        "value": "1d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "2d",
+                        "value": "2d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "3d",
+                        "value": "3d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "4d",
+                        "value": "4d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "7d",
+                        "value": "7d"
+                    }
+                ],
+                "query": "1h : 1h,2h : 2h,3h : 3h,4h : 4h,5h : 5h,6h : 6h,12h : 12h,1d : 1d,2d : 2d,3d : 3d,4d : 4d,7d : 7d",
+                "type": "custom"
+            },
+            {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${source}"
+                },
+                "multi": false,
+                "name": "instance",
+                "query": "query_result(sort_desc(    sum by (instance) (increase(    youtrack_UserSessions_ActiveUsers{}[$__range:$__interval]    ))))",
+                "refresh": 2,
+                "regex": "/{instance=\"(.*)\"}.*/",
+                "type": "query"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "✅ Yes",
+                    "value": "1"
+                },
+                "label": "Show app start",
+                "multi": false,
+                "name": "app_start",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "✅ Yes",
+                        "value": "1"
+                    },
+                    {
+                        "selected": false,
+                        "text": "🔳 No",
+                        "value": "0"
+                    }
+                ],
+                "query": "✅ Yes : 1,🔳 No : 0",
+                "type": "custom"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "Rule",
+                    "value": "❇️ Rule"
+                },
+                "label": "Workflow group",
+                "multi": false,
+                "name": "workflow_group",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "RuleGuard",
+                        "value": "🛡 Rule Guard"
+                    },
+                    {
+                        "selected": false,
+                        "text": "Rule",
+                        "value": "❇️ Rule"
+                    },
+                    {
+                        "selected": false,
+                        "text": "OnScheduleFull",
+                        "value": "🗓 On Schedule Full"
+                    }
+                ],
+                "query": "RuleGuard : 🛡 Rule Guard,Rule : ❇️ Rule,OnScheduleFull : 🗓 On Schedule Full",
+                "type": "custom"
+            },
+            {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${source}"
+                },
+                "multi": false,
+                "name": "script",
+                "query": "query_result(sort_desc(sum_over_time((sum(increase(youtrack_Workflow_${workflow_group:text}_TotalDuration{instance=~\"$instance\"}[1m:])) by (script))[$__range:1m])))",
+                "refresh": 2,
+                "regex": "/{script=\"(.*)\"}.*/",
+                "type": "query"
+            }
+        ]
+    },
+    "time": {
+        "from": "now-6h",
+        "to": "now"
+    },
+    "timezone": "utc",
+    "title": "YouTrack Workflow Details",
+    "uid": "yt_workflow_details"
+}

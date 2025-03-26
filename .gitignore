@@ -19,3 +19,8 @@ buildNumber.properties
 volumes
 volumes/
 ./volumes/
+/docker/mac-os-dev-version/opt/
+/docker/mac-os-dev-version/usr/
+/docker/mac-os-dev-version/run.sh
+/docker/mac-os-dev-version/stop.sh
+/.idea/libraries/

@@ -61,6 +61,7 @@
 -Dcom.sun.management.jmxremote.authenticate=false
 -Dcom.sun.management.jmxremote.ssl=false
 -Djava.rmi.server.hostname=youtrack
+-Dlog4j.configurationFile=/opt/youtrack/conf/log4j2.xml
 #-Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000
 #-Dorg.eclipse.jetty.server.Request.maxFormKeys=10000
 #-Djetbrains.http.request.header.buffer.size=102400

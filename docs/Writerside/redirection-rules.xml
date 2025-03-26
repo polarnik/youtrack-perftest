@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "https://resources.jetbrains.com/writerside/1.0/redirection-rules.dtd">
+<rules>
+    <!-- format is as follows
+    <rule id="<unique id>">
+        <accepts>page.html</accepts>
+    </rule>
+    -->
+    <rule id="683c17ba">
+        <description>Created after removal of "Prometheus JMX Exporter" from YouTrack performance</description>
+        <accepts>Prometheus-JMX-Exporter.html</accepts>
+    </rule>
+    <rule id="13fd80ae">
+        <description>Created after removal of "jvm" from YouTrack performance</description>
+        <accepts>jvm.html</accepts>
+    </rule>
+    <rule id="fa130f0">
+        <description>Created after removal of "general" from YouTrack performance</description>
+        <accepts>general.html</accepts>
+    </rule>
+    <rule id="33353026">
+        <description>Created after removal of "youtrack" from YouTrack performance</description>
+        <accepts>youtrack.html</accepts>
+    </rule>
+    <rule id="64995967">
+        <description>Created after removal of "runbook workflow" from YouTrack performance</description>
+        <accepts>runbook-workflow.html</accepts>
+    </rule>
+    <rule id="4bfdefd1">
+        <description>Created after removal of "ranbook youtrack jvm" from YouTrack performance</description>
+        <accepts>ranbook-youtrack-jvm.html</accepts>
+    </rule>
+    <rule id="33536cb7">
+        <description>Created after removal of "ranbook youtrack docker" from YouTrack performance</description>
+        <accepts>ranbook-youtrack-docker.html</accepts>
+    </rule>
+</rules>

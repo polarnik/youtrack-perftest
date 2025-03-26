@@ -1,0 +1,3 @@
+# YouTrack Logs
+
+Start typing here...
