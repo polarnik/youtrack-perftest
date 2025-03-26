@@ -6,5 +6,8 @@ meta_file_name = "meta.json"
 config_file_name = "config.json"
 
 ops = {
-    "==": operator.eq
+    "==": operator.eq,
+    ">": operator.gt,
+    ">=": operator.ge,
+    "!=": operator.ne,
 }

@@ -29,7 +29,9 @@
       "Body"
     ],
     "filters": {
-      "PostTypeId": ["==", "1"]
+      "PostTypeId": ["==", "1"],
+      "Score": [">", "1", "Integer"],
+      "ViewCount": [">", "1", "Integer"]
     },
     "fixes": {
       "Title": ["\"", "\"\""],

@@ -33,7 +33,8 @@
 @jfrexporter=-javaagent:/tools/perfana/jfr-exporter/jfr-exporter-0.5.0.jar=tag=service/youtrack,tag=systemUnderTest/youtrack_6g,tag=testEnvironment/local_docker_compose,influxUrl=http://nginx:8086,influxDatabase=jfr_youtrack,influxUser=jfr_youtrack,influxPassword=password,bigObjectThreshold=300000,bigObjectSampleWeightThreshold=300000
 @jolokia=
 @jmx_exporter=-javaagent:/opt/app/jmx_prometheus_javaagent.jar=youtrack:9404:/opt/app/jmx_exporter.yml
-@open_telemetry=-javaagent:/opt/app/opentelemetry-javaagent.jar  -Dotel.jmx.target.system=kafka-broker
+@jmx_exporter_new=-javaagent:/opt/app/jmx_prometheus_javaagent-1.1.0-post.jar=youtrack:9404:/opt/app/jmx_exporter.yml
+@open_telemetry=-javaagent:/opt/app/opentelemetry-javaagent.jar  -Dotel.jmx.target.system=youtrack
 
 -XX:NativeMemoryTracking=summary
 
@@ -57,8 +58,11 @@
 -Dcom.sun.management.jmxremote.local.only=false
 -Dcom.sun.management.jmxremote.authenticate=false
 -Dcom.sun.management.jmxremote.ssl=false
--Djava.rmi.server.hostname=youtrack
--Dlog4j.configurationFile=/opt/youtrack/conf/log4j2.xml
+-Djava.rmi.server.hostname=127.0.0.1
+#-Dlog4j.configurationFile=/opt/youtrack/conf/log4j2.xml
+-Djetbrains.youtrack.script.metrics.exporter.ruleTotalDurationThresholdMs=0
+-Djetbrains.youtrack.script.metrics.exporter.guardTotalDurationThresholdMs=0
+-Djetbrains.youtrack.script.metrics.exporter.scriptsToExportLimit=1000
 #-Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000
 #-Dorg.eclipse.jetty.server.Request.maxFormKeys=10000
 #-Djetbrains.http.request.header.buffer.size=102400
@@ -79,4 +83,4 @@
 ## You can also just run the "configure -J-yourkit" command of the YouTrack script
 #-yourkit
 
--jmx_exporter
+-jmx_exporter_new
