@@ -26,6 +26,15 @@ _transition: fade 1300ms
 
 ---
 
+# About me
+
+- ## __smirnov__*qa* (telegram)
+- ## *qa*__positive__ (gmail)
+- ## polarnik (github)
+- ## Slava
+
+---
+
 # __Why__ is it interesting
 
 - ## Organize metrics into realy _beatiful_ dashboards
