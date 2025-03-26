@@ -76,7 +76,7 @@
                     "showLineNumbers": false,
                     "showMiniMap": false
                 },
-                "content": "### Version\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
+                "content": "### Version of <a href=\"https://www.jetbrains.com/youtrack/\" target=\"_blank\" rel=\"author\" title=\"YouTrack. Project management for all your teams\"><img src=\"https://youtrack.jetbrains.com/youtrack-wide-dark.svg\" height=\"30\" /></a>\nDifferent colours 🟩🟨🟦 are different versions.\n\nMove a cursor 👆to the head of the line to get version info.\n",
                 "mode": "markdown"
             },
             "pluginVersion": "v10.4.0",
@@ -111,7 +111,8 @@
                 "y": 1
             },
             "id": 3,
-            "maxDataPoints": 100,
+            "interval": "3m",
+            "maxDataPoints": 300,
             "options": {
                 "legend": {
                     "isVisible": false,
@@ -130,7 +131,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "avg by (Version) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "expr": "avg by (Version) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
                     "format": "table",
                     "instant": false,
                     "range": true,
@@ -141,7 +142,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "avg by (instance, Build) (youtrack_version_info{  instance=~\"$instance\" })",
+                    "expr": "avg by (instance, Build) ({__name__=~\"youtrack_version_info|youtrack_version\",  instance=~\"$instance\" })",
                     "format": "table",
                     "instant": false,
                     "range": true,
@@ -220,7 +221,7 @@
                 "y": 8
             },
             "id": 4,
-            "title": "ℹ️ Info: ⚙️ Cached Jobs → ✅ Queued → (🟡|🟠) → 🛠️ Execute → ✳️ Started → ❎ Completed | ↩️ Retried | 🚫️ Interrupted",
+            "title": "ℹ️ Info: ✳️ Started → ❎ Completed | ↩️ Retried | 🚫️ Interrupted",
             "type": "row"
         },
         {
@@ -229,8 +230,8 @@
                 "uid": "-- Mixed --"
             },
             "gridPos": {
-                "h": 7,
-                "w": 24,
+                "h": 8,
+                "w": 12,
                 "x": 0,
                 "y": 9
             },
@@ -249,15 +250,124 @@
             "type": "text"
         },
         {
+            "datasource": {
+                "type": "grafana",
+                "uid": "grafana"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "valueName": "last"
+                    },
+                    "mappings": [ ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [ ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 9
+            },
+            "id": 6,
+            "options": {
+                "authPassword": "",
+                "authUsername": "",
+                "composites": [ ],
+                "content": "%%{ init: { 'flowchart': { 'curve': 'monotoneX' } } }%%\nflowchart LR\n    A(⚙️ Cached Jobs) ==> B(✅ Queued)\n    A(⚙️ Cached Jobs) -.-> C(❌ Non Queued)\n    B ==> D(🟡 Consistent)\n    B ==> E(🟠 Non Consistent)\n    D ==> F(🛠 Execute)\n    E ==> F\n    F ==> G(✳️ Started)\n    F -.-> H(⛔️ Not Started)\n    G -.-> I(↩️ Retried)\n    G ==> J(❎ Completed)\n    G -.-> K(🚫️ Interrupted)\n    I -.-> L(🟡 Consistent)\n    I -.-> M(🟠 Non Consistent)\n    K -.-> N(⌛️ Obsolete)\n    K -.-> O(⏰ Overdue)",
+                "legend": {
+                    "asTable": true,
+                    "displayMode": "table",
+                    "gradient": {
+                        "enabled": true,
+                        "show": true
+                    },
+                    "hideEmpty": false,
+                    "hideZero": false,
+                    "placement": "bottom",
+                    "show": false,
+                    "sortBy": "last",
+                    "sortDesc": true,
+                    "stats": [
+                        "mean",
+                        "last",
+                        "min",
+                        "max",
+                        "sum"
+                    ]
+                },
+                "maxWidth": true,
+                "mermaidServiceUrl": "",
+                "mermaidThemeVariablesDark": {
+                    "classDiagram": { },
+                    "common": {
+                        "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+                    },
+                    "flowChart": { },
+                    "sequenceDiagram": { },
+                    "stateDiagram": { },
+                    "userJourneyDiagram": { }
+                },
+                "mermaidThemeVariablesLight": {
+                    "classDiagram": { },
+                    "common": {
+                        "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+                    },
+                    "flowChart": { },
+                    "sequenceDiagram": { },
+                    "stateDiagram": { },
+                    "userJourneyDiagram": { }
+                },
+                "metricCharacterReplacements": [ ],
+                "moddedSeriesVal": 0,
+                "mode": "content",
+                "nodeSize": {
+                    "minHeight": 30,
+                    "minWidth": 30
+                },
+                "pluginVersion": "",
+                "style": "",
+                "useBackground": false,
+                "useBasicAuth": false,
+                "valueName": "last"
+            },
+            "pluginVersion": "1.10.4",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "grafana"
+                    },
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                }
+            ],
+            "transparent": true,
+            "type": "jdbranham-diagram-panel"
+        },
+        {
             "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 0,
                 "x": 24,
-                "y": 16
+                "y": 17
             },
-            "id": 6,
-            "title": "⚙️ Cached Jobs → ✅ Queued → (🟡|🟠) → 🛠️ Execute → ✳️ Started → ❎ Completed | ↩️ Retried | 🚫️ Interrupted",
+            "id": 7,
+            "title": "✳️ Started → ❎ Completed | ↩️ Retried | 🚫️ Interrupted",
             "type": "row"
         },
         {
@@ -340,10 +450,11 @@
                 "h": 7,
                 "w": 4,
                 "x": 0,
-                "y": 17
+                "y": 18
             },
             "hideTimeOverride": true,
-            "id": 7,
+            "id": 8,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -363,7 +474,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -554,9 +665,10 @@
                 "h": 7,
                 "w": 20,
                 "x": 4,
-                "y": 17
+                "y": 18
             },
-            "id": 8,
+            "id": 9,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -578,7 +690,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -591,7 +703,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -602,7 +714,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -612,7 +724,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -701,10 +813,11 @@
                 "h": 7,
                 "w": 4,
                 "x": 0,
-                "y": 24
+                "y": 25
             },
             "hideTimeOverride": true,
-            "id": 9,
+            "id": 10,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -724,7 +837,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -915,9 +1028,10 @@
                 "h": 7,
                 "w": 20,
                 "x": 4,
-                "y": 24
+                "y": 25
             },
-            "id": 10,
+            "id": 11,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -939,7 +1053,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -952,7 +1066,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -963,7 +1077,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -973,7 +1087,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1041,10 +1155,11 @@
                 "h": 7,
                 "w": 4,
                 "x": 0,
-                "y": 31
+                "y": 32
             },
             "hideTimeOverride": true,
-            "id": 11,
+            "id": 12,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -1071,7 +1186,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1262,9 +1377,10 @@
                 "h": 7,
                 "w": 20,
                 "x": 4,
-                "y": 31
+                "y": 32
             },
-            "id": 12,
+            "id": 13,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -1293,7 +1409,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1306,7 +1422,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1317,7 +1433,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1327,7 +1443,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1395,10 +1511,11 @@
                 "h": 7,
                 "w": 4,
                 "x": 0,
-                "y": 38
+                "y": 39
             },
             "hideTimeOverride": true,
-            "id": 13,
+            "id": 14,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -1425,7 +1542,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1616,9 +1733,10 @@
                 "h": 7,
                 "w": 20,
                 "x": 4,
-                "y": 38
+                "y": 39
             },
-            "id": 14,
+            "id": 15,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -1647,7 +1765,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -1660,7 +1778,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -1671,7 +1789,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n",
+                    "expr": "sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -1681,7 +1799,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n )\n  -\n  ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n)\n/\n( round( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n  -\n  (  sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n)\n/\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1770,10 +1888,11 @@
                 "h": 7,
                 "w": 4,
                 "x": 0,
-                "y": 45
+                "y": 46
             },
             "hideTimeOverride": true,
-            "id": 15,
+            "id": 16,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "colorMode": "background",
@@ -1793,7 +1912,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n  -\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n)\n/\n( round( 100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n )\n  -\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n)\n/\n( 100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -1984,9 +2103,10 @@
                 "h": 7,
                 "w": 20,
                 "x": 4,
-                "y": 45
+                "y": 46
             },
-            "id": 16,
+            "id": 17,
+            "interval": "3m",
             "maxDataPoints": 300,
             "options": {
                 "legend": {
@@ -2008,7 +2128,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -2021,7 +2141,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n",
+                    "expr": "100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -2032,7 +2152,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n",
+                    "expr": "100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -2042,7 +2162,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n  -\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n)\n/\n( round( 100 * ( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n-\nsum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n\n-\nsum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n )\n  -\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n)\n/\n( 100 * ( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n-\n( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n-\n( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2110,10 +2230,11 @@
                 "h": 7,
                 "w": 4,
                 "x": 0,
-                "y": 52
+                "y": 53
             },
             "hideTimeOverride": true,
-            "id": 17,
+            "id": 18,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -2140,7 +2261,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n  -\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n)\n/\n( round( 100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n )\n  -\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n)\n/\n( 100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2331,9 +2452,10 @@
                 "h": 7,
                 "w": 20,
                 "x": 4,
-                "y": 52
+                "y": 53
             },
-            "id": 18,
+            "id": 19,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -2362,7 +2484,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -2375,7 +2497,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n",
+                    "expr": "100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -2386,7 +2508,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n",
+                    "expr": "100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -2396,7 +2518,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n  -\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n)\n/\n( round( 100 * ( sum(increase(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n+\nsum(increase(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:]))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n )\n  -\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n)\n/\n( 100 * ( sum(rate(youtrack_TotalCachingJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n+\nsum(rate(youtrack_TotalCachingCountJobsRetried{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2464,10 +2586,11 @@
                 "h": 7,
                 "w": 4,
                 "x": 0,
-                "y": 59
+                "y": 60
             },
             "hideTimeOverride": true,
-            "id": 19,
+            "id": 20,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -2494,7 +2617,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n  -\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n)\n/\n( round( 100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n )\n  -\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n)\n/\n( 100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2685,9 +2808,10 @@
                 "h": 7,
                 "w": 20,
                 "x": 4,
-                "y": 59
+                "y": 60
             },
-            "id": 20,
+            "id": 21,
+            "interval": "3m",
             "links": [
                 {
                     "targetBlank": true,
@@ -2716,7 +2840,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n/\n(($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__rate_interval])) < 0)\n",
+                    "expr": "avg(\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n  /\n  (($app_start * delta({__name__=~\"process_uptime.*\",  instance=~\"$instance\" }[$__interval:])) < 0)\n)\n",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "app start",
@@ -2729,7 +2853,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n",
+                    "expr": "100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n",
                     "legendFormat": "prev ($offset)",
                     "range": true,
                     "refId": "prev"
@@ -2740,7 +2864,7 @@
                         "uid": "${source}"
                     },
                     "editorMode": "code",
-                    "expr": "100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n",
+                    "expr": "100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n",
                     "legendFormat": "current",
                     "range": true,
                     "refId": "current"
@@ -2750,7 +2874,7 @@
                         "type": "prometheus",
                         "uid": "${source}"
                     },
-                    "expr": "100 * (\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval]))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n  -\n  ( 100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n )\n)\n/\n( round( 100 * ( sum(increase(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n )\n/ (\n( sum(increase(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\"  }[$__rate_interval] offset ${offset}))\n* 1000 / $__rate_interval_ms\n ) != 0\n)\n , 0.0001) != 0 )\n",
+                    "expr": "100 * (\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:]))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:]))\n ) != 0\n)\n )\n  -\n  (  100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n)\n/\n( 100 * ( sum(rate(youtrack_TotalCachingJobsInterrupted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n )\n/ (\n( sum(rate(youtrack_TotalCachingJobsStarted{  instance=~\"$instance\" }[$__interval:] offset ${offset}))\n ) != 0\n)\n )\n",
                     "legendFormat": "diff",
                     "range": true,
                     "refId": "diff"
@@ -2883,7 +3007,7 @@
                 },
                 "multi": false,
                 "name": "instance",
-                "query": "query_result(sort_desc(    sum by (instance) (    youtrack_UtilizationPercent{}    ) > 0))",
+                "query": "query_result(sort_desc(    sum by (instance) (increase(    youtrack_UserSessions_ActiveUsers{}[$__range:$__interval]    ))))",
                 "refresh": 2,
                 "regex": "/{instance=\"(.*)\"}.*/",
                 "type": "query"
