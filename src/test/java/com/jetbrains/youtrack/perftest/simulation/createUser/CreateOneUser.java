@@ -10,7 +10,7 @@ import static io.gatling.javaapi.core.CoreDsl.reachRps;
 public class CreateOneUser extends Simulation {
     {
         setUp(
-                new UserCreator().users100()
+                new UserCreator().users(Integer.parseInt(System.getProperty("users", "9")))
         ).throttle(
                 reachRps(10).in(10),
                 holdFor(111111)

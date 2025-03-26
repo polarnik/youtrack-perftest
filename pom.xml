@@ -12,21 +12,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gatling.version>3.11.5</gatling.version>
         <gatling-maven-plugin.version>4.9.6</gatling-maven-plugin.version>
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <swagger>3.0.61</swagger>
+        <swagger>3.0.63</swagger>
 
-        <gson-version>2.10.1</gson-version>
+        <gson-version>2.12.1</gson-version>
         <gson-fire-version>1.9.0</gson-fire-version>
         <junit-version>4.13.2</junit-version>
-        <testng-version>6.9.8</testng-version>
-        <swagger-core-version>2.2.22</swagger-core-version>
+        <testng-version>7.11.0</testng-version>
+        <swagger-core-version>2.2.28</swagger-core-version>
 
-        <lombok-version>1.18.34</lombok-version>
-        <influxdb-client-java-version>7.1.0</influxdb-client-java-version>
-        <logback-classic-version>1.5.7</logback-classic-version>
-        <maven-surefire-plugin-version>3.4.0</maven-surefire-plugin-version>
+        <lombok-version>1.18.36</lombok-version>
+        <influxdb-client-java-version>7.2.0</influxdb-client-java-version>
+        <logback-classic-version>1.5.17</logback-classic-version>
+        <maven-surefire-plugin-version>3.5.2</maven-surefire-plugin-version>
+
+        <testcontainers-version>1.20.6</testcontainers-version>
     </properties>
 
     <dependencies>
@@ -82,6 +84,21 @@
             <version>${lombok-version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testcontainers/testcontainers -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.18.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
