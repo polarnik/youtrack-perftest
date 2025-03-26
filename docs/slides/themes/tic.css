@@ -1,0 +1,141 @@
+@charset "UTF-8";
+/*!
+ * Marp / Marpit tic theme.
+ *
+ * @theme tic
+ * @auto-scaling true
+ * @author Smirnov Viacheslav
+ */
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/idea.min.css");
+
+@media print { body { -webkit-print-color-adjust: exact; } }
+
+
+:root {
+    width: 1920px;
+    height: 1080px;
+    padding: 5%;
+    font-size: 50px;
+
+    --bg-color: #000000;
+    --shadow: #00000088;
+    --text-color: #fff;
+
+    --blue: rgb(84, 104, 237);
+    --green: rgb(211, 221, 80);
+    --red: #FF002E;
+    --logo: url(themes/img/code_talks.svg);
+    --page-title: url(themes/page/svg/title.svg);
+}
+
+section {
+    background-color: var(--bg-color) ;
+    width: 1920px;
+    height: 1080px;
+    color: var(--text-color) !important;
+    font-family: 'Roboto';
+    page-break-before: always;
+    page-break-after: always;
+    /*text-shadow: 1px 1px 5px var(--shadow), 0px 0px 5px var(--shadow), 1px 2px 6px var(--shadow), -1px -1px 6px var(--shadow), 2px 3px 6px var(--shadow);*/
+}
+
+section.lead {
+    background-image: var(--page-title);
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-origin: padding-box;
+    color: var(--bg-color) !important;
+}
+
+section.lead h1, section.lead h2, section.lead h3 {
+    margin-left: 0% !important;
+    margin-right: 20% !important;
+}
+
+section.lead h1, section.main h1 {
+    font-size: 300%;
+}
+section.lead h2, section.main h2 {
+    font-size: 200%;
+
+}
+section.lead h3, section.main h3 {
+    font-size: 150%;
+}
+
+strong {
+    background-color: var(--blue);
+    font-style: normal;
+    font-weight: inherit;
+}
+
+em {
+    background-color: var(--green);
+    color: var(--bg-color);
+    font-style: normal;
+}
+
+section.about, section.lead, section.main {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+}
+
+table, td, th {
+    border-color: var(--blue);
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 2px;
+    border-spacing: 10px;
+    padding: 2%;
+}
+
+img.emoji{
+    margin: 0 0.1em 0 0.1em !important;
+}
+
+li::marker {
+    color: var(--blue);
+}
+
+a {
+    color: white;
+    text-decoration-color: var(--blue);
+}
+
+em a {
+    color: var(--bg-color);
+}
+
+code {
+    font-size: 150%;
+    font-family: 'JetBrains Mono';
+}
+
+pre {
+    margin: 0% !important;
+}
+
+section > p > code
+{
+    word-wrap: anywhere;
+}
+section pre, section > code, section > pre, section > p {
+    margin: 30px;
+}
+
+pre code.language-java {
+    opacity: 0.3;
+}
+
+.hljs, code.hljs {
+    color: #fff !important;
+    background: #000 !important;
+    padding: 0 0;
+}

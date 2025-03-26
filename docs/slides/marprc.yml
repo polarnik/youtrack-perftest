@@ -1,0 +1,54 @@
+# .marprc.yml
+# Allow to access local files from Markdown while converting PDF (NOT SECURE)
+allowLocalFiles: false
+# Define author of the slide deck
+author: Viacheslav Smirnov
+# Setting options for bespoke template
+bespoke:
+  # [Bespoke] Use on-screen controller (true by default)
+  osc: false
+  # [Bespoke] Use progress bar (false by default)
+  progress: false
+  # [Bespoke] Use transitions (Only in browsers supported View Transition API: true by default)
+  transition: true
+# Define description of the slide deck
+description: Grafana, YouTrack, JVM, PromQL, InfluxDB
+# Define keywords for the slide deck (Accepts comma-separated string and array of string)
+keywords:
+  - Grafana
+  - YouTrack
+  - JVM
+  - PromQL
+  - InfluxDB
+# Define the language of converted HTML
+lang: EN
+# Enable or disable HTML tags (Configuration file can pass the whitelist object if you are using Marp Core)
+html: true
+# The base options for the constructor of engine
+options:
+  looseYAML: false
+  markdown:
+    breaks: false
+  emoji:
+    shortcode: false
+    unicode: false
+# The base directory to find markdown and theme CSS
+inputDir: .
+# Output file path (or directory when input-dir is passed)
+output: .
+# Set the number of concurrency for parallel conversion (5 by default)
+parallel: 1
+# Convert slide deck into PDF
+pdf: false
+# Enable server mode
+server: false
+# Choose template (bespoke by default)
+template: bespoke
+# Override theme by name or CSS file
+theme: ./themes/tic.css
+# Path to additional theme CSS files
+themeSet: ./themes/baseConference.css
+# Define title of the slide deck
+title: Building fast dashboards quickly
+# Watch input markdowns for changes
+watch: true
