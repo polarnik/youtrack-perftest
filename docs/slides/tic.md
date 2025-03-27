@@ -28,10 +28,10 @@ _transition: fade 1300ms
 
 # About me
 
-- ## __smirnov__*qa* (telegram)
-- ## *qa*__positive__ (gmail)
-- ## polarnik (github)
-- ## Slava
+* ## __smirnov__*qa* (telegram)
+* ## *qa*__positive__ (gmail)
+* ## polarnik (github)
+* ## Slava
 
 ---
 
@@ -479,6 +479,18 @@ panels.combo.stat.
 
 ---
 
+<!-- _class: main
+-->
+
+# __How__ to _generate_
+
+# ?
+
+![bg](themes/page/svg/page.svg)
+
+
+---
+
 ![bg](img/tools.1.png)
 
 ---
@@ -558,6 +570,8 @@ panels.combo.stat.
 
 ---
 
+# Let's create a _custom_ panel
+
 ```kotlin
 stat: {                                               
   a_bigger_value_is_better(title, target):            
@@ -567,6 +581,9 @@ stat: {
 ![bg](themes/page/svg/page.svg)
 
 ---
+
+# as a __base__ panel with a _custom_ title
+
 
 ```java
 stat: {                                               
@@ -585,6 +602,9 @@ stat: {
 
 ---
 
+# + settings from _JSON_
+
+
 ```java
 stat: {                                          
   a_bigger_value_is_better(title, target):       
@@ -593,18 +613,15 @@ stat: {
       target)                                         
 ```
 ```kotlin
-    + {                                               
-      timeFrom: '$diff_interval',                     
-      maxDataPoints: 300,                             
-      interval: "3m",                                 
-      hideTimeOverride: true,                         
-    }                                                 
+    + { timeFrom: '$diff_interval',                   
+        maxDataPoints: 300,                           
+        interval: "3m",                               
+        hideTimeOverride: true, }                     
 ```
 ```java
 }                                                    
 ```
 
-![bg](themes/page/svg/page.svg)
 
 ---
 
@@ -647,9 +664,9 @@ stat: {
 
 ```bash
 brew install jsonnet-bundler
-
 jb install github.com/grafana/grafonnet/gen/grafonnet-v10.4.0@main
 ```
+![bg](themes/page/svg/page.svg)
 
 ---
 
@@ -661,6 +678,8 @@ jb install github.com/grafana/grafonnet/gen/grafonnet-v10.4.0@main
 ```
 
 # 🔄
+
+![bg](themes/page/svg/page.svg)
 
 ---
 
@@ -673,6 +692,8 @@ jb install github.com/grafana/grafonnet/gen/grafonnet-v10.4.0@main
 
 # 🔄
 # ☕
+
+![bg](themes/page/svg/page.svg)
 
 ---
 
@@ -687,9 +708,22 @@ jb install github.com/grafana/grafonnet/gen/grafonnet-v10.4.0@main
 # ☕
 # ✅
 
+![bg](themes/page/svg/page.svg)
+
 ---
 
 ![bg](img/jsonnet.language.server.png)
+
+---
+
+<!-- _class: main
+-->
+
+# __How__ to _compile_
+# and _debug_
+
+![bg](themes/page/svg/page.svg)
+
 
 ---
 
@@ -949,15 +983,25 @@ sum_over_time((           | sum_over_time(
 
 ---
 
+# Summary
+
+* ## Youtrack provides _2000_ metric points
+* ## Monitoring is a common __visual language__
+* ## Attractive dashboards are _fast_
+* ## __json__*net*, __granon__*net*, *s*__json__*net*
+
+---
+
 <!-- _class: main
 -->
 
 # __Demo__ _time_
 
-# YouTrack, Grafana, ...
+## YouTrack, Grafana, ...
 
 ### https://github.com/polarnik/youtrack-perftest
-### qapositive (gmail), smirnovqa (telegram)
+### https://github.com/polarnik/youtrack-monitoring
+
 
 ![bg](themes/page/svg/page.svg)
 
